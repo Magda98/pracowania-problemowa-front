@@ -1,76 +1,67 @@
 <template>
-  <v-container>
-    <v-row>
-      <validation-observer ref="observer" v-slot="{ errors }">
-        <form>
-          <validation-provider
-            v-slot="{ errors }"
-            name="Name"
-            rules="required|max:10"
-          >
-            <v-text-field
-              v-model="name"
-              :counter="10"
-              :error-messages="errors"
-              label="Name"
-              required
-            ></v-text-field>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            name="email"
-            rules="required|email"
-          >
-            <v-text-field
-              v-model="email"
-              :error-messages="errors"
-              label="E-mail"
-              required
-            ></v-text-field>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            name="select"
-            rules="required"
-          >
-            <v-select
-              v-model="select"
-              :items="items"
-              :error-messages="errors"
-              label="Select"
-              data-vv-name="select"
-              required
-            ></v-select>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            name="checkbox"
-          >
-            <v-checkbox
-              v-model="checkbox"
-              :error-messages="errors"
-              value="1"
-              label="Option"
-              type="checkbox"
-              required
-            ></v-checkbox>
-          </validation-provider>
-
-          <v-btn class="mr-4" @click="submit">
-            submit
-          </v-btn>
-          <v-btn @click="clear">
-            clear
-          </v-btn>
-        </form>
-      </validation-observer>
+  <v-container
+    class="container"
+    fill-height
+    :style="{
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
+    }"
+  >
+    <v-row justify="center" align="center">
+      <v-col>
+        <h1>Fit Kid Catering 🥗</h1>
+        <validation-observer ref="observer">
+          <form>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:10"
+            >
+              <v-text-field
+                v-model="name"
+                color="primary"
+                :counter="10"
+                :error-messages="errors"
+                label="Nazwa użytkownika"
+                required
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="email"
+              rules="required|email"
+            >
+              <v-text-field
+                :error-messages="errors"
+                color="primary"
+                label="Hasło"
+                required
+                name="password"
+                :value="myPass"
+                :append-icon="pass ? 'visibility' : 'visibility_off'"
+                @click:append="() => (value = !value)"
+                :type="pass ? 'password' : 'text'"
+              ></v-text-field>
+            </validation-provider>
+            <v-btn
+              color="primary"
+              outlined
+              class="mr-4 login-btn"
+              @click="submit"
+            >
+              zaloguj
+            </v-btn>
+            <v-btn class="login-btn" color="primary" outlined @click="clear">
+              wyczyść
+            </v-btn>
+          </form>
+        </validation-observer>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { required, email, max } from "vee-validate/dist/rules";
+import { required, max } from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -82,19 +73,13 @@ setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty"
+  message: "to pole nie może być puste"
 });
 
 extend("max", {
   ...max,
-  message: "{_field_} may not be greater than {length} characters"
+  message: "pole nie może być dłuższe niż 256 znaków"
 });
-
-extend("email", {
-  ...email,
-  message: "Email must be valid"
-});
-
 export default {
   components: {
     ValidationProvider,
@@ -105,8 +90,7 @@ export default {
     email: "",
     select: null,
     errors: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-    checkbox: null
+    pass: String
   }),
 
   methods: {
@@ -123,3 +107,26 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 40px;
+  color: #272727;
+}
+form {
+  max-width: 400px;
+  margin: 50px auto;
+}
+.login-btn {
+  margin-top: 20px;
+}
+.container {
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+</style>
