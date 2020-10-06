@@ -43,7 +43,7 @@
               ></v-text-field>
             </validation-provider>
             <v-btn
-              color="primary"
+              color="accent"
               outlined
               class="mr-4 login-btn"
               @click="submit"
@@ -62,6 +62,7 @@
 
 <script>
 import { required, max } from "vee-validate/dist/rules";
+import { mapGetters } from "vuex";
 import {
   extend,
   ValidationObserver,
@@ -90,7 +91,8 @@ export default {
     email: "",
     select: null,
     errors: null,
-    pass: String
+    pass: String,
+    myPass: ""
   }),
 
   methods: {
@@ -103,6 +105,14 @@ export default {
       this.select = null;
       this.checkbox = null;
       this.$refs.observer.reset();
+    }
+  },
+  computed: {
+    ...mapGetters("user", ["userInfo", "loggedIn"])
+  },
+  beforeMount() {
+    if (this.loggedIn) {
+      this.$router.push("/");
     }
   }
 };
