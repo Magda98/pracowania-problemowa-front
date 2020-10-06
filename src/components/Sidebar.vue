@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent color="primary" dark>
+  <v-navigation-drawer permanent color="primary" dark fill-height>
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar>
