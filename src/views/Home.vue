@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height>
-    <OrderList :list="listaDzieci" />
+    <OrderList :orderList="listaDzieci" />
   </v-container>
 </template>
 
@@ -10,6 +10,7 @@ export default {
   components: {
     OrderList
   },
+
   data: () => ({
     listaDzieci: [
       {

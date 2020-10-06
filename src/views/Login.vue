@@ -14,12 +14,11 @@
             <validation-provider
               v-slot="{ errors }"
               name="Name"
-              rules="required|max:10"
+              rules="required|min:4"
             >
               <v-text-field
                 v-model="name"
                 color="primary"
-                :counter="10"
                 :error-messages="errors"
                 label="Nazwa użytkownika"
                 required
@@ -27,8 +26,8 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
-              name="email"
-              rules="required|email"
+              name="password"
+              rules="required|min:4"
             >
               <v-text-field
                 :error-messages="errors"
@@ -61,7 +60,7 @@
 </template>
 
 <script>
-import { required, max } from "vee-validate/dist/rules";
+import { required, max, min } from "vee-validate/dist/rules";
 import { mapGetters } from "vuex";
 import {
   extend,

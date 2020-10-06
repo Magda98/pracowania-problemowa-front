@@ -1,6 +1,6 @@
 <template
   ><v-container>
-    <v-row v-for="(index, order) in orderList" :key="index">
+    <v-row v-for="(order, index) in orderList" :key="index">
       <v-card>
         <v-card-title>{{ order.name }}</v-card-title>
       </v-card>
@@ -12,6 +12,9 @@
 export default {
   props: {
     orderList: Array
+  },
+  beforeMount() {
+    console.log(this.orderList);
   }
 };
 </script>
