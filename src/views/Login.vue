@@ -8,7 +8,7 @@
   >
     <v-row justify="center" align="center">
       <v-col>
-        <h1>Fit Kid Catering 🥗</h1>
+        <h1>Fit Kid Catering</h1>
         <validation-observer ref="observer">
           <form>
             <validation-provider
