@@ -14,12 +14,11 @@
             <validation-provider
               v-slot="{ errors }"
               name="Name"
-              rules="required|max:10"
+              rules="required|max:256"
             >
               <v-text-field
                 v-model="name"
                 color="primary"
-                :counter="10"
                 :error-messages="errors"
                 label="Nazwa użytkownika"
                 required
@@ -27,8 +26,8 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
-              name="email"
-              rules="required|email"
+              name="password"
+              rules="required|max:256"
             >
               <v-text-field
                 :error-messages="errors"
@@ -36,14 +35,14 @@
                 label="Hasło"
                 required
                 name="password"
-                :value="myPass"
+                v-model="myPass"
                 :append-icon="pass ? 'visibility' : 'visibility_off'"
-                @click:append="() => (value = !value)"
+                @click:append="() => (pass = !pass)"
                 :type="pass ? 'password' : 'text'"
               ></v-text-field>
             </validation-provider>
             <v-btn
-              color="primary"
+              color="accent"
               outlined
               class="mr-4 login-btn"
               @click="submit"
@@ -61,36 +60,42 @@
 </template>
 
 <script>
-import { required, max } from "vee-validate/dist/rules";
+import { required, max, min } from "vee-validate/dist/rules";
+import { mapGetters } from "vuex";
 import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode
+  setInteractionMode,
 } from "vee-validate";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "to pole nie może być puste"
+  message: "to pole nie może być puste",
 });
 
 extend("max", {
   ...max,
-  message: "pole nie może być dłuższe niż 256 znaków"
+  message: "pole nie może być dłuższe niż 256 znaków",
+});
+extend("min", {
+  ...max,
+  message: "pole nie może być krótsze niż 4 znaki",
 });
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   data: () => ({
     name: "",
     email: "",
     select: null,
     errors: null,
-    pass: String
+    pass: String,
+    myPass: "",
   }),
 
   methods: {
@@ -98,13 +103,19 @@ export default {
       this.$refs.observer.validate();
     },
     clear() {
+      this.myPass = "";
       this.name = "";
-      this.email = "";
-      this.select = null;
-      this.checkbox = null;
       this.$refs.observer.reset();
+    },
+  },
+  computed: {
+    ...mapGetters("user", ["userInfo", "loggedIn"]),
+  },
+  beforeMount() {
+    if (this.loggedIn) {
+      this.$router.push("/");
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
