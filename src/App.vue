@@ -41,7 +41,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
-    Sidebar
+    Sidebar,
   },
   name: "App",
   data: () => ({
@@ -54,12 +54,17 @@ export default {
       "alertType",
       "alertIcon",
       "message",
-      "showAlert"
-    ])
+      "showAlert",
+    ]),
   },
   methods: {
-    ...mapActions("toastMessage", ["hideAlert"])
-  }
+    ...mapActions("toastMessage", ["hideAlert"]),
+  },
+  beforeMount() {
+    if (!this.loggedIn) {
+      this.$router.push("/login");
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>
