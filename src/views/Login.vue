@@ -14,7 +14,7 @@
             <validation-provider
               v-slot="{ errors }"
               name="Name"
-              rules="required|min:4"
+              rules="required|max:256"
             >
               <v-text-field
                 v-model="name"
@@ -27,7 +27,7 @@
             <validation-provider
               v-slot="{ errors }"
               name="password"
-              rules="required|min:4"
+              rules="required|max:256"
             >
               <v-text-field
                 :error-messages="errors"
@@ -35,9 +35,9 @@
                 label="Hasło"
                 required
                 name="password"
-                :value="myPass"
+                v-model="myPass"
                 :append-icon="pass ? 'visibility' : 'visibility_off'"
-                @click:append="() => (value = !value)"
+                @click:append="() => (pass = !pass)"
                 :type="pass ? 'password' : 'text'"
               ></v-text-field>
             </validation-provider>
@@ -66,24 +66,28 @@ import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode
+  setInteractionMode,
 } from "vee-validate";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "to pole nie może być puste"
+  message: "to pole nie może być puste",
 });
 
 extend("max", {
   ...max,
-  message: "pole nie może być dłuższe niż 256 znaków"
+  message: "pole nie może być dłuższe niż 256 znaków",
+});
+extend("min", {
+  ...max,
+  message: "pole nie może być krótsze niż 4 znaki",
 });
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   data: () => ({
     name: "",
@@ -91,7 +95,7 @@ export default {
     select: null,
     errors: null,
     pass: String,
-    myPass: ""
+    myPass: "",
   }),
 
   methods: {
@@ -99,21 +103,19 @@ export default {
       this.$refs.observer.validate();
     },
     clear() {
+      this.myPass = "";
       this.name = "";
-      this.email = "";
-      this.select = null;
-      this.checkbox = null;
       this.$refs.observer.reset();
-    }
+    },
   },
   computed: {
-    ...mapGetters("user", ["userInfo", "loggedIn"])
+    ...mapGetters("user", ["userInfo", "loggedIn"]),
   },
   beforeMount() {
     if (this.loggedIn) {
       this.$router.push("/");
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
