@@ -1,7 +1,8 @@
 <template>
   <v-container
-    class="container"
+    class="container-custom"
     fill-height
+    fluid
     :style="{
       backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
@@ -163,7 +164,7 @@ form {
 .login-btn {
   margin-top: 20px;
 }
-.container {
+.container-custom {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

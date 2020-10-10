@@ -1,12 +1,12 @@
 <template>
   <v-container
-    class="container"
-    fill-height
+    class="container-custom"
+    fluid
     :style="{
       backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
-    <div>
+    <v-container>
       <v-row justify="center" align-content="center">
         <v-col md="6">
           <h1>About</h1>
@@ -23,7 +23,7 @@
       <v-row justify="center">
         <AboutCard v-for="person in people" :key="person.id" :person="person" />
       </v-row>
-    </div>
+    </v-container>
   </v-container>
 </template>
 
@@ -96,7 +96,7 @@ h4 {
   font-size: 20px;
   color: #272727;
 }
-.container {
+.container-custom {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
