@@ -3,7 +3,7 @@
     <v-layout fill-height>
       <Sidebar />
       <v-main>
-        <router-view></router-view>
+        <router-view />
       </v-main>
     </v-layout>
     <v-snackbar
@@ -59,11 +59,6 @@ export default {
   },
   methods: {
     ...mapActions("toastMessage", ["hideAlert"]),
-  },
-  beforeMount() {
-    if (!this.loggedIn) {
-      this.$router.push("/login");
-    }
   },
 };
 </script>

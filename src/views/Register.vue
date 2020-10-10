@@ -164,9 +164,7 @@ form {
   margin-top: 20px;
 }
 .container {
-  width: 100%;
-  max-width: 100%;
-  object-fit: cover;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
