@@ -8,7 +8,7 @@
   >
     <v-row justify="center" align="center">
       <v-col>
-        <h1>Fit Kid Catering</h1>
+        <h1>Rejestracja</h1>
         <validation-observer ref="observer">
           <form>
             <validation-provider
@@ -21,6 +21,19 @@
                 color="primary"
                 :error-messages="errors"
                 label="Nazwa użytkownika"
+                required
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:256"
+            >
+              <v-text-field
+                v-model="email"
+                color="primary"
+                :error-messages="errors"
+                label="Adres E-mail"
                 required
               ></v-text-field>
             </validation-provider>
@@ -41,30 +54,32 @@
                 :type="pass ? 'password' : 'text'"
               ></v-text-field>
             </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="password"
+              rules="required|max:256"
+            >
+              <v-text-field
+                :error-messages="errors"
+                color="primary"
+                label="Powtórz hasło"
+                required
+                name="password"
+                v-model="myPass1"
+                :append-icon="pass1 ? 'visibility' : 'visibility_off'"
+                @click:append="() => (pass1 = !pass1)"
+                :type="pass1 ? 'password' : 'text'"
+              ></v-text-field>
+            </validation-provider>
             <v-btn
               color="accent"
               outlined
               class="mr-4 login-btn"
               @click="submit"
             >
-              zaloguj
+              zarejestruj
             </v-btn>
-            <v-btn class="login-btn" color="primary" outlined @click="clear">
-              wyczyść
-            </v-btn>
-            <v-card flat
-              ><v-card-title class="card-title"
-                >nie masz konta? &nbsp;
-                <v-btn
-                  outlined
-                  small
-                  class="login-btn"
-                  color="primary"
-                  to="/register"
-                  >Zarejestruj się</v-btn
-                ></v-card-title
-              >
-            </v-card>
           </form>
         </validation-observer>
       </v-col>
@@ -109,7 +124,8 @@ export default {
     errors: null,
     pass: String,
     myPass: "",
-    dialog: false,
+    pass1: String,
+    myPass1: "",
   }),
 
   methods: {
@@ -153,14 +169,5 @@ form {
   object-fit: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-.card-title {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  color: #607d8b;
-  button {
-    margin-left: 20px;
-  }
 }
 </style>

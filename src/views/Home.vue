@@ -8,7 +8,7 @@
 import OrderList from "@/components/OrderList.vue";
 export default {
   components: {
-    OrderList
+    OrderList,
   },
 
   data: () => ({
@@ -20,30 +20,30 @@ export default {
           {
             day: "monday",
             mealName: "Pierogi",
-            comments: "Ser bez laktozy"
+            comments: "Ser bez laktozy",
           },
           {
             day: "teusday",
             mealName: "Schabowy",
-            comments: "Mięso Sojowe"
+            comments: "Mięso Sojowe",
           },
           {
             day: "wednesday",
             mealName: "Spagetthi",
-            comments: "Sos bez pomidorów"
+            comments: "Sos bez pomidorów",
           },
 
           {
             day: "thrustday",
             mealName: "Pierogi",
-            comments: "Ser bez laktozy"
+            comments: "Ser bez laktozy",
           },
           {
             day: "friday",
             mealName: "Naleśniki z serem",
-            comments: "Ser bez laktozy"
-          }
-        ]
+            comments: "Ser bez laktozy",
+          },
+        ],
       },
       {
         name: "Alicja Adams",
@@ -51,27 +51,27 @@ export default {
         meals: {
           mondays: {
             mealName: "Pierogi",
-            comments: "Ser bez laktozy"
+            comments: "Ser bez laktozy",
           },
           teusdays: {
             mealName: "Schabowy",
-            comments: "Mięso Sojowe"
+            comments: "Mięso Sojowe",
           },
           wensdays: {
             mealName: "Spagetthi",
-            comments: "Sos bez pomidorów"
+            comments: "Sos bez pomidorów",
           },
           thrustdays: {
             mealName: "Pierogi",
-            comments: "Ser bez laktozy"
+            comments: "Ser bez laktozy",
           },
           fridays: {
             mealName: "Naleśniki z serem",
-            comments: "Ser bez laktozy"
-          }
-        }
-      }
-    ]
-  })
+            comments: "Ser bez laktozy",
+          },
+        },
+      },
+    ],
+  }),
 };
 </script>
