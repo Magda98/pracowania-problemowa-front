@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout fill-height>
-      <Sidebar v-if="loggedIn" />
+      <Sidebar />
       <v-content>
         <router-view></router-view>
       </v-content>
