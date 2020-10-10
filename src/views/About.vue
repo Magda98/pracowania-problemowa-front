@@ -100,7 +100,6 @@ h4 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  max-width: fit-content;
   height: 100vh;
   align-items: center;
   justify-content: center;
