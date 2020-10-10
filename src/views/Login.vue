@@ -194,6 +194,10 @@ form {
   object-fit: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 .card-title {
   margin-top: 20px;

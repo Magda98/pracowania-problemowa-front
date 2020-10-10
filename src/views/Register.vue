@@ -26,7 +26,7 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
-              name="Name"
+              name="Email"
               rules="required|max:256"
             >
               <v-text-field
@@ -57,7 +57,7 @@
 
             <validation-provider
               v-slot="{ errors }"
-              name="password"
+              name="passwordref"
               rules="required|max:256"
             >
               <v-text-field
@@ -65,7 +65,7 @@
                 color="primary"
                 label="Powtórz hasło"
                 required
-                name="password"
+                name="password1"
                 v-model="myPass1"
                 :append-icon="pass1 ? 'visibility' : 'visibility_off'"
                 @click:append="() => (pass1 = !pass1)"
@@ -169,5 +169,9 @@ form {
   object-fit: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 </style>

@@ -2,9 +2,9 @@
   <v-app>
     <v-layout fill-height>
       <Sidebar />
-      <v-content>
+      <v-main>
         <router-view></router-view>
-      </v-content>
+      </v-main>
     </v-layout>
     <v-snackbar
       class="sp-snackbar"
