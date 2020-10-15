@@ -32,19 +32,25 @@
         </v-list-item-icon>
         <v-list-item-title>Lista zamówień</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="offer">
+      <v-list-item v-if="loggedIn" link to="/offer">
         <v-list-item-icon>
           <v-icon>mdi-book-open-outline</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Oferta</v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="!loggedIn" link to="login">
+      <v-list-item v-if="loggedIn" link to="/list">
+        <v-list-item-icon>
+          <v-icon>mdi-book-open-outline</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Lista podopiecznych</v-list-item-title>
+      </v-list-item>
+      <v-list-item v-if="!loggedIn" link to="/login">
         <v-list-item-icon>
           <v-icon>mdi-account-arrow-left-outline</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Logowanie</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="about">
+      <v-list-item link to="/about">
         <v-list-item-icon>
           <v-icon>mdi-information-outline</v-icon>
         </v-list-item-icon>

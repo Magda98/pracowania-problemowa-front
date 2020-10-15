@@ -38,41 +38,43 @@
                 required
               ></v-text-field>
             </validation-provider>
-            <validation-provider
-              v-slot="{ errors }"
-              name="password"
-              rules="required|max:256"
-            >
-              <v-text-field
-                :error-messages="errors"
-                color="primary"
-                label="Hasło"
-                required
+            <ValidationObserver>
+              <validation-provider
+                v-slot="{ errors }"
                 name="password"
-                v-model="myPass"
-                :append-icon="pass ? 'visibility' : 'visibility_off'"
-                @click:append="() => (pass = !pass)"
-                :type="pass ? 'password' : 'text'"
-              ></v-text-field>
-            </validation-provider>
+                rules="required|max:256|password:@confirm"
+              >
+                <v-text-field
+                  :error-messages="errors"
+                  color="primary"
+                  label="Hasło"
+                  required
+                  name="password"
+                  v-model="myPass"
+                  :append-icon="pass ? 'visibility' : 'visibility_off'"
+                  @click:append="() => (pass = !pass)"
+                  :type="pass ? 'password' : 'text'"
+                ></v-text-field>
+              </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
-              name="passwordref"
-              rules="required|max:256"
-            >
-              <v-text-field
-                :error-messages="errors"
-                color="primary"
-                label="Powtórz hasło"
-                required
-                name="password1"
-                v-model="myPass1"
-                :append-icon="pass1 ? 'visibility' : 'visibility_off'"
-                @click:append="() => (pass1 = !pass1)"
-                :type="pass1 ? 'password' : 'text'"
-              ></v-text-field>
-            </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                name="confirm"
+                rules="required|max:256"
+              >
+                <v-text-field
+                  :error-messages="errors"
+                  color="primary"
+                  label="Powtórz hasło"
+                  required
+                  name="password1"
+                  v-model="confirmation"
+                  :append-icon="pass1 ? 'visibility' : 'visibility_off'"
+                  @click:append="() => (pass1 = !pass1)"
+                  :type="pass1 ? 'password' : 'text'"
+                ></v-text-field>
+              </validation-provider>
+            </ValidationObserver>
             <v-btn
               color="accent"
               outlined
@@ -113,6 +115,13 @@ extend("min", {
   ...max,
   message: "pole nie może być krótsze niż 4 znaki",
 });
+extend("password", {
+  params: ["target"],
+  validate(value, { target }) {
+    return value === target;
+  },
+  message: "Hasła muszą być identyczne!",
+});
 export default {
   components: {
     ValidationProvider,
@@ -126,7 +135,7 @@ export default {
     pass: String,
     myPass: "",
     pass1: String,
-    myPass1: "",
+    confirmation: "",
   }),
 
   methods: {
