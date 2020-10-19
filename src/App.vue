@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <v-layout fill-height>
-      <Sidebar v-if="loggedIn" />
-      <v-content>
-        <router-view></router-view>
-      </v-content>
+      <Sidebar />
+      <v-main>
+        <router-view />
+      </v-main>
     </v-layout>
     <v-snackbar
       class="sp-snackbar"
@@ -41,7 +41,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
-    Sidebar
+    Sidebar,
   },
   name: "App",
   data: () => ({
@@ -54,12 +54,12 @@ export default {
       "alertType",
       "alertIcon",
       "message",
-      "showAlert"
-    ])
+      "showAlert",
+    ]),
   },
   methods: {
-    ...mapActions("toastMessage", ["hideAlert"])
-  }
+    ...mapActions("toastMessage", ["hideAlert"]),
+  },
 };
 </script>
 <style lang="scss" scoped>

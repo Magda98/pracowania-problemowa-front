@@ -1,13 +1,12 @@
 <template>
   <v-container
-    class="container"
-    fill-height
+    class="container-custom"
     fluid
     :style="{
       backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
-    <v-row justify="center">
+    <v-container>
       <v-row justify="center" align-content="center">
         <v-col md="6">
           <h1>About</h1>
@@ -24,7 +23,7 @@
       <v-row justify="center">
         <AboutCard v-for="person in people" :key="person.id" :person="person" />
       </v-row>
-    </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -33,7 +32,7 @@ import AboutCard from "@/components/AboutCard.vue";
 export default {
   name: "About",
   components: {
-    AboutCard
+    AboutCard,
   },
   data() {
     return {
@@ -44,7 +43,7 @@ export default {
           surname: "Kochman",
           description: "Kierownik projektu, front-end Vue.js",
           link: "https://github.com/Magda98",
-          logo: "logo.png"
+          logo: "logo.png",
         },
         {
           id: "2",
@@ -52,7 +51,7 @@ export default {
           surname: "Knapik",
           description: "Back-end C#",
           link: "https://github.com/WhiteRaidho",
-          logo: "csharplogo.png"
+          logo: "csharplogo.png",
         },
         {
           id: "3",
@@ -60,7 +59,7 @@ export default {
           surname: "Kida",
           description: "Back-end C#",
           link: "https://github.com/JKida10",
-          logo: "csharplogo.png"
+          logo: "csharplogo.png",
         },
         {
           id: "4",
@@ -68,11 +67,11 @@ export default {
           surname: "Król",
           description: "Front-end Vue.js",
           link: "https://github.com/krolik1337",
-          logo: "logo.png"
-        }
-      ]
+          logo: "logo.png",
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
@@ -97,11 +96,13 @@ h4 {
   font-size: 20px;
   color: #272727;
 }
-.container {
-  width: 100%;
-  max-width: 100%;
-  object-fit: cover;
+.container-custom {
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 </style>

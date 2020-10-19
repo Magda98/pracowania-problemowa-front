@@ -1,9 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
 import About from "../views/About.vue";
 import Home from "../views/Home.vue";
 import Menu from "../views/Menu.vue";
+import KidsList from "../views/KidsList.vue";
+import DishList from "../views/DishList.vue";
 
 Vue.use(VueRouter);
 
@@ -12,6 +15,21 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/list",
+    name: "KidsList",
+    component: KidsList
+  },
+  {
+    path: "/list/:id",
+    name: "DishList",
+    component: DishList
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
   },
   {
     path: "/",
