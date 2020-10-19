@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import About from "../views/About.vue";
 import Home from "../views/Home.vue";
+import Menu from "../views/Menu.vue";
 import KidsList from "../views/KidsList.vue";
 import DishList from "../views/DishList.vue";
 
@@ -38,10 +39,12 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: About
+  },
+  {
+    path: "/menu",
+    name: "Menu",
+    component: Menu
   }
 ];
 
