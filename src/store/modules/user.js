@@ -6,7 +6,7 @@ const querystring = require("query-string");
 // initial state
 const state = {
   id: "",
-  logged_in: true,
+  logged_in: false,
   getToken: false,
   token: String,
   userInfo: false

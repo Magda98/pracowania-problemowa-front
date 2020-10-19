@@ -18,10 +18,23 @@
               rules="required|max:256"
             >
               <v-text-field
+                v-model="surname"
+                color="primary"
+                :error-messages="errors"
+                label="Imię"
+                required
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:256"
+            >
+              <v-text-field
                 v-model="name"
                 color="primary"
                 :error-messages="errors"
-                label="Nazwa użytkownika"
+                label="Nazwisko"
                 required
               ></v-text-field>
             </validation-provider>
@@ -128,6 +141,7 @@ export default {
     ValidationObserver,
   },
   data: () => ({
+    surname: "",
     name: "",
     email: "",
     select: null,
