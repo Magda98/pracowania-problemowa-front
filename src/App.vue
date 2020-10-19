@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <v-layout fill-height>
-      <Sidebar v-if="loggedIn" />
-      <v-content>
-        <router-view></router-view>
-      </v-content>
+      <Sidebar />
+      <v-main>
+        <router-view />
+      </v-main>
     </v-layout>
     <v-snackbar
       class="sp-snackbar"
@@ -59,11 +59,6 @@ export default {
   },
   methods: {
     ...mapActions("toastMessage", ["hideAlert"]),
-  },
-  beforeMount() {
-    if (!this.loggedIn) {
-      this.$router.push("/login");
-    }
   },
 };
 </script>
