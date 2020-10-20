@@ -108,33 +108,33 @@
 
 <script>
 import { required, max, min } from "vee-validate/dist/rules";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
+  setInteractionMode
 } from "vee-validate";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "to pole nie może być puste",
+  message: "to pole nie może być puste"
 });
 
 extend("max", {
   ...max,
-  message: "pole nie może być dłuższe niż 256 znaków",
+  message: "pole nie może być dłuższe niż 256 znaków"
 });
 extend("min", {
   ...max,
-  message: "pole nie może być krótsze niż 4 znaki",
+  message: "pole nie może być krótsze niż 4 znaki"
 });
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   data: () => ({
     name: "",
@@ -143,27 +143,30 @@ export default {
     errors: null,
     pass: String,
     myPass: "",
-    dialog: false,
+    dialog: false
   }),
 
   methods: {
+    ...mapActions("user", ["login"]),
     submit() {
-      this.$refs.observer.validate();
+      if (this.$refs.observer.validate()) {
+        this.login({ username: this.name, password: this.myPass });
+      }
     },
     clear() {
       this.myPass = "";
       this.name = "";
       this.$refs.observer.reset();
-    },
+    }
   },
   computed: {
-    ...mapGetters("user", ["userInfo", "loggedIn"]),
+    ...mapGetters("user", ["userInfo", "loggedIn"])
   },
   beforeMount() {
     if (this.loggedIn) {
       this.$router.push("/");
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

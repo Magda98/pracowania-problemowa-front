@@ -2,6 +2,7 @@ import * as types from "../mutation-types";
 import router from "@/router";
 import axios from "axios";
 const querystring = require("query-string");
+import api from "@/api";
 
 // initial state
 const state = {
@@ -9,6 +10,8 @@ const state = {
   logged_in: false,
   getToken: false,
   token: String,
+  refToken: String,
+  expires: Date,
   userInfo: false
 };
 
@@ -21,49 +24,53 @@ const getters = {
     state.getToken;
   },
   userInfo: state => state.userInfo,
-  userProfile: state => state.userInfo.external_urls.spotify,
+  userProfile: state => state.userInfo,
   loggedIn: state => state.logged_in,
-  isExpired: state => new Date(state.expiryDate) < new Date()
+  isExpired: state => new Date(state.expires) < new Date()
 };
 
 // actions
 const actions = {
-  login({ commit, state }) {
-    const baseUrl = "https://accounts.spotify.com/authorize";
-    const clientId = "9e71951e46e74a79ac078ac56f76ba69";
-    const redirectUri = "http://localhost:8080/spotifix-vue/";
-    //"https://magda98.github.io/spotifix-vue/";
-    //
-    //
-    let scopes = new Array(
-      "user-read-private",
-      "user-read-email",
-      "user-read-currently-playing",
-      "user-read-recently-played",
-      "user-modify-playback-state",
-      "streaming",
-      "user-library-modify",
-      "user-library-read",
-      "user-top-read"
-    );
-    const scope = scopes.join("%20");
-    const responseType = "token";
-
+  login({ commit, state }, data) {
+    api.login(response => {
+      if (response.status === 401) {
+        this.dispatch("user/login");
+      } else if (response.status === 400) {
+        this.dispatch("toastMessage/alert", {
+          message: "Niepoprawne dane logowania",
+          type: "error"
+        });
+      } else {
+        console.log(response);
+        commit("saveToken", response);
+        router.push({ path: "home" });
+        this.dispatch("toastMessage/alert", {
+          message: "Zostałeś poprawnie zalogowany",
+          type: "success"
+        });
+      }
+    }, data);
     commit(types.GET_TOKEN, {});
-
-    window.location.href = `${baseUrl}?client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&response_type=${responseType}`;
   },
-
-  getToken({ commit, state }) {
-    if (state.getToken) {
-      commit(types.GET_TOKEN_AF);
-      const token = querystring.parse(location.hash.slice(2)).access_token;
-      commit(types.SAVE_TOKEN, { token });
-      router.push("/");
-    }
+  register({ commit, state }, data) {
+    api.register(response => {
+      if (response.status === 400) {
+        this.dispatch("toastMessage/alert", {
+          message: `Niepoprawne dane: ${response.data.errors.Password?.[0] +
+            " " +
+            response.data.errors.UserName?.[0]}`,
+          type: "error"
+        });
+      } else {
+        router.push({ path: "login" });
+        this.dispatch("toastMessage/alert", {
+          message: "Zostałeś poprawnie zarejestrowany",
+          type: "success"
+        });
+      }
+    }, data);
   }
 };
-
 // mutations
 const mutations = {
   noToken(state) {
@@ -71,7 +78,12 @@ const mutations = {
   },
   saveUserInfo(state, { userInfo }) {
     state.userInfo = userInfo;
+  },
+  saveToken(state, data) {
     state.logged_in = true;
+    state.token = data.token;
+    state.refToken = data.refresh;
+    state.expires = data.expires;
   },
   [types.LOGIN_USER](state) {
     state.logged_in = true;

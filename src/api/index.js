@@ -2,10 +2,37 @@ import _ from "lodash";
 import axios from "axios";
 import router from "@/router";
 
-axios.defaults.baseURL = "API BASE URL";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-
+axios.defaults.baseURL = "https://fitkidcateringapp.azurewebsites.net";
+axios.defaults.headers.post["Content-Type"] = "application/json-patch+json";
+// axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 export default {
+  login(cb, data) {
+    axios
+      .post(`/api/user/authenticate`, {
+        Username: data.username,
+        Password: data.password
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+  register(cb, data) {
+    axios
+      .post(`/api/user`, {
+        UserName: data.username,
+        Password: data.password,
+        Email: data.email,
+        FirstName: data.firstname,
+        LastName: data.lastname
+      })
+      .then(response => {
+        console.log(response.data);
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+
   getUserInfo(cb) {
     axios
       .get("me")
@@ -38,12 +65,12 @@ export default {
         `me/player/play?device_id=${data.id}`,
         data.track.position != undefined
           ? {
-            uris: data.track.uris,
-            offset: { position: data.track.position }
-          }
+              uris: data.track.uris,
+              offset: { position: data.track.position }
+            }
           : {
-            uris: [data.track.uri]
-          }
+              uris: [data.track.uri]
+            }
       )
       .then(response => {
         cb(response.data);
@@ -85,14 +112,6 @@ export default {
         cb(response.data);
       })
       .catch(e => cb(e.response.data.error));
-  },
-  getNewReleases(cb) {
-    axios
-      .get(`browse/new-releases`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(response.data.error));
   },
   playShuffle(cb, data) {
     axios
