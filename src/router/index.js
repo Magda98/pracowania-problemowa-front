@@ -6,6 +6,7 @@ import About from "../views/About.vue";
 import Home from "../views/Home.vue";
 import KidsList from "../views/KidsList.vue";
 import DishList from "../views/DishList.vue";
+import UserList from "../views/UserLists.vue";
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,11 @@ const routes = [
     path: "/list",
     name: "KidsList",
     component: KidsList
+  },
+  {
+    path: "/permissions",
+    name: "UserList",
+    component: UserList
   },
   {
     path: "/list/:id",

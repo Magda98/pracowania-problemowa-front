@@ -1,6 +1,5 @@
 import * as types from "../mutation-types";
 import router from "@/router";
-import axios from "axios";
 const querystring = require("query-string");
 import api from "@/api";
 
@@ -11,7 +10,7 @@ const state = {
   getToken: false,
   token: String,
   refToken: String,
-  expires: Date,
+  expires: String,
   userInfo: false
 };
 
@@ -43,6 +42,7 @@ const actions = {
       } else {
         console.log(response);
         commit("saveToken", response);
+        commit(types.GET_TOKEN, {});
         router.push({ path: "home" });
         this.dispatch("toastMessage/alert", {
           message: "Zostałeś poprawnie zalogowany",
@@ -50,7 +50,22 @@ const actions = {
         });
       }
     }, data);
-    commit(types.GET_TOKEN, {});
+  },
+  refreshToken({ state, commit }) {
+    console.log("refresh");
+    api.refreshToken(
+      response => {
+        console.log(response);
+        commit("saveToken", response);
+        commit(types.GET_TOKEN, {});
+        // router.push({ path: "home" });
+      },
+      {
+        token: state.token,
+        ref: state.refToken,
+        exp: state.expires
+      }
+    );
   },
   register({ commit, state }, data) {
     api.register(response => {

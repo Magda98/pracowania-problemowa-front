@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import * as actions from "./actions";
 import * as getters from "./getters";
 import user from "./modules/user";
+import admin from "./modules/admin";
 import toastMessage from "./modules/toastMessage";
 import VuexPersistence from "vuex-persist";
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     user,
+    admin,
     toastMessage
   },
   mutations: {

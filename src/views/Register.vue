@@ -154,16 +154,10 @@ export default {
     ValidationObserver
   },
   data: () => ({
-    surname: "",
     nick: "",
     name: "",
-    email: "",
-    select: null,
-    errors: null,
-    pass: String,
-    myPass: "",
-    pass1: String,
-    confirmation: ""
+    lastname: "",
+    email: ""
   }),
 
   methods: {
