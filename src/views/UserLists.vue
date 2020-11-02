@@ -11,6 +11,7 @@
             label=" Imie i Nazwisko"
             single-line
             hide-details
+            v-on:input="search"
             v-debounce:500ms="search"
           ></v-text-field>
         </v-col>
@@ -114,7 +115,7 @@ export default {
       { text: "Nazwisko", value: "lastName" },
       { text: "E-mail", value: "email" },
       { text: "Nazwa", value: "userName" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "Edycja", value: "actions", sortable: false }
     ]
   }),
   computed: {

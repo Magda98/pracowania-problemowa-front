@@ -1,14 +1,15 @@
 <template>
   <v-navigation-drawer permanent color="primary" dark fill-height>
-    <v-list v-if="loggedIn">
+    <v-list v-if="loggedIn && userInfo">
       <v-list-item class="px-2"> </v-list-item>
 
       <v-list-item link>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Sandra Adams
+            {{ userInfo.firstName + " " + userInfo.lastName }}
           </v-list-item-title>
-          <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ userInfo.email }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ userInfo.userName }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -28,7 +29,7 @@
         </v-list-item-icon>
         <v-list-item-title>Lista zamówień</v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="loggedIn" link to="/offer">
+      <v-list-item v-if="loggedIn" link to="/menu">
         <v-list-item-icon>
           <v-icon>mdi-book-open-outline</v-icon>
         </v-list-item-icon>
@@ -46,7 +47,7 @@
         </v-list-item-icon>
         <v-list-item-title>Logowanie</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/permissions">
+      <v-list-item v-if="loggedIn" link to="/permissions">
         <v-list-item-icon>
           <v-icon>mdi-account-box-multiple-outline</v-icon>
         </v-list-item-icon>
@@ -58,6 +59,12 @@
         </v-list-item-icon>
         <v-list-item-title>O nas</v-list-item-title>
       </v-list-item>
+      <v-list-item v-if="loggedIn" @click="logout" to="/login">
+        <v-list-item-icon
+          ><v-icon>mdi-account-arrow-right-outline</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Wyloguj</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -66,7 +73,10 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapGetters("user", ["userInfo", "loggedIn"])
+    ...mapGetters("user", ["userInfo", "loggedIn", "userInfo"])
+  },
+  methods: {
+    ...mapActions("user", ["logout"])
   }
 };
 </script>

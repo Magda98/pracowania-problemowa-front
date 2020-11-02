@@ -11,7 +11,7 @@ const state = {
   token: String,
   refToken: String,
   expires: String,
-  userInfo: false
+  userInfo: {}
 };
 
 // getters
@@ -32,24 +32,21 @@ const getters = {
 const actions = {
   login({ commit, state }, data) {
     api.login(response => {
-      if (response.status === 401) {
-        this.dispatch("user/login");
-      } else if (response.status === 400) {
-        this.dispatch("toastMessage/alert", {
-          message: "Niepoprawne dane logowania",
-          type: "error"
-        });
-      } else {
-        console.log(response);
-        commit("saveToken", response);
-        commit(types.GET_TOKEN, {});
-        router.push({ path: "home" });
-        this.dispatch("toastMessage/alert", {
-          message: "Zostałeś poprawnie zalogowany",
-          type: "success"
-        });
-      }
+      commit("saveToken", response);
+      commit(types.GET_TOKEN, {});
+      router.push({ path: "menu" });
+      this.dispatch("user/getUserData");
+      this.dispatch("toastMessage/alert", {
+        message: "Zostałeś poprawnie zalogowany",
+        type: "success"
+      });
     }, data);
+  },
+  getUserData({ commit }) {
+    api.getUserData(response => {
+      commit("saveUserInfo", response);
+      console.log(response);
+    });
   },
   refreshToken({ state, commit }) {
     console.log("refresh");
@@ -58,7 +55,6 @@ const actions = {
         console.log(response);
         commit("saveToken", response);
         commit(types.GET_TOKEN, {});
-        // router.push({ path: "home" });
       },
       {
         token: state.token,
@@ -68,24 +64,16 @@ const actions = {
     );
   },
   logout({ commit }) {
-    commit([types.LOGOUT_USER]);
+    commit(types.LOGOUT_USER);
+    router.push({ path: "login" });
   },
   register({ commit, state }, data) {
     api.register(response => {
-      if (response.status === 400) {
-        this.dispatch("toastMessage/alert", {
-          message: `Niepoprawne dane: ${response.data.errors.Password?.[0] +
-            " " +
-            response.data.errors.UserName?.[0]}`,
-          type: "error"
-        });
-      } else {
-        router.push({ path: "login" });
-        this.dispatch("toastMessage/alert", {
-          message: "Zostałeś poprawnie zarejestrowany",
-          type: "success"
-        });
-      }
+      router.push({ path: "login" });
+      this.dispatch("toastMessage/alert", {
+        message: "Zostałeś poprawnie zarejestrowany",
+        type: "success"
+      });
     }, data);
   }
 };
@@ -94,7 +82,7 @@ const mutations = {
   noToken(state) {
     state.noTokenProvided = true;
   },
-  saveUserInfo(state, { userInfo }) {
+  saveUserInfo(state, userInfo) {
     state.userInfo = userInfo;
   },
   saveToken(state, data) {
@@ -109,6 +97,9 @@ const mutations = {
 
   [types.LOGOUT_USER](state) {
     state.logged_in = false;
+    state.token = "";
+    state.refToken = "";
+    state.expires = "";
   },
   [types.GET_TOKEN](state) {
     state.getToken = true;

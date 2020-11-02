@@ -13,9 +13,18 @@ export default {
         Password: data.password
       })
       .then(response => {
+        console.log(response.data.status);
         cb(response.data);
       })
-      .catch(e => cb(e.response));
+      .catch(e => console.log(e));
+  },
+  getUserData(cb) {
+    api
+      .get(`/api/user`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
   },
   register(cb, data) {
     api
@@ -29,11 +38,11 @@ export default {
       .then(response => {
         cb(response.data);
       })
-      .catch(e => cb(e.response));
+      .catch(e => console.log(e));
   },
   refreshToken(cb, data) {
     api
-      .post(`/api/user/authenticate/recover`, {
+      .post(`/api/user/authenticate/refresh`, {
         Token: data.ref
       })
       .then(response => {
@@ -42,7 +51,7 @@ export default {
           "Authorization"
         ] = `Bearer ${response.data.token}`;
       })
-      .catch(e => cb(e.response));
+      .catch(e => console.log(e));
   },
   getUserPermissions(cb, data) {
     api
@@ -50,7 +59,7 @@ export default {
       .then(response => {
         cb(response.data);
       })
-      .catch(e => cb(e.response));
+      .catch(e => console.log(e));
   },
   setUserPermissions(cb, data) {
     console.log(data);
@@ -67,7 +76,7 @@ export default {
       .then(response => {
         cb(response.data);
       })
-      .catch(e => cb(e.response));
+      .catch(e => console.log(e));
   },
   getUsers(cb, data) {
     api
@@ -83,7 +92,7 @@ export default {
         cb(response.data);
       })
       .catch(e => {
-        cb(e.response);
+        console.log(e);
       });
   },
   getPermissions(cb) {
@@ -93,146 +102,7 @@ export default {
         cb(response.data);
       })
       .catch(e => {
-        cb(e.response);
+        console.log(e);
       });
-  },
-  getUserInfo(cb) {
-    api
-      .get("me")
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => {
-        cb(e.response.data.error);
-      });
-  },
-  getAlbums(cb) {
-    api
-      .get("me/playlists")
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  getPlaylistSongs(cb, type) {
-    api
-      .get(type + "s/" + router.apps[0].$route.params.id + "/tracks")
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  playSong(cb, data) {
-    api
-      .put(
-        `me/player/play?device_id=${data.id}`,
-        data.track.position != undefined
-          ? {
-              uris: data.track.uris,
-              offset: { position: data.track.position }
-            }
-          : {
-              uris: [data.track.uri]
-            }
-      )
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  playPlaylist(cb, data) {
-    api
-      .put(`me/player/play?device_id=${data.id}`, {
-        context_uri: data.uri
-      })
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  getSavedTracks(cb) {
-    api
-      .get(`me/tracks`, {
-        limit: 50
-      })
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  getRecomendations(cb) {
-    api
-      .get(`me/top/tracks`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  getFeaturedPlaylists(cb) {
-    api
-      .get(`browse/featured-playlists`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  playShuffle(cb, data) {
-    api
-      .put(`me/player/shuffle?state=${data}`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  /**
-   * @param {Function} cb - CallBack Function to get server response
-   * @param {String} data - Repeat mode
-   */
-  playRepeat(cb, data) {
-    api
-      .put(`me/player/repeat?state=${data}`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  /**
-   * @param {Function} cb - CallBack Function to get server response
-   * @param {String} data - ID of song to save to liked songs
-   */
-  saveTracks(cb, data) {
-    api
-      .put(`me/tracks`, {
-        ids: [data]
-      })
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  deleteTracks(cb, data) {
-    api
-      .delete(`me/tracks?ids=${data}`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  addToQueue(cb, data) {
-    api
-      .post(`me/player/queue?uri=${data.uri}&device_id=${data.id}`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
-  },
-  checkSavedTracks(cb, ids) {
-    ids = ids.join(",");
-    api
-      .get(`me/tracks/contains?ids=${ids}`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(e.response.data.error));
   }
 };

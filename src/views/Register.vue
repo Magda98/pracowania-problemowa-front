@@ -155,9 +155,15 @@ export default {
   },
   data: () => ({
     nick: "",
+    surname: "",
+    myPass: "",
+    myPass1: "",
     name: "",
     lastname: "",
-    email: ""
+    email: "",
+    confirmation: "",
+    pass: true,
+    pass1: true
   }),
 
   methods: {

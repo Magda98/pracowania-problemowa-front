@@ -33,20 +33,34 @@ api.interceptors.response.use(
     }
   },
   error => {
-    console.log(error);
+    console.log(error.response);
     if (error.response.status) {
       switch (error.response.status) {
         case 400:
-          //do something
+          console.log(error.response);
+          if (error.response.data.message)
+            store.dispatch("toastMessage/alert", {
+              message: `Błąd: ${error.response.data.message}`,
+              type: "error"
+            });
+          else {
+            store.dispatch("toastMessage/alert", {
+              message: `Błąd: ${JSON.stringify(error.response.data.errors)}`,
+              type: "error"
+            });
+          }
           break;
-
         case 401:
-          store.dispatch("user/refreshToken");
+          store.dispatch("user/logout");
           break;
         case 403:
           router.replace({
-            path: "/login",
+            path: "/menu",
             query: { redirect: router.currentRoute.fullPath }
+          });
+          store.dispatch("toastMessage/alert", {
+            message: `Brak dostępu`,
+            type: "error"
           });
           break;
         case 404:

@@ -164,7 +164,7 @@ export default {
   },
   beforeMount() {
     if (this.loggedIn) {
-      this.$router.push("/");
+      this.$router.push("/menu");
     }
   }
 };
