@@ -32,7 +32,6 @@ export default {
       .catch(e => cb(e.response));
   },
   refreshToken(cb, data) {
-    // console.log(data);
     api
       .post(`/api/user/authenticate/recover`, {
         Token: data.ref
@@ -45,8 +44,32 @@ export default {
       })
       .catch(e => cb(e.response));
   },
-  getUsers(cb, data) {
+  getUserPermissions(cb, data) {
+    api
+      .get(`/api/admin/permissions/inspect/${data.id}`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+  setUserPermissions(cb, data) {
     console.log(data);
+    api
+      .post(`/api/admin/permissions/inspect/${data.id}`, [
+        {
+          key: data.key,
+          value: {
+            AdminAccess: data.AdminAccess === true ? "Allow" : "Deny",
+            UserAccess: data.UserAccess === true ? "Allow" : "Deny"
+          }
+        }
+      ])
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+  getUsers(cb, data) {
     api
       .get(`api/admin/users`, {
         params: {

@@ -7,12 +7,15 @@ import api from "@/api";
 // initial state
 const state = {
   userList: [],
-  Permissions: {}
+  permissions: {},
+  currentUserPermissions: {}
 };
 
 // getters
 const getters = {
-  userList: state => state.userList
+  userList: state => state.userList,
+  currentUserPermissions: state => state.currentUserPermissions,
+  permissions: state => state.permissions
 };
 
 // actions
@@ -26,16 +29,40 @@ const actions = {
     api.getUsers(response => {
       commit("users", response);
     }, data);
+  },
+  getUserPermissions({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      api.getUserPermissions(
+        response => {
+          commit("userPermissions", response);
+          resolve();
+        },
+        { id: data }
+      );
+    });
+  },
+  setUserPermissions({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      api.setUserPermissions(response => {
+        this.dispatch("toastMessage/alert", {
+          message: "Uprawnienia zostały zmienione",
+          type: "success"
+        });
+        resolve();
+      }, data);
+    });
   }
 };
 // mutations
 const mutations = {
   permissions(state, data) {
-    state.Permissions = data;
+    state.permissions = data;
   },
   users(state, data) {
-    console.log(data);
     state.userList = data;
+  },
+  userPermissions(state, data) {
+    state.currentUserPermissions = data;
   }
 };
 
