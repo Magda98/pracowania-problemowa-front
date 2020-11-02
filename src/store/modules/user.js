@@ -45,14 +45,11 @@ const actions = {
   getUserData({ commit }) {
     api.getUserData(response => {
       commit("saveUserInfo", response);
-      console.log(response);
     });
   },
   refreshToken({ state, commit }) {
-    console.log("refresh");
     api.refreshToken(
       response => {
-        console.log(response);
         commit("saveToken", response);
         commit(types.GET_TOKEN, {});
       },

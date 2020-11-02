@@ -12,6 +12,7 @@ Vue.use(vueDebounce, {
 Vue.prototype.$http = api;
 api.defaults.timeout = 10000;
 Vue.config.productionTip = false;
+
 api.interceptors.request.use(
   config => {
     const token = store.state.user.token;
@@ -24,9 +25,11 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 api.interceptors.response.use(
   response => {
     if (response.status === 200 || response.status === 201) {
+      if (!response.data.refresh) store.dispatch("user/refreshToken");
       return Promise.resolve(response);
     } else {
       return Promise.reject(response);

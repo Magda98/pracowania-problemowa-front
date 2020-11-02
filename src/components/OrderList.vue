@@ -17,10 +17,8 @@
 <script>
 export default {
   props: {
-    kidList: Array,
+    kidList: Array
   },
-  beforeMount() {
-    console.log(this.orderList);
-  },
+  beforeMount() {}
 };
 </script>

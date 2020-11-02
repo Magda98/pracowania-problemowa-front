@@ -165,7 +165,6 @@ export default {
           this.currentUserPermissions[0].value.UserAccess === "Allow"
             ? true
             : false;
-        console.log(this.currentUserPermissions);
       });
     }
   },

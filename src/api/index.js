@@ -42,9 +42,7 @@ export default {
   },
   refreshToken(cb, data) {
     api
-      .post(`/api/user/authenticate/refresh`, {
-        Token: data.ref
-      })
+      .get(`/api/user/authenticate/refresh`)
       .then(response => {
         cb(response.data);
         api.defaults.headers.common[
