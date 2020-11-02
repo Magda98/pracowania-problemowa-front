@@ -67,6 +67,9 @@ const actions = {
       }
     );
   },
+  logout({ commit }) {
+    commit([types.LOGOUT_USER]);
+  },
   register({ commit, state }, data) {
     api.register(response => {
       if (response.status === 400) {
