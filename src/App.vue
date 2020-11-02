@@ -12,6 +12,7 @@
       :value="showAlert"
       :multi-line="true"
       :timeout="timeout"
+      style="margin-left: 8%;"
     >
       <div
         style="display: flex;align-items:center;margin:auto;"
@@ -26,7 +27,10 @@
         {{ message }}
       </div>
       <v-btn
-        style="margin-top: -25px;, font-size: 12px;"
+        style="
+    position: absolute;
+    right: 16px;
+    top: 8px;, font-size: 12px;"
         icon
         text
         @click="hideAlert"
@@ -41,7 +45,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
-    Sidebar,
+    Sidebar
   },
   name: "App",
   data: () => ({
@@ -54,12 +58,12 @@ export default {
       "alertType",
       "alertIcon",
       "message",
-      "showAlert",
-    ]),
+      "showAlert"
+    ])
   },
   methods: {
-    ...mapActions("toastMessage", ["hideAlert"]),
-  },
+    ...mapActions("toastMessage", ["hideAlert"])
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -15,6 +15,19 @@
             <validation-provider
               v-slot="{ errors }"
               name="Name"
+              rules="required|min:6|max:256"
+            >
+              <v-text-field
+                v-model="nick"
+                color="primary"
+                :error-messages="errors"
+                label="Nazwa"
+                required
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
               rules="required|max:256"
             >
               <v-text-field
@@ -55,7 +68,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="password"
-                rules="required|max:256|password:@confirm"
+                rules="required|max:256|password:@confirm|min:6"
               >
                 <v-text-field
                   :error-messages="errors"
@@ -73,7 +86,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="confirm"
-                rules="required|max:256"
+                rules="required|max:256|min:6"
               >
                 <v-text-field
                   :error-messages="errors"
@@ -105,71 +118,72 @@
 
 <script>
 import { required, max, min } from "vee-validate/dist/rules";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
+  setInteractionMode
 } from "vee-validate";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "to pole nie może być puste",
+  message: "to pole nie może być puste"
 });
 
 extend("max", {
   ...max,
-  message: "pole nie może być dłuższe niż 256 znaków",
+  message: "pole nie może być dłuższe niż 256 znaków"
 });
 extend("min", {
-  ...max,
-  message: "pole nie może być krótsze niż 4 znaki",
+  ...min,
+  message: "pole nie może być krótsze niż 6 znaków"
 });
 extend("password", {
   params: ["target"],
   validate(value, { target }) {
     return value === target;
   },
-  message: "Hasła muszą być identyczne!",
+  message: "Hasła muszą być identyczne!"
 });
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   data: () => ({
-    surname: "",
+    nick: "",
     name: "",
-    email: "",
-    select: null,
-    errors: null,
-    pass: String,
-    myPass: "",
-    pass1: String,
-    confirmation: "",
+    lastname: "",
+    email: ""
   }),
 
   methods: {
+    ...mapActions("user", ["register"]),
     submit() {
-      this.$refs.observer.validate();
-    },
-    clear() {
-      this.myPass = "";
-      this.name = "";
-      this.$refs.observer.reset();
-    },
+      this.$refs.observer.validate().then(result => {
+        if (result) {
+          this.register({
+            username: this.nick,
+            password: this.myPass,
+            email: this.email,
+            firstname: this.surname,
+            lastname: this.name
+          });
+        }
+      });
+    }
   },
   computed: {
-    ...mapGetters("user", ["userInfo", "loggedIn"]),
+    ...mapGetters("user", ["userInfo", "loggedIn"])
   },
   beforeMount() {
     if (this.loggedIn) {
       this.$router.push("/");
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

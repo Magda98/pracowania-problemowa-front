@@ -1,13 +1,80 @@
 import _ from "lodash";
-import axios from "axios";
 import router from "@/router";
+import api from "@/axios/api.js";
 
-axios.defaults.baseURL = "API BASE URL";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-
+// axios.defaults.baseURL = "https://fitkidcateringapp.azurewebsites.net";
+// axios.defaults.headers.post["Content-Type"] = "application/json-patch+json";
+// axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 export default {
+  login(cb, data) {
+    api
+      .post(`/api/user/authenticate`, {
+        Username: data.username,
+        Password: data.password
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+  register(cb, data) {
+    api
+      .post(`/api/user`, {
+        UserName: data.username,
+        Password: data.password,
+        Email: data.email,
+        FirstName: data.firstname,
+        LastName: data.lastname
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => cb(e.response));
+  },
+  refreshToken(cb, data) {
+    // console.log(data);
+    api
+      .post(`/api/user/authenticate/recover`, {
+        Token: data.ref
+      })
+      .then(response => {
+        cb(response.data);
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data.token}`;
+      })
+      .catch(e => cb(e.response));
+  },
+  getUsers(cb, data) {
+    console.log(data);
+    api
+      .get(`api/admin/users`, {
+        params: {
+          limit: 0,
+          UserName: data.UserName,
+          Email: data.Email,
+          Name: data.LastName
+        }
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => {
+        cb(e.response);
+      });
+  },
+  getPermissions(cb) {
+    api
+      .get(`/api/admin/permissions`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => {
+        cb(e.response);
+      });
+  },
   getUserInfo(cb) {
-    axios
+    api
       .get("me")
       .then(response => {
         cb(response.data);
@@ -17,7 +84,7 @@ export default {
       });
   },
   getAlbums(cb) {
-    axios
+    api
       .get("me/playlists")
       .then(response => {
         cb(response.data);
@@ -25,7 +92,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   getPlaylistSongs(cb, type) {
-    axios
+    api
       .get(type + "s/" + router.apps[0].$route.params.id + "/tracks")
       .then(response => {
         cb(response.data);
@@ -33,17 +100,17 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   playSong(cb, data) {
-    axios
+    api
       .put(
         `me/player/play?device_id=${data.id}`,
         data.track.position != undefined
           ? {
-            uris: data.track.uris,
-            offset: { position: data.track.position }
-          }
+              uris: data.track.uris,
+              offset: { position: data.track.position }
+            }
           : {
-            uris: [data.track.uri]
-          }
+              uris: [data.track.uri]
+            }
       )
       .then(response => {
         cb(response.data);
@@ -51,7 +118,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   playPlaylist(cb, data) {
-    axios
+    api
       .put(`me/player/play?device_id=${data.id}`, {
         context_uri: data.uri
       })
@@ -61,7 +128,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   getSavedTracks(cb) {
-    axios
+    api
       .get(`me/tracks`, {
         limit: 50
       })
@@ -71,7 +138,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   getRecomendations(cb) {
-    axios
+    api
       .get(`me/top/tracks`)
       .then(response => {
         cb(response.data);
@@ -79,23 +146,15 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   getFeaturedPlaylists(cb) {
-    axios
+    api
       .get(`browse/featured-playlists`)
       .then(response => {
         cb(response.data);
       })
       .catch(e => cb(e.response.data.error));
   },
-  getNewReleases(cb) {
-    axios
-      .get(`browse/new-releases`)
-      .then(response => {
-        cb(response.data);
-      })
-      .catch(e => cb(response.data.error));
-  },
   playShuffle(cb, data) {
-    axios
+    api
       .put(`me/player/shuffle?state=${data}`)
       .then(response => {
         cb(response.data);
@@ -107,7 +166,7 @@ export default {
    * @param {String} data - Repeat mode
    */
   playRepeat(cb, data) {
-    axios
+    api
       .put(`me/player/repeat?state=${data}`)
       .then(response => {
         cb(response.data);
@@ -119,7 +178,7 @@ export default {
    * @param {String} data - ID of song to save to liked songs
    */
   saveTracks(cb, data) {
-    axios
+    api
       .put(`me/tracks`, {
         ids: [data]
       })
@@ -129,7 +188,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   deleteTracks(cb, data) {
-    axios
+    api
       .delete(`me/tracks?ids=${data}`)
       .then(response => {
         cb(response.data);
@@ -137,7 +196,7 @@ export default {
       .catch(e => cb(e.response.data.error));
   },
   addToQueue(cb, data) {
-    axios
+    api
       .post(`me/player/queue?uri=${data.uri}&device_id=${data.id}`)
       .then(response => {
         cb(response.data);
@@ -146,7 +205,7 @@ export default {
   },
   checkSavedTracks(cb, ids) {
     ids = ids.join(",");
-    axios
+    api
       .get(`me/tracks/contains?ids=${ids}`)
       .then(response => {
         cb(response.data);
