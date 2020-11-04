@@ -32,7 +32,7 @@ import AboutCard from "@/components/AboutCard.vue";
 export default {
   name: "About",
   components: {
-    AboutCard,
+    AboutCard
   },
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
           surname: "Kochman",
           description: "Kierownik projektu, front-end Vue.js",
           link: "https://github.com/Magda98",
-          logo: "logo.png",
+          logo: "logo"
         },
         {
           id: "2",
@@ -51,7 +51,7 @@ export default {
           surname: "Knapik",
           description: "Back-end C#",
           link: "https://github.com/WhiteRaidho",
-          logo: "csharplogo.png",
+          logo: "csharplogo"
         },
         {
           id: "3",
@@ -59,7 +59,7 @@ export default {
           surname: "Kida",
           description: "Back-end C#",
           link: "https://github.com/JKida10",
-          logo: "csharplogo.png",
+          logo: "csharplogo"
         },
         {
           id: "4",
@@ -67,11 +67,11 @@ export default {
           surname: "Król",
           description: "Front-end Vue.js",
           link: "https://github.com/krolik1337",
-          logo: "logo.png",
-        },
-      ],
+          logo: "logo"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
