@@ -2,7 +2,7 @@
   <v-col md="2">
     <v-card elevation="10">
       <v-img
-        :src="getImgUrl(person.logo)"
+        :src="getImgUrl"
         contain
         max-height="150px"
         gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.5)"
@@ -30,9 +30,9 @@ export default {
     person: Object
   },
   computed: {
-    getImgUrl(pic) {
+    getImgUrl() {
       var images = require.context("../assets/", false, /\.png$/);
-      return images("./" + pic + ".png");
+      return images("./" + this.person.logo + ".png");
     }
   }
 };
