@@ -43,7 +43,7 @@ export default {
           surname: "Kochman",
           description: "Kierownik projektu, front-end Vue.js",
           link: "https://github.com/Magda98",
-          logo: "logo"
+          logo: "logo.png"
         },
         {
           id: "2",
@@ -51,7 +51,7 @@ export default {
           surname: "Knapik",
           description: "Back-end C#",
           link: "https://github.com/WhiteRaidho",
-          logo: "csharplogo"
+          logo: "csharplogo.png"
         },
         {
           id: "3",
@@ -59,7 +59,7 @@ export default {
           surname: "Kida",
           description: "Back-end C#",
           link: "https://github.com/JKida10",
-          logo: "csharplogo"
+          logo: "csharplogo.png"
         },
         {
           id: "4",
@@ -67,7 +67,7 @@ export default {
           surname: "Król",
           description: "Front-end Vue.js",
           link: "https://github.com/krolik1337",
-          logo: "logo"
+          logo: "logo.png"
         }
       ]
     };
