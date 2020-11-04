@@ -2,7 +2,7 @@
   <v-col md="2">
     <v-card elevation="10">
       <v-img
-        :src="require('@/assets/' + person.logo)"
+        :src="'@/assets/' + person.logo"
         contain
         max-height="150px"
         gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.5)"
