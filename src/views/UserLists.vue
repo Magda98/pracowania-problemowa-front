@@ -155,16 +155,17 @@ export default {
     },
     editItem(item) {
       this.editedItem = Object.assign({}, item);
-      this.getUserPermissions(item.id).then(() => {
+      this.getUserPermissions(item.id).then(response => {
         this.dialog = true;
-        this.checkbox.AdminAccess =
-          this.currentUserPermissions[0].value.AdminAccess === "Allow"
-            ? true
-            : false;
-        this.checkbox.UserAccess =
-          this.currentUserPermissions[0].value.UserAccess === "Allow"
-            ? true
-            : false;
+        if (!response.length) {
+          this.checkbox.AdminAccess = false;
+          this.checkbox.UserAccess = false;
+        } else {
+          this.checkbox.AdminAccess =
+            response[0].value.AdminAccess === "Allow" ? true : false;
+          this.checkbox.UserAccess =
+            response[0].value.UserAccess === "Allow" ? true : false;
+        }
       });
     }
   },

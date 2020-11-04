@@ -35,7 +35,7 @@ const actions = {
       api.getUserPermissions(
         response => {
           commit("userPermissions", response);
-          resolve();
+          resolve(response);
         },
         { id: data }
       );
