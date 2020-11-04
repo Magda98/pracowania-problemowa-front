@@ -4,7 +4,7 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
+      backgroundImage: 'url(' + require('@/assets/bg-1_white.png') + ')'
     }"
   >
     <v-row justify="center" align="center">

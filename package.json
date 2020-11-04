@@ -46,6 +46,5 @@
     "vue-gh-pages": "^1.19.1",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.3.0"
-  },
-  "homepage": "https://github.com/Magda98/pracowania-problemowa-front"
+  }
 }
