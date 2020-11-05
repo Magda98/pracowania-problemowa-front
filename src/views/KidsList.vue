@@ -8,7 +8,7 @@
 import OrderList from "@/components/OrderList.vue";
 export default {
   components: {
-    OrderList,
+    OrderList
   },
   data: () => ({
     listaDzieci: [
@@ -17,16 +17,16 @@ export default {
         name: "Jan Kowalski",
         institution: "Szkoła podstawowa Łańcut",
         institutuionID: "SP10",
-        parent: "Adam nowak",
+        parent: "Adam nowak"
       },
       {
         id: 2,
         name: "Alicja Adams",
         institution: "Szkoła podstawowa Łańcut",
         institutuionID: "SP10",
-        parent: "Adam Nowal",
-      },
-    ],
-  }),
+        parent: "Adam Nowal"
+      }
+    ]
+  })
 };
 </script>
