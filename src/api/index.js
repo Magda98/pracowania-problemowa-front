@@ -60,14 +60,13 @@ export default {
       .catch(e => console.log(e));
   },
   setUserPermissions(cb, data) {
-    console.log(data);
     api
       .post(`/api/admin/permissions/inspect/${data.id}`, [
         {
           key: data.key,
           value: {
             AdminAccess: data.AdminAccess === true ? "Allow" : "Deny",
-            UserAccess: data.UserAccess === true ? "Allow" : "Deny"
+            CateringEmployee: data.CateringEmployee === true ? "Allow" : "Deny"
           }
         }
       ])

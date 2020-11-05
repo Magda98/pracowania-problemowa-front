@@ -104,7 +104,7 @@ export default {
     dialog: false,
     checkbox: {
       AdminAccess: false,
-      UserAccess: false
+      CateringEmployee: false
     },
     headers: [
       { text: "Id", value: "id" },
@@ -147,7 +147,7 @@ export default {
       this.setUserPermissions({
         id: this.editedItem.id,
         AdminAccess: this.checkbox.AdminAccess,
-        UserAccess: this.checkbox.UserAccess,
+        CateringEmployee: this.checkbox.CateringEmployee,
         key: this.permissions[0].key
       }).then(() => {
         this.dialog = false;
@@ -157,14 +157,15 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.getUserPermissions(item.id).then(response => {
         this.dialog = true;
+        console.log(response);
         if (!response.length) {
           this.checkbox.AdminAccess = false;
-          this.checkbox.UserAccess = false;
+          this.checkbox.CateringEmployee = false;
         } else {
           this.checkbox.AdminAccess =
             response[0].value.AdminAccess === "Allow" ? true : false;
-          this.checkbox.UserAccess =
-            response[0].value.UserAccess === "Allow" ? true : false;
+          this.checkbox.CateringEmployee =
+            response[0].value.CateringEmployee === "Allow" ? true : false;
         }
       });
     }
