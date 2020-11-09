@@ -27,6 +27,7 @@
 export default {
   name: "AboutCard",
   props: {
+    // Objekt o danych danej osoby
     person: Object
   }
 };
