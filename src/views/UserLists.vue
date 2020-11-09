@@ -140,6 +140,11 @@ export default {
         LastName: this.name
       });
     },
+    // @vuese
+    // Zamyka okno dialogowe
+    /**
+     *
+     */
     close() {
       this.dialog = false;
     },

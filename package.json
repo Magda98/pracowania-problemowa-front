@@ -6,9 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "gh-pages": "vue-cli-service gh-pages"
+    "gh-pages": "vue-cli-service gh-pages",
+    "gen-docs": "vuese gen",
+    "run-docs": "npx serve -d website",
+    "docs-js": "documentation build src/store/** -f md -o docs"
   },
   "dependencies": {
+    "@vuese/cli": "^2.14.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "querystring": "^0.2.0",
