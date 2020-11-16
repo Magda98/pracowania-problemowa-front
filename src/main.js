@@ -28,7 +28,11 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   response => {
-    if (response.status === 200 || response.status === 201) {
+    if (
+      response.status === 200 ||
+      response.status === 201 ||
+      response.status === 202
+    ) {
       if (!response.data.refresh) store.dispatch("user/refreshToken");
       return Promise.resolve(response);
     } else {

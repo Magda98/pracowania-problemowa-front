@@ -125,5 +125,20 @@ export default {
         cb(response.data);
       })
       .catch(e => console.log(e));
+  },
+  editInstitutions(cb, data) {
+    console.log(data);
+    api
+      .put(`/api/institutions/${data.publicId}`, {
+        Name: data.name,
+        Street: data.street,
+        ZipCode: data.zipCode,
+        City: data.city,
+        OwnerId: ""
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
   }
 };

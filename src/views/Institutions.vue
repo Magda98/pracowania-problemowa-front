@@ -71,6 +71,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogEdit" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edycja placówki</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.name"
+                  label="Nazwa"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.street"
+                  label="Ulica"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.zipCode"
+                  label="Kod pocztowy"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.city"
+                  label="Miasto"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeEdit">
+            Anuluj
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="saveEdit">
+            Zapisz
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-data-table
       v-if="institutionsList.length"
       :headers="headers"
@@ -120,12 +169,12 @@
 </template>
 
 <script>
-import { currentConfig } from "vee-validate/dist/types/config";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       dialogDelete: false,
+      dialogEdit: false,
       dialog: false,
       currentItem: {},
       institution: {
@@ -175,16 +224,27 @@ export default {
     ...mapActions("institutions", [
       "getInstitutions",
       "addInstitutions",
-      "deleteInstitutions"
+      "deleteInstitution",
+      "editInstitution"
     ]),
     ...mapActions("admin", ["getUsers"]),
     deleteItem(item) {
       this.currentItem = item;
       this.dialogDelete = "true";
     },
-    editItem() {},
+    editItem(item) {
+      this.currentItem = item;
+      this.dialogEdit = true;
+    },
+    closeEdit() {
+      this.dialogEdit = false;
+    },
+    saveEdit() {
+      this.editInstitution(this.currentItem);
+      this.dialogEdit = false;
+    },
     deleteItemConfirm() {
-      this.dleteInstitution(this.currentItem.publicId);
+      this.deleteInstitution(this.currentItem.publicId);
       this.closeDelete();
     },
 

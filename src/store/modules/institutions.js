@@ -31,14 +31,23 @@ const actions = {
       console.log(response);
     }, data);
   },
-  deleteInstitution({ dispatch }, data) {
+  deleteInstitution({ commit }, data) {
     api.deleteInstitutions(response => {
       this.dispatch("toastMessage/alert", {
         message: "Placówka została usunięta",
-        type: "alert"
+        type: "info"
+      });
+      commit("deleteInstitution", data);
+    }, data);
+  },
+  editInstitution({ dispatch }, data) {
+    api.editInstitutions(response => {
+      console.log(response);
+      this.dispatch("toastMessage/alert", {
+        message: "Dane placówki zostały zmienione",
+        type: "success"
       });
       dispatch("getInstitutions");
-      console.log(response);
     }, data);
   }
 };
@@ -46,6 +55,13 @@ const actions = {
 const mutations = {
   getInstitutions(state, data) {
     state.institutionsList = data;
+  },
+  deleteInstitution(state, data) {
+    let removeIndex = state.institutionsList
+      .map(item => item.publicId)
+      .indexOf(data);
+    console.log(removeIndex);
+    state.institutionsList.splice(removeIndex, 1);
   }
 };
 
