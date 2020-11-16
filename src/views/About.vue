@@ -8,7 +8,7 @@
   >
     <v-container>
       <v-row justify="center" align-content="center">
-        <v-col md="6">
+        <v-col md="10">
           <h1>About</h1>
           <br />
           <h4>

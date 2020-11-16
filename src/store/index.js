@@ -5,6 +5,7 @@ import * as getters from "./getters";
 import user from "./modules/user";
 import admin from "./modules/admin";
 import toastMessage from "./modules/toastMessage";
+import offers from "./modules/menu"
 import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
@@ -32,7 +33,8 @@ export default new Vuex.Store({
   modules: {
     user,
     admin,
-    toastMessage
+    toastMessage,
+    offers
   },
   mutations: {
     RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION // this mutation **MUST** be named "RESTORE_MUTATION"
