@@ -1,5 +1,5 @@
 <template>
-  <v-col md="2">
+  <v-col md="3">
     <v-card elevation="10">
       <v-img
         :src="require('../assets/' + person.logo)"
