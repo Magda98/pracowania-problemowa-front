@@ -92,6 +92,53 @@ export default {
         console.log(e);
       });
   },
+  getOffers(cb) {
+    api
+      .get(`api/offers`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  },
+  addOffer(cb, data) {
+    api
+      .post(`/api/offers`, {
+        Name: data.name,
+        Price: data.price,
+        Type: data.type,
+        DayOfWeek: data.day
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
+  deleteOffer(cb, data){
+    api
+    .delete(`/api/offers/${data.id}`, {
+      publicId: data.id
+    })
+    .then(response => {
+      cb(response.data);
+    })
+    .catch(e => console.log(e));
+  },
+  updateOffer(cb, data) {
+    api
+      .put(`/api/offers/${data.id}`, {
+        publicId: data.id,
+        Name: data.name,
+        Price: data.price,
+        Type: data.type,
+        DayOfWeek: data.day
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
   getPermissions(cb) {
     api
       .get(`/api/admin/permissions`)

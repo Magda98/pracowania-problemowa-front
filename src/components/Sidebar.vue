@@ -21,7 +21,7 @@
         <v-list-item-icon>
           <v-icon>mdi-account-multiple</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>Ustwienia konta</v-list-item-title>
+        <v-list-item-title>Ustawienia konta</v-list-item-title>
       </v-list-item>
       <v-list-item v-if="loggedIn" link>
         <v-list-item-icon>
