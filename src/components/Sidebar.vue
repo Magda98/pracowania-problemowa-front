@@ -53,6 +53,12 @@
         </v-list-item-icon>
         <v-list-item-title>Prawa użytkowników</v-list-item-title>
       </v-list-item>
+      <v-list-item v-if="loggedIn" link to="/institutions">
+        <v-list-item-icon>
+          <v-icon>mdi-office-building</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Placówki</v-list-item-title>
+      </v-list-item>
       <v-list-item link to="/about">
         <v-list-item-icon>
           <v-icon>mdi-information-outline</v-icon>
