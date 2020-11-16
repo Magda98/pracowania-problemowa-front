@@ -1,6 +1,6 @@
 import _ from "lodash";
 import router from "@/router";
-import api from "@/axios/api.js";
+import api from "@/axios/settings.js";
 
 // axios.defaults.baseURL = "https://fitkidcateringapp.azurewebsites.net";
 // axios.defaults.headers.post["Content-Type"] = "application/json-patch+json";
@@ -101,5 +101,29 @@ export default {
       .catch(e => {
         console.log(e);
       });
+  },
+  getInstitutions(cb) {
+    api
+      .get(`/api/institutions`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
+  addInstitutions(cb, data) {
+    api
+      .post(`/api/institutions`, data)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
+  deleteInstitutions(cb, data) {
+    api
+      .delete(`/api/institutions/${data}`)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
   }
 };

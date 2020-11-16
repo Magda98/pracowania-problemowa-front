@@ -211,7 +211,6 @@ form {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
   align-items: center;
   justify-content: center;
   display: flex;

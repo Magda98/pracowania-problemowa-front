@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import api from "./axios/api.js";
+import api from "./axios/settings.js";
 import vueDebounce from "vue-debounce";
 
 Vue.use(vueDebounce, {
