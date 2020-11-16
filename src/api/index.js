@@ -134,7 +134,7 @@ export default {
         Street: data.street,
         ZipCode: data.zipCode,
         City: data.city,
-        OwnerId: ""
+        OwnerPublicId: data.ownerPublicId
       })
       .then(response => {
         cb(response.data);

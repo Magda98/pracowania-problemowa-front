@@ -49,7 +49,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-autocomplete
-                  v-model="institution.OwnerId"
+                  v-model="institution.OwnerPublicId"
                   :items="userNames"
                   dense
                   filled
@@ -182,7 +182,7 @@ export default {
         Street: "",
         ZipCode: "",
         City: "",
-        OwnerId: ""
+        OwnerPublicId: ""
       },
       headers: [
         {
@@ -205,6 +205,11 @@ export default {
           align: "start",
           value: "city"
         },
+        {
+          text: "Osoba zarządzająca",
+          align: "start",
+          value: "ownerUsername"
+        },
         { text: "Edycja/Usuwanie", value: "actions", sortable: false }
       ]
     };
@@ -215,7 +220,7 @@ export default {
     userNames() {
       return this.userList.map(obj => ({
         text: obj.userName,
-        value: obj.id
+        value: obj.publicId
       }));
     }
   },
@@ -233,7 +238,7 @@ export default {
       this.dialogDelete = "true";
     },
     editItem(item) {
-      this.currentItem = item;
+      this.currentItem = Object.assign({}, item);
       this.dialogEdit = true;
     },
     closeEdit() {
