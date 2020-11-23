@@ -233,6 +233,7 @@ export default {
       "editInstitution"
     ]),
     ...mapActions("admin", ["getUsers"]),
+    ...mapActions("user", ["getMyPermission"]),
     deleteItem(item) {
       this.currentItem = item;
       this.dialogDelete = "true";
@@ -274,7 +275,6 @@ export default {
       FirstName: "",
       LastName: ""
     });
-    console.log(this.institutionsList);
   }
 };
 </script>

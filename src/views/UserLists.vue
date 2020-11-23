@@ -162,7 +162,6 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.getUserPermissions(item.id).then(response => {
         this.dialog = true;
-        console.log(response);
         if (!response.length) {
           this.checkbox.AdminAccess = false;
           this.checkbox.CateringEmployee = false;
