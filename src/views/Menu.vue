@@ -147,7 +147,17 @@
                       </v-card>
                     </v-dialog>
                   </template>
-                  <template v-slot:item.actions="{ item }">
+                  <template
+                    v-if="
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                      ] ||
+                        myPermissions[
+                          'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                        ]
+                    "
+                    v-slot:item.actions="{ item }"
+                  >
                     <v-btn
                       small
                       color="secondary"
