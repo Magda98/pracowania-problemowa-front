@@ -4,7 +4,7 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')',
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
     <v-container :style="{ top: '70px', position: 'absolute' }">
@@ -147,7 +147,17 @@
                       </v-card>
                     </v-dialog>
                   </template>
-                  <template v-slot:item.actions="{ item }">
+                  <template
+                    v-if="
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                      ] ||
+                        myPermissions[
+                          'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                        ]
+                    "
+                    v-slot:item.actions="{ item }"
+                  >
                     <v-btn
                       small
                       color="secondary"
@@ -177,6 +187,14 @@
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
+                  v-if="
+                    myPermissions[
+                      'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                    ] ||
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ]
+                  "
                   color="light-green accent-1"
                   block
                   elevation="3"
@@ -291,29 +309,29 @@ import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
+  setInteractionMode
 } from "vee-validate";
 
 setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "To pole jest obowiązkowe",
+  message: "To pole jest obowiązkowe"
 });
 
 extend("max", {
   ...max,
-  message: "Nazwa posiłku nie może być dłuższa niż 256 znaków",
+  message: "Nazwa posiłku nie może być dłuższa niż 256 znaków"
 });
 extend("min", {
   ...min,
-  message: "Nazwa posiłku nie może być krótsza niż 4 znaki",
+  message: "Nazwa posiłku nie może być krótsza niż 4 znaki"
 });
 
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   data: () => ({
     dialog: false,
@@ -334,47 +352,48 @@ export default {
       { id: 3, name: "Czwartek" },
       { id: 4, name: "Piątek" },
       { id: 5, name: "Sobota" },
-      { id: 6, name: "Niedziela" },
+      { id: 6, name: "Niedziela" }
     ],
     mealTypes: [
       { id: 1, name: "Śniadanie" },
       { id: 2, name: "Obiad jednodaniowy" },
       { id: 3, name: "Obiad dwudaniowy" },
-      { id: 4, name: "Podwieczorek" },
+      { id: 4, name: "Podwieczorek" }
     ],
     headers: [
       {
         text: "Posiłek",
         align: "start",
         sortable: true,
-        value: "name",
+        value: "name"
       },
       { text: "Rodzaj", value: "type" },
       { text: "Cena (PLN)", value: "price" },
-      { text: "Akcje", value: "actions", sortable: false },
-    ],
+      { text: "Akcje", value: "actions", sortable: false }
+    ]
   }),
   computed: {
     ...mapGetters("offers", ["offersList"]),
+    ...mapGetters("user", ["myPermissions"])
   },
   methods: {
     ...mapActions("offers", [
       "getOffers",
       "addOffer",
       "deleteOffer",
-      "updateOffer",
+      "updateOffer"
     ]),
 
     /** Zwrócenie ofert odpowiadających danemu dniu */
     _offersList(value) {
       return this.offersList.filter(
-        (offersList) => offersList.dayOfWeek == value
+        offersList => offersList.dayOfWeek == value
       );
     },
     /** Usunięcie rekordu */
     remove() {
       this.deleteOffer({
-        id: this.editedOffer.publicId,
+        id: this.editedOffer.publicId
       }).then(() => {
         this.dialogDelete = false;
       });
@@ -392,7 +411,7 @@ export default {
         name: this.editedOffer.name,
         price: this.editedOffer.price,
         type: this.editedOffer.type,
-        day: this.editedOffer.dayOfWeek,
+        day: this.editedOffer.dayOfWeek
       }).then(() => {
         this.dialogEdit = false;
       });
@@ -414,7 +433,7 @@ export default {
           name: this.newName,
           price: this.newPrice,
           type: this.newType,
-          day: this.newDay,
+          day: this.newDay
         });
         this.dialog = false;
       }
@@ -426,11 +445,11 @@ export default {
         ids.push(item.publicId);
       }
       alert("Do zamówienia dodano posiłki o id: " + ids);
-    },
+    }
   },
   beforeMount() {
     this.getOffers();
-  },
+  }
 };
 </script>
 

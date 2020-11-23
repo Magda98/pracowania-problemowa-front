@@ -11,7 +11,8 @@ const state = {
   token: String,
   refToken: String,
   expires: String,
-  userInfo: {}
+  userInfo: {},
+  myPermissions: []
 };
 
 // getters
@@ -22,6 +23,7 @@ const getters = {
     //data
     state.getToken;
   },
+  myPermissions: state => state.myPermissions,
   userInfo: state => state.userInfo,
   userProfile: state => state.userInfo,
   loggedIn: state => state.logged_in,
@@ -34,6 +36,9 @@ const actions = {
     api.login(response => {
       commit("saveToken", response);
       commit(types.GET_TOKEN, {});
+      api.getPermission(response => {
+        commit("myPermissions", response);
+      });
       router.push({ path: "menu" });
       this.dispatch("user/getUserData");
       this.dispatch("toastMessage/alert", {
@@ -76,6 +81,9 @@ const actions = {
 };
 // mutations
 const mutations = {
+  myPermissions(state, data) {
+    state.myPermissions = data;
+  },
   noToken(state) {
     state.noTokenProvided = true;
   },
@@ -94,6 +102,7 @@ const mutations = {
 
   [types.LOGOUT_USER](state) {
     state.logged_in = false;
+    state.myPermissions = [];
     state.token = "";
     state.refToken = "";
     state.expires = "";

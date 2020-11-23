@@ -18,7 +18,6 @@ const actions = {
   getInstitutions({ commit, state }, data) {
     api.getInstitutions(response => {
       commit("getInstitutions", response);
-      console.log(response);
     });
   },
   addInstitutions({ dispatch }, data) {
@@ -28,7 +27,6 @@ const actions = {
         type: "success"
       });
       dispatch("getInstitutions");
-      console.log(response);
     }, data);
   },
   deleteInstitution({ commit }, data) {
@@ -42,7 +40,6 @@ const actions = {
   },
   editInstitution({ dispatch }, data) {
     api.editInstitutions(response => {
-      console.log(response);
       this.dispatch("toastMessage/alert", {
         message: "Dane placówki zostały zmienione",
         type: "success"
@@ -60,7 +57,6 @@ const mutations = {
     let removeIndex = state.institutionsList
       .map(item => item.publicId)
       .indexOf(data);
-    console.log(removeIndex);
     state.institutionsList.splice(removeIndex, 1);
   }
 };

@@ -18,6 +18,19 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  getPermission(cb) {
+    api
+      .post(`/api/admin/permissions`, {
+        permissions: [
+          "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess",
+          "FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee"
+        ]
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
   getUserData(cb) {
     api
       .get(`/api/user`)
@@ -115,15 +128,15 @@ export default {
       })
       .catch(e => console.log(e));
   },
-  deleteOffer(cb, data){
+  deleteOffer(cb, data) {
     api
-    .delete(`/api/offers/${data.id}`, {
-      publicId: data.id
-    })
-    .then(response => {
-      cb(response.data);
-    })
-    .catch(e => console.log(e));
+      .delete(`/api/offers/${data.id}`, {
+        publicId: data.id
+      })
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
   },
   updateOffer(cb, data) {
     api
@@ -186,6 +199,41 @@ export default {
       .then(response => {
         cb(response.data);
       })
+      .catch(e => console.log(e));
+  },
+  getAllKids(cb) {
+    api
+      .get(`/api/children`)
+      .then(response => cb(response.data))
+      .catch(e => console.log(e));
+  },
+  addKid(cb, data) {
+    api
+      .post(`/api/children`, data)
+      .then(response => cb(response.data))
+      .catch(e => console.log(e));
+  },
+  editKid(cb, data) {
+    api
+      .put(`/api/children/${data.publicId}`, {
+        FirstName: data.firstName,
+        LastName: data.lastName,
+        ParentPublicId: data.parentPublicId,
+        InstitutionPublicId: data.institutionPublicId
+      })
+      .then(response => cb(response.data))
+      .catch(e => console.log(e));
+  },
+  deleteKid(cb, data) {
+    api
+      .delete(`/api/children/${data}`)
+      .then(response => cb(response.data))
+      .catch(e => console.log(e));
+  },
+  getMyKids(cb) {
+    api
+      .get(`/api/children/mychildren`)
+      .then(response => cb(response.data))
       .catch(e => console.log(e));
   }
 };
