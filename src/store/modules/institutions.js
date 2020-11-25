@@ -3,7 +3,16 @@ import router from "@/router";
 const querystring = require("query-string");
 import api from "@/api";
 
-// initial state
+/**
+ * @module store/modules/institutions
+ * @desc Magazyn do przechowywania informacji dotyczących instytucji
+ */
+
+/** obiekt przechowujący aktualne stany danych zmiennych pobranych z API
+ *  @name institutions/state
+ * @type {object}
+ * @property {Array} institutionsList- tablica przechowująca listę obiektów instytucji pobranych z API
+ */
 const state = {
   institutionsList: []
 };
