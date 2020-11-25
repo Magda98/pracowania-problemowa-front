@@ -2,10 +2,16 @@ import _ from "lodash";
 import router from "@/router";
 import api from "@/axios/settings.js";
 
-// axios.defaults.baseURL = "https://fitkidcateringapp.azurewebsites.net";
-// axios.defaults.headers.post["Content-Type"] = "application/json-patch+json";
-// axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+/**
+ * @module Api
+ * @desc moduł posiadający funkcje wysyłające zapytania do API, dane funkcje wywoływane są w poszczególnych modułach w magazynie Vuex
+ */
+
 export default {
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane użytkownika przekazane podczas logowania
+   */
   login(cb, data) {
     api
       .post(`/api/user/authenticate`, {
@@ -18,6 +24,9 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getPermission(cb) {
     api
       .post(`/api/admin/permissions`, {
@@ -31,6 +40,9 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getUserData(cb) {
     api
       .get(`/api/user`)
@@ -39,6 +51,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane użytkownika przekazane podczas rejestracji
+   */
   register(cb, data) {
     api
       .post(`/api/user`, {
@@ -53,6 +69,9 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   refreshToken(cb, data) {
     api
       .get(`/api/user/authenticate/refresh`)
@@ -64,6 +83,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane użytkownika
+   */
   getUserPermissions(cb, data) {
     api
       .get(`/api/admin/permissions/inspect/${data.id}`)
@@ -72,6 +95,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane użytkownika
+   */
   setUserPermissions(cb, data) {
     api
       .post(`/api/admin/permissions/inspect/${data.id}`, [
@@ -88,6 +115,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane użytkownika przekazane podczas rejestracji
+   */
   getUsers(cb, data) {
     api
       .get(`api/admin/users`, {
@@ -105,6 +136,9 @@ export default {
         console.log(e);
       });
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getOffers(cb) {
     api
       .get(`api/offers`)
@@ -115,6 +149,10 @@ export default {
         console.log(e);
       });
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas dodawnia oferty
+   */
   addOffer(cb, data) {
     api
       .post(`/api/offers`, {
@@ -128,6 +166,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas usuwania oferty
+   */
   deleteOffer(cb, data) {
     api
       .delete(`/api/offers/${data.id}`, {
@@ -138,6 +180,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas edycji oferty
+   */
   updateOffer(cb, data) {
     api
       .put(`/api/offers/${data.id}`, {
@@ -152,6 +198,9 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getPermissions(cb) {
     api
       .get(`/api/admin/permissions`)
@@ -162,6 +211,9 @@ export default {
         console.log(e);
       });
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getInstitutions(cb) {
     api
       .get(`/api/institutions`)
@@ -170,6 +222,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas dodawania instytucji
+   */
   addInstitutions(cb, data) {
     api
       .post(`/api/institutions`, data)
@@ -178,6 +234,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas usuwania instytucji
+   */
   deleteInstitutions(cb, data) {
     api
       .delete(`/api/institutions/${data}`)
@@ -186,6 +246,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas edycji instytucji
+   */
   editInstitutions(cb, data) {
     console.log(data);
     api
@@ -201,18 +265,29 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getAllKids(cb) {
     api
       .get(`/api/children`)
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas dodawnia dziecka
+   */
   addKid(cb, data) {
     api
       .post(`/api/children`, data)
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas edycji danych dziecka
+   */
   editKid(cb, data) {
     api
       .put(`/api/children/${data.publicId}`, {
@@ -224,12 +299,19 @@ export default {
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas usuwania danych dziecka
+   */
   deleteKid(cb, data) {
     api
       .delete(`/api/children/${data}`)
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getMyKids(cb) {
     api
       .get(`/api/children/mychildren`)
