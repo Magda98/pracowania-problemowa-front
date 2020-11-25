@@ -11,7 +11,7 @@ import api from "@/api";
 
 /** obiekt przechowujący aktualne stany danych zmiennych pobranych z API
  *  @name admin/state
- * @type {object}
+ * @type {Object}
  * @property {Array} userList - tablica przechowująca listę obiektów użytkowników pobranych z API
  * @property {Object} permissions - obiekt zawierający informacje o dostępnych uprawnieniach
  * @property {Object} currentUserPermissions - obiekt zawierający informacje o uprawnieniach danego użytkownika
@@ -22,7 +22,7 @@ const state = {
   currentUserPermissions: {}
 };
 
-/** obiekt posiadający funkcje które zwracają obiektylub tablice z obiektu state
+/** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
  *  @name admin/getters
  * @type {object}
  * @getter userList - funkcja zwracająca listę użytkowników
@@ -36,7 +36,7 @@ const getters = {
   permissions: state => state.permissions
 };
 
-/** obiekt posiadający funkcje, które wywołują funkcje które pobierają dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
+/** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
  *  @name admin/actions
  * @desc
  *  getPermissions - funkcja pobiera dostępne uprawnienia z API nstępnie wywołuje mutacje "permissions" <br/>
@@ -77,7 +77,7 @@ const actions = {
     });
   }
 };
-/** obiekt posiadający funkcje które zwracają obiektylub tablice z obiektu state
+/** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state
  * @name admin/mutations
  * @type {object}
  * @mutator users - funkcja zapisujaca listę użytkowników w obiekcie state.userList

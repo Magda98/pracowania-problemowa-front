@@ -10,19 +10,30 @@ import api from "@/api";
 
 /** obiekt przechowujący aktualne stany danych zmiennych pobranych z API
  *  @name institutions/state
- * @type {object}
+ * @type {Object}
  * @property {Array} institutionsList- tablica przechowująca listę obiektów instytucji pobranych z API
  */
 const state = {
   institutionsList: []
 };
 
-// getters
+/** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
+ *  @name institutions/getters
+ * @type {Object}
+ * @getter institutionsList - funkcja zwracająca listę instytucji
+ */
 const getters = {
   institutionsList: state => state.institutionsList
 };
 
-// actions
+/** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
+ *  @name institutions/actions
+ * @desc
+ * getInstitutions - funkcja pobiera listę instytucji z API <br/>
+ * addInstitutions - wywołuje zapytanie aby dodać nową instytucję <br/>
+ * deleteInstitution - wywołuje zapytanie w celu usunięcia instytucji <br/>
+ * editInstitution - wywołuje zpytanie w celu edycji danych instytucji <br/>
+ */
 const actions = {
   getInstitutions({ commit, state }, data) {
     api.getInstitutions(response => {
@@ -57,7 +68,12 @@ const actions = {
     }, data);
   }
 };
-// mutations
+/** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state
+ * @name institutions/mutations
+ * @type {object}
+ * @mutator  getInstitutions - funkcja zapisujaca listę instytucji w obiekcie state.institutionsList
+ * @mutator deleteInstitution - funkcja uaktualniająca listę instytucji w obiekcie state
+ */
 const mutations = {
   getInstitutions(state, data) {
     state.institutionsList = data;
