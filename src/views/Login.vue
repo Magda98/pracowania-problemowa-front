@@ -131,6 +131,9 @@ extend("min", {
   ...max,
   message: "pole nie może być krótsze niż 4 znaki"
 });
+
+// @vuese
+// Widok stroy logowania
 export default {
   components: {
     ValidationProvider,
@@ -147,21 +150,35 @@ export default {
   }),
 
   methods: {
+    // @vuese
+    // funkcja, która pobiera akcje z magazynu Vuex
     ...mapActions("user", ["login"]),
+
+    // @vuese
+    // metoda uruchamiana po kliknięciu przycisku zaloguj, wywołuje funkcję logowania z magazynu Vuex
     submit() {
       if (this.$refs.observer.validate()) {
         this.login({ username: this.name, password: this.myPass });
       }
     },
+
+    // @vuese
+    // metoda uruchamiana po kliknięciu przycisku wyczyść, usuwa dane z pól tekstowych formularza
     clear() {
       this.myPass = "";
       this.name = "";
       this.$refs.observer.reset();
     }
   },
+
   computed: {
+    // @vuese
+    // funkcja, która pobiera gettery z magazynu Vuex
     ...mapGetters("user", ["userInfo", "loggedIn"])
   },
+
+  // @vuese
+  // funkcja, która wywołuje się przed zamonotowaniem komponentu, w przypadku kiedy użytkownik ma aktywny token, zostaje przekeierowany do strony z ofertą
   beforeMount() {
     if (this.loggedIn) {
       this.$router.push("/menu");

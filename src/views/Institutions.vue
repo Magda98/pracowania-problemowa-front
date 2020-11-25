@@ -170,6 +170,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+// @vuese
+// Widok stroy Instytucji
 export default {
   data() {
     return {
@@ -234,34 +236,50 @@ export default {
     ]),
     ...mapActions("admin", ["getUsers"]),
     ...mapActions("user", ["getMyPermission"]),
+    // @vuese
+    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej instytucji
+    // @arg Argument to instytucja której dotyczy wybrany wiersz
     deleteItem(item) {
       this.currentItem = item;
       this.dialogDelete = "true";
     },
+    // @vuese
+    // funkcja, która przypisuje dany obiekt do zmiennej currentIem w celu edycji
+    // @arg Argument to instytucja której dotyczy wybrany wiersz
     editItem(item) {
       this.currentItem = Object.assign({}, item);
       this.dialogEdit = true;
     },
+    // @vuese
+    // funkcja, która zamyka okno dialogowe
     closeEdit() {
       this.dialogEdit = false;
     },
+    // @vuese
+    // funkcja, która zapisuje wyedytowane dane instytucji, wywołuje funkcję z magazynu Vuex
     saveEdit() {
       this.editInstitution(this.currentItem);
       this.dialogEdit = false;
     },
+    // @vuese
+    // funkcja, która wywołuje funkcję z magazyku Vuex w celu usunięcia danej instytucji
     deleteItemConfirm() {
       this.deleteInstitution(this.currentItem.publicId);
       this.closeDelete();
     },
-
+    // @vuese
+    // funkcja, która zamyka okno dialogowe
     close() {
       this.dialog = false;
     },
-
+    // @vuese
+    // funkcja, która zamyka okno dialogowe
     closeDelete() {
       this.dialogDelete = false;
     },
 
+    // @vuese
+    // funkcja, która dodaje instytucje
     save() {
       this.addInstitutions(this.institution);
       this.close();

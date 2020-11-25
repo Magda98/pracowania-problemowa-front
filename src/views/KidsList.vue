@@ -155,6 +155,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+// @vuese
+// Widok stroy listy podopiecznych - administrator
 export default {
   data() {
     return {
@@ -212,34 +214,49 @@ export default {
     ...mapActions("kids", ["getKids", "addKid", "editKid", "deleteKid"]),
     ...mapActions("admin", ["getUsers"]),
     ...mapActions("user", ["getMyPermission"]),
+    // @vuese
+    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby
+    // @arg Argument to osoba której dotyczy wybrany wiersz
     deleteItem(item) {
       this.currentItem = item;
       this.dialogDelete = "true";
     },
+    // @vuese
+    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji daniej osoby
+    // @arg Argument to osoba której dotyczy wybrany wiersz
     editItem(item) {
       this.currentItem = Object.assign({}, item);
       this.dialogEdit = true;
     },
+    // @vuese
+    // funkcja zamyka okno dialogowe edycji
     closeEdit() {
       this.dialogEdit = false;
     },
+    // @vuese
+    // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
     saveEdit() {
       this.editKid(this.currentItem);
       this.dialogEdit = false;
     },
+    // @vuese
+    // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
     deleteItemConfirm() {
       this.deleteKid(this.currentItem.publicId);
       this.closeDelete();
     },
-
+    // @vuese
+    // funkcja zamyka okno dialogowe
     close() {
       this.dialog = false;
     },
-
+    // @vuese
+    // funkcja zamyka okno dialogowe usuwania
     closeDelete() {
       this.dialogDelete = false;
     },
-
+    // @vuese
+    // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
     save() {
       this.addKid(this.kid);
       this.close();
