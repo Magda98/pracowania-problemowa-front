@@ -56,7 +56,7 @@
                       v-model="dialogEdit"
                       persistent
                       max-width="600px"
-                      retain-focus="False"
+                      :retain-focus="false"
                     >
                       <v-card>
                         <form>
@@ -127,7 +127,7 @@
                     <v-dialog
                       v-model="dialogDelete"
                       max-width="500px"
-                      retain-focus="False"
+                      :retain-focus="false"
                     >
                       <v-card>
                         <v-card-title>
@@ -198,7 +198,7 @@
                           <validation-provider
                             v-slot="{ errors }"
                             name="newname"
-                            rules="required|max:256|min:4"
+                            rules="required|max:256|min:6"
                             slim
                           >
                             <v-text-field
@@ -295,20 +295,6 @@ import {
 } from "vee-validate";
 
 setInteractionMode("eager");
-
-extend("required", {
-  ...required,
-  message: "To pole jest obowiązkowe",
-});
-
-extend("max", {
-  ...max,
-  message: "Nazwa posiłku nie może być dłuższa niż 256 znaków",
-});
-extend("min", {
-  ...min,
-  message: "Nazwa posiłku nie może być krótsza niż 4 znaki",
-});
 
 export default {
   components: {
