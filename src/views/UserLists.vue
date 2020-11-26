@@ -94,6 +94,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+// @vuese
+// Widok stroy z uprawnieniami użytkowników
 export default {
   data: () => ({
     editedItem: {},
@@ -132,6 +134,8 @@ export default {
       "getUserPermissions",
       "setUserPermissions"
     ]),
+    // @vuese
+    //  funkcja umożliwiająca wyszukiwanie danego użytkownika
     search() {
       this.getUsers({
         UserName: this.nick,
@@ -140,9 +144,13 @@ export default {
         LastName: this.name
       });
     },
+    // @vuese
+    // Zamyka okno dialogowe
     close() {
       this.dialog = false;
     },
+    // @vuese
+    // funkcja zapisuje zmienione uprawnienia danego użytkownika wywołując odpowiednią funkcję z magazynu Vuex
     save() {
       this.setUserPermissions({
         id: this.editedItem.id,
@@ -153,11 +161,12 @@ export default {
         this.dialog = false;
       });
     },
+    // @vuese
+    // Funkcja otwiera odpowiendie okno dialogowe edycji z uprawnieniami danego użytkownika
     editItem(item) {
       this.editedItem = Object.assign({}, item);
       this.getUserPermissions(item.id).then(response => {
         this.dialog = true;
-        console.log(response);
         if (!response.length) {
           this.checkbox.AdminAccess = false;
           this.checkbox.CateringEmployee = false;

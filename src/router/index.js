@@ -8,6 +8,8 @@ import Menu from "../views/Menu.vue";
 import KidsList from "../views/KidsList.vue";
 import DishList from "../views/DishList.vue";
 import UserList from "../views/UserLists.vue";
+import MyKidList from "../views/MyKidList.vue";
+import Institutions from "../views/Institutions.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +23,11 @@ const routes = [
     path: "/list",
     name: "KidsList",
     component: KidsList
+  },
+  {
+    path: "/kidlist",
+    name: "MyKidList",
+    component: MyKidList
   },
   {
     path: "/permissions",
@@ -51,6 +58,11 @@ const routes = [
     path: "/menu",
     name: "Menu",
     component: Menu
+  },
+  {
+    path: "/institutions",
+    name: "Institutions",
+    component: Institutions
   }
 ];
 

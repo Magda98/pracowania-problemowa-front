@@ -37,15 +37,6 @@
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-autocomplete
-                  v-model="kid.ParentPublicId"
-                  :items="userNames"
-                  dense
-                  filled
-                  label="Rodzic"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
                   v-model="kid.InstitutionPublicId"
                   :items="institutionsNames"
                   dense
@@ -156,7 +147,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 // @vuese
-// Widok stroy listy podopiecznych - administrator
+// Widok strony listy podopiecznych - rodzic
 export default {
   data() {
     return {
@@ -192,15 +183,9 @@ export default {
   },
   computed: {
     ...mapGetters("institutions", ["institutionsList"]),
-    ...mapGetters("admin", ["userList"]),
     ...mapGetters("kids", ["kidsList"]),
+    ...mapGetters("user", ["userInfo"]),
 
-    userNames() {
-      return this.userList.map(obj => ({
-        text: obj.userName,
-        value: obj.publicId
-      }));
-    },
     institutionsNames() {
       return this.institutionsList.map(obj => ({
         text: obj.name,
@@ -211,8 +196,12 @@ export default {
 
   methods: {
     ...mapActions("institutions", ["getInstitutions"]),
-    ...mapActions("kids", ["getKids", "addKid", "editKid", "deleteKid"]),
-    ...mapActions("admin", ["getUsers"]),
+    ...mapActions("kids", [
+      "getMyKids",
+      "addMyKid",
+      "editMyKid",
+      "deleteMyKid"
+    ]),
     ...mapActions("user", ["getMyPermission"]),
     // @vuese
     // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby
@@ -236,13 +225,13 @@ export default {
     // @vuese
     // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
     saveEdit() {
-      this.editKid(this.currentItem);
+      this.editMyKid(this.currentItem);
       this.dialogEdit = false;
     },
     // @vuese
     // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
     deleteItemConfirm() {
-      this.deleteKid(this.currentItem.publicId);
+      this.deleteMyKid(this.currentItem.publicId);
       this.closeDelete();
     },
     // @vuese
@@ -258,18 +247,14 @@ export default {
     // @vuese
     // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
     save() {
-      this.addKid(this.kid);
+      this.kid.ParentPublicId = this.userInfo.publicId;
+      this.addMyKid(this.kid);
+      console.log(this.kid);
       this.close();
     }
   },
   mounted() {
-    this.getUsers({
-      UserName: this.nick,
-      Email: this.email,
-      FirstName: this.surname,
-      LastName: this.name
-    });
-    this.getKids();
+    this.getMyKids();
     this.getInstitutions();
   }
 };

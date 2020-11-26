@@ -4,8 +4,10 @@ import * as actions from "./actions";
 import * as getters from "./getters";
 import user from "./modules/user";
 import admin from "./modules/admin";
+import institutions from "./modules/institutions";
 import toastMessage from "./modules/toastMessage";
-import offers from "./modules/menu"
+import offers from "./modules/menu";
+import kids from "./modules/kids";
 import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
@@ -17,7 +19,9 @@ const vuexLocal = new VuexPersistence({
   key: "pracownia",
   strictMode: true
 });
-
+/**
+ * Moduł magazynu przechowujący dane w local storage
+ */
 export default new Vuex.Store({
   actions,
   getters,
@@ -25,7 +29,9 @@ export default new Vuex.Store({
     user,
     admin,
     toastMessage,
-    offers
+    institutions,
+    offers,
+    kids
   },
   mutations: {
     RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION // this mutation **MUST** be named "RESTORE_MUTATION"

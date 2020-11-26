@@ -17,7 +17,7 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">Nowa osoba</span>
+          <span class="headline">Nowa placówka</span>
         </v-card-title>
 
         <v-card-text>
@@ -25,32 +25,35 @@
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="kid.FirstName"
-                  label="Imię"
+                  v-model="institution.Name"
+                  label="Nazwa"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="kid.LastName"
-                  label="Nazwisko"
+                  v-model="institution.Street"
+                  label="Ulica"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="institution.ZipCode"
+                  label="Kod pocztowy"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="institution.City"
+                  label="Miasto"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-autocomplete
-                  v-model="kid.ParentPublicId"
+                  v-model="institution.OwnerPublicId"
                   :items="userNames"
                   dense
                   filled
-                  label="Rodzic"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
-                  v-model="kid.InstitutionPublicId"
-                  :items="institutionsNames"
-                  dense
-                  filled
-                  label="Placówka"
+                  label="Właściciel"
                 ></v-autocomplete>
               </v-col>
             </v-row>
@@ -72,7 +75,7 @@
     <v-dialog v-model="dialogEdit" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">Edycja danych dziecka</span>
+          <span class="headline">Edycja placówki</span>
         </v-card-title>
 
         <v-card-text>
@@ -80,14 +83,26 @@
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="currentItem.firstName"
-                  label="Imię"
+                  v-model="currentItem.name"
+                  label="Nazwa"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="currentItem.lastName"
-                  label="Nazwisko"
+                  v-model="currentItem.street"
+                  label="Ulica"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.zipCode"
+                  label="Kod pocztowy"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="currentItem.city"
+                  label="Miasto"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -106,20 +121,20 @@
       </v-card>
     </v-dialog>
     <v-data-table
-      v-if="kidsList.length"
+      v-if="institutionsList.length"
       :headers="headers"
-      :items="kidsList"
+      :items="institutionsList"
       class="elevation-1"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Lista dzieci</v-toolbar-title>
+          <v-toolbar-title>Placówki</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline"
-                >Na pewno chcesz usunąć osobę?</v-card-title
+                >Na pewno chcesz usunąć placówkę?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -148,7 +163,7 @@
       v-else
       style="margin:auto; padding-top: 50px;width:100%;text-align:center;"
     >
-      brak dodanych dzieci
+      brak placówek
     </div>
   </v-container>
 </template>
@@ -156,7 +171,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 // @vuese
-// Widok stroy listy podopiecznych - administrator
+// Widok stroy Instytucji
 export default {
   data() {
     return {
@@ -164,27 +179,38 @@ export default {
       dialogEdit: false,
       dialog: false,
       currentItem: {},
-      kid: {
-        FirstName: "",
-        LastName: "",
-        ParentPublicId: "",
-        InstitutionPublicId: ""
+      institution: {
+        Name: "",
+        Street: "",
+        ZipCode: "",
+        City: "",
+        OwnerPublicId: ""
       },
       headers: [
         {
-          text: "Imię i nazwisko",
+          text: "Nazwa",
           align: "start",
           value: "name"
         },
         {
-          text: "Rodzic",
+          text: "Ulica",
           align: "start",
-          value: "parentUsername"
+          value: "street"
         },
         {
-          text: "Instytucja",
+          text: "Kod pocztowy",
           align: "start",
-          value: "institutionName"
+          value: "zipCode"
+        },
+        {
+          text: "Miasto",
+          align: "start",
+          value: "city"
+        },
+        {
+          text: "Osoba zarządzająca",
+          align: "start",
+          value: "ownerUsername"
         },
         { text: "Edycja/Usuwanie", value: "actions", sortable: false }
       ]
@@ -193,84 +219,80 @@ export default {
   computed: {
     ...mapGetters("institutions", ["institutionsList"]),
     ...mapGetters("admin", ["userList"]),
-    ...mapGetters("kids", ["kidsList"]),
-
     userNames() {
       return this.userList.map(obj => ({
         text: obj.userName,
-        value: obj.publicId
-      }));
-    },
-    institutionsNames() {
-      return this.institutionsList.map(obj => ({
-        text: obj.name,
         value: obj.publicId
       }));
     }
   },
 
   methods: {
-    ...mapActions("institutions", ["getInstitutions"]),
-    ...mapActions("kids", ["getKids", "addKid", "editKid", "deleteKid"]),
+    ...mapActions("institutions", [
+      "getInstitutions",
+      "addInstitutions",
+      "deleteInstitution",
+      "editInstitution"
+    ]),
     ...mapActions("admin", ["getUsers"]),
     ...mapActions("user", ["getMyPermission"]),
     // @vuese
-    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby
-    // @arg Argument to osoba której dotyczy wybrany wiersz
+    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej instytucji
+    // @arg Argument to instytucja której dotyczy wybrany wiersz
     deleteItem(item) {
       this.currentItem = item;
       this.dialogDelete = "true";
     },
     // @vuese
-    // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji daniej osoby
-    // @arg Argument to osoba której dotyczy wybrany wiersz
+    // funkcja, która przypisuje dany obiekt do zmiennej currentIem w celu edycji
+    // @arg Argument to instytucja której dotyczy wybrany wiersz
     editItem(item) {
       this.currentItem = Object.assign({}, item);
       this.dialogEdit = true;
     },
     // @vuese
-    // funkcja zamyka okno dialogowe edycji
+    // funkcja, która zamyka okno dialogowe
     closeEdit() {
       this.dialogEdit = false;
     },
     // @vuese
-    // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
+    // funkcja, która zapisuje wyedytowane dane instytucji, wywołuje funkcję z magazynu Vuex
     saveEdit() {
-      this.editKid(this.currentItem);
+      this.editInstitution(this.currentItem);
       this.dialogEdit = false;
     },
     // @vuese
-    // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
+    // funkcja, która wywołuje funkcję z magazyku Vuex w celu usunięcia danej instytucji
     deleteItemConfirm() {
-      this.deleteKid(this.currentItem.publicId);
+      this.deleteInstitution(this.currentItem.publicId);
       this.closeDelete();
     },
     // @vuese
-    // funkcja zamyka okno dialogowe
+    // funkcja, która zamyka okno dialogowe
     close() {
       this.dialog = false;
     },
     // @vuese
-    // funkcja zamyka okno dialogowe usuwania
+    // funkcja, która zamyka okno dialogowe
     closeDelete() {
       this.dialogDelete = false;
     },
+
     // @vuese
-    // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
+    // funkcja, która dodaje instytucje
     save() {
-      this.addKid(this.kid);
+      this.addInstitutions(this.institution);
       this.close();
     }
   },
-  mounted() {
-    this.getUsers({
-      UserName: this.nick,
-      Email: this.email,
-      FirstName: this.surname,
-      LastName: this.name
-    });
-    this.getKids();
+  beforeMount() {
     this.getInstitutions();
+    this.getUsers({
+      UserName: "",
+      Email: "",
+      FirstName: "",
+      LastName: ""
+    });
   }
 };
 </script>

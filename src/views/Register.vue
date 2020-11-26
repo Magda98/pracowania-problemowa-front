@@ -148,6 +148,9 @@ extend("password", {
   },
   message: "Hasła muszą być identyczne!"
 });
+
+// @vuese
+// Widok stroy rejestracji
 export default {
   components: {
     ValidationProvider,
@@ -168,6 +171,8 @@ export default {
 
   methods: {
     ...mapActions("user", ["register"]),
+    // @vuese
+    // metoda uruchamiana po kliknięciu przycisku zaloguj, wywołuje funkcję rejestracji z magazynu Vuex
     submit() {
       this.$refs.observer.validate().then(result => {
         if (result) {
@@ -211,7 +216,6 @@ form {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
   align-items: center;
   justify-content: center;
   display: flex;
