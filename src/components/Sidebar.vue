@@ -10,6 +10,25 @@
           </v-list-item-title>
           <v-list-item-subtitle>{{ userInfo.email }}</v-list-item-subtitle>
           <v-list-item-subtitle>{{ userInfo.userName }}</v-list-item-subtitle>
+          <v-list-item-subtitle v-if="userInfo.institutions.length"
+            >Instytucja: {{ userInfo.institutions[0].name }}
+          </v-list-item-subtitle>
+          <v-list-item-subtitle
+            v-if="
+              myPermissions[
+                'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+              ]
+            "
+            >Administrator serwisu
+          </v-list-item-subtitle>
+          <v-list-item-subtitle
+            v-if="
+              myPermissions[
+                'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+              ]
+            "
+            >Przedstawiciel Cateringu
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -17,12 +36,12 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item v-if="loggedIn" link>
+      <!-- <v-list-item v-if="loggedIn" link>
         <v-list-item-icon>
           <v-icon>mdi-account-multiple</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Ustawienia konta</v-list-item-title>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item v-if="loggedIn" link>
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
@@ -55,10 +74,27 @@
           loggedIn &&
             !myPermissions[
               'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-            ]
+            ] &&
+            !userInfo.institutions.length
         "
         link
         to="/kidlist"
+      >
+        <v-list-item-icon>
+          <v-icon>mdi-account-child-outline</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Lista podopiecznych</v-list-item-title>
+      </v-list-item>
+      <v-list-item
+        v-if="
+          loggedIn &&
+            !myPermissions[
+              'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+            ] &&
+            userInfo.institutions.length
+        "
+        link
+        to="/kidlistinstitution"
       >
         <v-list-item-icon>
           <v-icon>mdi-account-child-outline</v-icon>
@@ -126,6 +162,8 @@ export default {
   methods: {
     ...mapActions("user", ["logout"])
   },
-  mounted() {}
+  mounted() {
+    console.log(this.userInfo);
+  }
 };
 </script>
