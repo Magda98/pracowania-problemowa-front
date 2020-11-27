@@ -68,7 +68,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn small class="mr-2" color="secondary" @click="see(item)">
-          zobacz Zamówienia
+          Zamówienia
         </v-btn>
         <v-dialog :retain-focus="false" v-model="dialogOrders">
           <v-card>
@@ -149,23 +149,6 @@ export default {
         "Czwartek",
         "Piątek",
         "Niedziela"
-      ],
-      headersDish: [
-        {
-          text: "Nazwa dania",
-          align: "start",
-          value: "name"
-        },
-        {
-          text: "Dzień tygodnia",
-          align: "start",
-          value: "dayOfWeek"
-        },
-        {
-          text: "Cean",
-          align: "start",
-          value: "price"
-        }
       ],
       headers: [
         {

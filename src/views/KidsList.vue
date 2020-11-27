@@ -143,6 +143,52 @@
           mdi-delete
         </v-icon>
       </template>
+      <template v-slot:item.orders="{ item }">
+        <v-btn small class="mr-2" color="secondary" @click="see(item)">
+          Zamówienia
+        </v-btn>
+        <v-dialog :retain-focus="false" v-model="dialogOrders">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Zamówienia dziecka</span>
+            </v-card-title>
+            <v-tabs
+              v-model="tab"
+              background-color="transparent"
+              color="basil"
+              grow
+            >
+              <v-tab v-for="day in days" :key="day">
+                {{ day }}
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">
+              <v-tab-item v-for="day in days" :key="day">
+                <v-card>
+                  <v-card-title>
+                    {{ day }}
+                  </v-card-title>
+                  <v-card-text>
+                    <v-col
+                      cols="12"
+                      v-for="dish in kidDishList[day]"
+                      :key="dish.publicId"
+                    >
+                      {{ dish.name }} {{ dish.price }} zł
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeOrders">
+                Zamknij
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </template>
     </v-data-table>
     <div
       v-else
@@ -163,6 +209,9 @@ export default {
       dialogDelete: false,
       dialogEdit: false,
       dialog: false,
+      tab: null,
+      dialogOrders: false,
+      ordersList: [],
       currentItem: {},
       kid: {
         FirstName: "",
@@ -170,6 +219,14 @@ export default {
         ParentPublicId: "",
         InstitutionPublicId: ""
       },
+      days: [
+        "Poniedziałek",
+        "Wtorek",
+        "Środa",
+        "Czwartek",
+        "Piątek",
+        "Niedziela"
+      ],
       headers: [
         {
           text: "Imię i nazwisko",
@@ -186,7 +243,8 @@ export default {
           align: "start",
           value: "institutionName"
         },
-        { text: "Edycja/Usuwanie", value: "actions", sortable: false }
+        { text: "Edycja/Usuwanie", value: "actions", sortable: false },
+        { text: "Zamówienia", value: "orders", sortable: false }
       ]
     };
   },
@@ -194,7 +252,7 @@ export default {
     ...mapGetters("institutions", ["institutionsList"]),
     ...mapGetters("admin", ["userList"]),
     ...mapGetters("kids", ["kidsList"]),
-
+    ...mapGetters("offers", ["offersList"]),
     userNames() {
       return this.userList.map(obj => ({
         text: obj.userName,
@@ -206,10 +264,34 @@ export default {
         text: obj.name,
         value: obj.publicId
       }));
+    },
+    kidDishList() {
+      return this.offersList
+        .filter(offer => this.ordersList.includes(offer.publicId))
+        .reduce(
+          (offers, currOffer) => ({
+            ...offers,
+            [this.days[currOffer.dayOfWeek]]: [
+              ...offers[this.days[currOffer.dayOfWeek]],
+              currOffer
+            ]
+          }),
+          {
+            Poniedziałek: [],
+            Wtorek: [],
+            Środa: [],
+            Czwartek: [],
+            Piątek: [],
+            Sobota: [],
+            Niedziela: []
+          }
+        );
     }
   },
 
   methods: {
+    ...mapActions("offers", ["getOffers"]),
+    ...mapActions("orders", ["getOrder"]),
     ...mapActions("institutions", ["getInstitutions"]),
     ...mapActions("kids", ["getKids", "addKid", "editKid", "deleteKid"]),
     ...mapActions("admin", ["getUsers"]),
@@ -260,6 +342,15 @@ export default {
     save() {
       this.addKid(this.kid);
       this.close();
+    },
+    closeOrders() {
+      this.dialogOrders = false;
+    },
+    see(item) {
+      this.getOrder(item.publicId).then(response => {
+        this.ordersList = response.offers;
+        this.dialogOrders = true;
+      });
     }
   },
   mounted() {
@@ -271,6 +362,7 @@ export default {
     });
     this.getKids();
     this.getInstitutions();
+    this.getOffers();
   }
 };
 </script>
