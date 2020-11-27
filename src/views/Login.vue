@@ -80,6 +80,8 @@
               outlined
               class="mr-4 login-btn"
               @click="submit"
+              :loading="loading"
+              :disabled="loading"
             >
               zaloguj
             </v-btn>
@@ -140,6 +142,8 @@ export default {
     ValidationObserver
   },
   data: () => ({
+    loader: null,
+    loading: false,
     name: "",
     email: "",
     select: null,
@@ -148,7 +152,16 @@ export default {
     myPass: "",
     dialog: false
   }),
+  watch: {
+    loader() {
+      const l = this.loader;
+      this[l] = !this[l];
 
+      setTimeout(() => (this[l] = false), 3000);
+
+      this.loader = null;
+    }
+  },
   methods: {
     // @vuese
     // funkcja, która pobiera akcje z magazynu Vuex
@@ -158,6 +171,7 @@ export default {
     // metoda uruchamiana po kliknięciu przycisku zaloguj, wywołuje funkcję logowania z magazynu Vuex
     submit() {
       if (this.$refs.observer.validate()) {
+        this.loader = "loading";
         this.login({ username: this.name, password: this.myPass });
       }
     },

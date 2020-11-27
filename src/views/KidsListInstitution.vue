@@ -1,5 +1,74 @@
 <template>
   <v-container>
+    <v-fab-transition>
+      <v-btn
+        @click="dialog = true"
+        color="secondary"
+        dark
+        absolute
+        right
+        top
+        fab
+        style="margin: 50px 20px;"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Nowa osoba</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="kid.FirstName"
+                  label="Imię"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="kid.LastName"
+                  label="Nazwisko"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-autocomplete
+                  v-model="kid.ParentPublicId"
+                  :items="userNames"
+                  dense
+                  filled
+                  label="Rodzic"
+                ></v-autocomplete>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-autocomplete
+                  v-model="kid.InstitutionPublicId"
+                  :items="institutionsNames"
+                  dense
+                  filled
+                  label="Placówka"
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close">
+            Anuluj
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="save">
+            Dodaj
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="dialogEdit" max-width="500px">
       <v-card>
         <v-card-title>
@@ -87,7 +156,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 // @vuese
-// Widok strony listy podopiecznych - opiekun placówki
+// Widok stroy listy podopiecznych - administrator
 export default {
   data() {
     return {
@@ -123,9 +192,15 @@ export default {
   },
   computed: {
     ...mapGetters("institutions", ["institutionsList"]),
+    ...mapGetters("admin", ["userList"]),
     ...mapGetters("kids", ["kidsInstitution"]),
-    ...mapGetters("user", ["userInfo"]),
 
+    userNames() {
+      return this.userList.map(obj => ({
+        text: obj.userName,
+        value: obj.publicId
+      }));
+    },
     institutionsNames() {
       return this.institutionsList.map(obj => ({
         text: obj.name,
@@ -136,7 +211,13 @@ export default {
 
   methods: {
     ...mapActions("institutions", ["getInstitutions"]),
-    ...mapActions("kids", ["getInstitutionKids", "editMyKid", "deleteMyKid"]),
+    ...mapActions("kids", [
+      "getInstitutionKids",
+      "addKid",
+      "editKid",
+      "deleteKid"
+    ]),
+    ...mapActions("admin", ["getUsers"]),
     ...mapActions("user", ["getMyPermission"]),
     // @vuese
     // funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby
@@ -160,23 +241,41 @@ export default {
     // @vuese
     // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
     saveEdit() {
-      this.editMyKid(this.currentItem);
+      this.editKid(this.currentItem);
       this.dialogEdit = false;
     },
     // @vuese
     // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
     deleteItemConfirm() {
-      this.deleteMyKid(this.currentItem.publicId);
+      this.deleteKid(this.currentItem.publicId);
       this.closeDelete();
     },
     // @vuese
     // funkcja zamyka okno dialogowe
     close() {
       this.dialog = false;
+    },
+    // @vuese
+    // funkcja zamyka okno dialogowe usuwania
+    closeDelete() {
+      this.dialogDelete = false;
+    },
+    // @vuese
+    // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
+    save() {
+      this.addKid(this.kid);
+      this.close();
     }
   },
   mounted() {
+    this.getUsers({
+      UserName: this.nick,
+      Email: this.email,
+      FirstName: this.surname,
+      LastName: this.name
+    });
     this.getInstitutionKids(this.userInfo.institutions[0].publicId);
+    this.getInstitutions();
   }
 };
 </script>

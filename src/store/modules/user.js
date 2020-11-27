@@ -70,17 +70,17 @@ const actions = {
       api.getPermission(response => {
         commit("myPermissions", response);
       });
-      router.push({ path: "menu" });
       this.dispatch("user/getUserData");
-      this.dispatch("toastMessage/alert", {
-        message: "Zostałeś poprawnie zalogowany",
-        type: "success"
-      });
     }, data);
   },
   getUserData({ commit }) {
     api.getUserData(response => {
       commit("saveUserInfo", response);
+      router.push({ path: "menu" });
+      this.dispatch("toastMessage/alert", {
+        message: "Zostałeś poprawnie zalogowany",
+        type: "success"
+      });
     });
   },
   refreshToken({ state, commit }) {
@@ -136,6 +136,7 @@ const mutations = {
 
   [types.LOGOUT_USER](state) {
     state.logged_in = false;
+    state.userInfo = {};
     state.myPermissions = [];
     state.token = "";
     state.refToken = "";
