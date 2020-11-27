@@ -76,11 +76,11 @@ const actions = {
   getUserData({ commit }) {
     api.getUserData(response => {
       commit("saveUserInfo", response);
-      router.push({ path: "menu" });
       this.dispatch("toastMessage/alert", {
         message: "Zostałeś poprawnie zalogowany",
         type: "success"
       });
+      router.push({ path: "menu" });
     });
   },
   refreshToken({ state, commit }) {

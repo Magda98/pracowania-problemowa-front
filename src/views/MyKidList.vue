@@ -37,7 +37,7 @@
       </v-card>
     </v-dialog>
     <v-data-table
-      v-if="kidsList.length"
+      v-if="kidsList"
       :headers="headers"
       :items="kidsList"
       class="elevation-1"
@@ -67,12 +67,23 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
+        <v-btn small class="mr-2" color="secondary" @click="see(item)">
+          zobacz Zamówienia
+        </v-btn>
+        <v-dialog v-model="dialogOrders" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Zamówienia dziecka</span>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeOrders">
+                Zamknij
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </template>
     </v-data-table>
     <div
@@ -94,6 +105,7 @@ export default {
       dialogDelete: false,
       dialogEdit: false,
       dialog: false,
+      dialogOrders: false,
       currentItem: {},
       kid: {
         FirstName: "",
@@ -116,8 +128,8 @@ export default {
           text: "Instytucja",
           align: "start",
           value: "institutionName"
-        }
-        // { text: "Edycja/Usuwanie", value: "actions", sortable: false }
+        },
+        { text: "Zamówienia", value: "actions", sortable: false }
       ]
     };
   },
@@ -184,6 +196,9 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
     },
+    closeOrders() {
+      this.dialogOrders = false;
+    },
     // @vuese
     // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
     save() {
@@ -191,6 +206,12 @@ export default {
       this.addMyKid(this.kid);
       console.log(this.kid);
       this.close();
+    },
+    see(item) {
+      this.getGetKidOrders(item.publicId).then(response => {
+        this.dialogOrders = true;
+        console.log(response);
+      });
     }
   },
   mounted() {

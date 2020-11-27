@@ -13,25 +13,29 @@
             userInfo.userName
           }}</v-list-item-subtitle>
           <v-list-item-subtitle
-            v-if="userInfo.institutions.length"
+            v-if="loggedIn && userInfo && userInfo.institutions.length"
             style="color: #C0CA33; font-weight: bold;"
             >Opiekun: {{ userInfo.institutions[0].name }}
           </v-list-item-subtitle>
           <v-list-item-subtitle
             style="color: #8E24AA; font-weight: bold;"
             v-if="
-              myPermissions[
-                'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-              ]
+              loggedIn &&
+                myPermissions &&
+                myPermissions[
+                  'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                ]
             "
             >Administrator serwisu
           </v-list-item-subtitle>
           <v-list-item-subtitle
             style="color: #7CB342; font-weight: bold;"
             v-if="
-              myPermissions[
-                'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
-              ]
+              loggedIn &&
+                myPermissions &&
+                myPermissions[
+                  'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                ]
             "
             >Przedstawiciel Cateringu
           </v-list-item-subtitle>
@@ -48,7 +52,15 @@
         </v-list-item-icon>
         <v-list-item-title>Ustawienia konta</v-list-item-title>
       </v-list-item> -->
-      <v-list-item v-if="loggedIn" link>
+      <v-list-item
+        v-if="
+          loggedIn &&
+            myPermissions[
+              'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+            ]
+        "
+        link
+      >
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
         </v-list-item-icon>
@@ -78,6 +90,7 @@
       <v-list-item
         v-if="
           loggedIn &&
+            userInfo &&
             !myPermissions[
               'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
             ] &&
@@ -94,6 +107,7 @@
       <v-list-item
         v-if="
           loggedIn &&
+            userInfo &&
             !myPermissions[
               'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
             ] &&
