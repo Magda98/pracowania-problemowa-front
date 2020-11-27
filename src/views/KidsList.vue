@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <!-- <v-fab-transition>
+    <v-fab-transition>
       <v-btn
         @click="dialog = true"
         color="secondary"
@@ -67,7 +67,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>
 
     <v-dialog v-model="dialogEdit" max-width="500px">
       <v-card>

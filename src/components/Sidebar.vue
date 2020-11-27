@@ -18,7 +18,7 @@
             >Opiekun: {{ userInfo.institutions[0].name }}
           </v-list-item-subtitle>
           <v-list-item-subtitle
-            style="color: #47131d; font-weight: bold;"
+            style="color: #8E24AA; font-weight: bold;"
             v-if="
               myPermissions[
                 'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
