@@ -14,7 +14,8 @@ import api from "@/api";
  * @property {Array} kidsList- tablica przechowująca listę obiektów o z informacjami o danych podopiecznych pobranych z API
  */
 const state = {
-  kidsList: []
+  kidsList: [],
+  kidsInstitution: []
 };
 
 /** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
@@ -23,7 +24,8 @@ const state = {
  * @getter kidsList - funkcja zwracająca listę podopiecznych
  */
 const getters = {
-  kidsList: state => state.kidsList
+  kidsList: state => state.kidsList,
+  kidsInstitution: state => state.kidsInstitution
 };
 
 /** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
@@ -49,6 +51,12 @@ const actions = {
       commit("getKids", response);
       console.log(response);
     });
+  },
+  getInstitutionKids({ commit }, data) {
+    api.getInstitutionKids(response => {
+      commit("getKidsInstitution", response);
+      console.log(response);
+    }, data);
   },
   addKid({ commit, dispatch }, data) {
     api.addKid(response => {
@@ -113,6 +121,9 @@ const actions = {
 const mutations = {
   getKids(state, data) {
     state.kidsList = data;
+  },
+  getKidsInstitution(state, data) {
+    state.kidsInstitution = data;
   }
 };
 
