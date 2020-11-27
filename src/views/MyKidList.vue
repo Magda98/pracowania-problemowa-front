@@ -70,12 +70,39 @@
         <v-btn small class="mr-2" color="secondary" @click="see(item)">
           zobacz Zamówienia
         </v-btn>
-        <v-dialog v-model="dialogOrders" max-width="500px">
+        <v-dialog :retain-focus="false" v-model="dialogOrders">
           <v-card>
             <v-card-title>
               <span class="headline">Zamówienia dziecka</span>
             </v-card-title>
-
+            <v-tabs
+              v-model="tab"
+              background-color="transparent"
+              color="basil"
+              grow
+            >
+              <v-tab v-for="day in days" :key="day">
+                {{ day }}
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">
+              <v-tab-item v-for="day in days" :key="day">
+                <v-card>
+                  <v-card-title>
+                    {{ day }}
+                  </v-card-title>
+                  <v-card-text>
+                    <v-col
+                      cols="12"
+                      v-for="dish in kidDishList[day]"
+                      :key="dish.publicId"
+                    >
+                      {{ dish.name }} {{ dish.price }} zł
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeOrders">
@@ -102,10 +129,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      tab: null,
       dialogDelete: false,
       dialogEdit: false,
       dialog: false,
       dialogOrders: false,
+      ordersList: [],
       currentItem: {},
       kid: {
         FirstName: "",
@@ -113,6 +142,31 @@ export default {
         ParentPublicId: "",
         InstitutionPublicId: ""
       },
+      days: [
+        "Poniedziałek",
+        "Wtorek",
+        "Środa",
+        "Czwartek",
+        "Piątek",
+        "Niedziela"
+      ],
+      headersDish: [
+        {
+          text: "Nazwa dania",
+          align: "start",
+          value: "name"
+        },
+        {
+          text: "Dzień tygodnia",
+          align: "start",
+          value: "dayOfWeek"
+        },
+        {
+          text: "Cean",
+          align: "start",
+          value: "price"
+        }
+      ],
       headers: [
         {
           text: "Imię i nazwisko",
@@ -137,16 +191,46 @@ export default {
     ...mapGetters("institutions", ["institutionsList"]),
     ...mapGetters("kids", ["kidsList"]),
     ...mapGetters("user", ["userInfo"]),
-
+    ...mapGetters("offers", ["offersList"]),
     institutionsNames() {
       return this.institutionsList.map(obj => ({
         text: obj.name,
         value: obj.publicId
       }));
+    },
+    kidDishList() {
+      console.log(this.offersList);
+      // return this.offersList.filter(element => {
+      //   if (this.ordersList.includes(element.publicId)) {
+      //     return element;
+      //   }
+      // });
+
+      return this.offersList
+        .filter(offer => this.ordersList.includes(offer.publicId))
+        .reduce(
+          (offers, currOffer) => ({
+            ...offers,
+            [this.days[currOffer.dayOfWeek]]: [
+              ...offers[this.days[currOffer.dayOfWeek]],
+              currOffer
+            ]
+          }),
+          {
+            Poniedziałek: [],
+            Wtorek: [],
+            Środa: [],
+            Czwartek: [],
+            Piątek: [],
+            Sobota: [],
+            Niedziela: []
+          }
+        );
     }
   },
 
   methods: {
+    ...mapActions("offers", ["getOffers"]),
     ...mapActions("institutions", ["getInstitutions"]),
     ...mapActions("orders", ["getOrder"]),
     ...mapActions("kids", [
@@ -205,19 +289,19 @@ export default {
     save() {
       this.kid.ParentPublicId = this.userInfo.publicId;
       this.addMyKid(this.kid);
-      console.log(this.kid);
       this.close();
     },
     see(item) {
       this.getOrder(item.publicId).then(response => {
+        this.ordersList = response.offers;
         this.dialogOrders = true;
-        console.log(response);
       });
     }
   },
   mounted() {
     this.getMyKids();
     this.getInstitutions();
+    this.getOffers();
   }
 };
 </script>
