@@ -182,6 +182,18 @@ export default {
   },
   /**
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas tworzenia zamówienia
+   */
+  addOrder(cb, data) {
+    api
+      .post(`/api/orders/${data.id}`, data.offers)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => console.log(e));
+  },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas edycji oferty
    */
   updateOffer(cb, data) {
