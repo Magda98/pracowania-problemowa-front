@@ -203,11 +203,41 @@
                 </v-card-title>
                 <v-card-text>
                   <v-autocomplete
+                    v-if="
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess' ||
+                          'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                      ]
+                    "
                     v-model="childID"
                     :items="kidsNames"
                     dense
                     filled
-                    label="Wybierz dziecko"
+                    label="Wybierz dzieckoA"
+                  ></v-autocomplete>
+                  <v-autocomplete
+                    v-if="
+                      !myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ] && userInfo.institutions.length
+                    "
+                    v-model="childID"
+                    :items="kidsInstitutionNames"
+                    dense
+                    filled
+                    label="Wybierz dzieckoB"
+                  ></v-autocomplete>
+                  <v-autocomplete
+                    v-if="
+                      !myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ] && !userInfo.institutions.length
+                    "
+                    v-model="childID"
+                    :items="myKidsNames"
+                    dense
+                    filled
+                    label="Wybierz dzieckoC"
                   ></v-autocomplete>
                   <v-textarea
                     v-model="comments"
@@ -407,11 +437,23 @@ export default {
   }),
   computed: {
     ...mapGetters("offers", ["offersList"]),
-    ...mapGetters("user", ["myPermissions"]),
+    ...mapGetters("user", ["userInfo", "myPermissions"]),
     ...mapGetters("orders", ["ordersList"]),
-    ...mapGetters("kids", ["kidsList"]),
+    ...mapGetters("kids", ["kidsList", "kidsInstitution"]),
     kidsNames() {
       return this.kidsList.map((obj) => ({
+        text: obj.name,
+        value: obj.publicId,
+      }));
+    },
+    myKidsNames() {
+      return this.kidsList.map((obj) => ({
+        text: obj.name,
+        value: obj.publicId,
+      }));
+    },
+    kidsInstitutionNames() {
+      return this.kidsInstitution.map((obj) => ({
         text: obj.name,
         value: obj.publicId,
       }));
@@ -425,7 +467,7 @@ export default {
       "updateOffer",
     ]),
     ...mapActions("orders", ["addOrder"]),
-    ...mapActions("kids", ["getMyKids"]),
+    ...mapActions("kids", ["getKids", "getMyKids", "getInstitutionKids"]),
     // @vuese
     // Funkcja zwraca listę ofert na odpowiedni dzień
     _offersList(value) {
@@ -512,7 +554,28 @@ export default {
   },
   beforeMount() {
     this.getOffers();
-    this.getMyKids();
+    if (
+      this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess" ||
+          "FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee"
+      ]
+    ) {
+      this.getKids();
+    } else if (
+      !this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess"
+      ] &&
+      this.userInfo.institutions.length
+    ) {
+      this.getInstitutionKids(this.userInfo.institutions[0].publicId);
+    } else if (
+      !this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess"
+      ] &&
+      !this.userInfo.institutions.length
+    ) {
+      this.getMyKids();
+    }
   },
 };
 </script>
