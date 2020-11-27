@@ -148,6 +148,7 @@ export default {
 
   methods: {
     ...mapActions("institutions", ["getInstitutions"]),
+    ...mapActions("orders", ["getOrder"]),
     ...mapActions("kids", [
       "getMyKids",
       "addMyKid",
@@ -208,7 +209,7 @@ export default {
       this.close();
     },
     see(item) {
-      this.getGetKidOrders(item.publicId).then(response => {
+      this.getOrder(item.publicId).then(response => {
         this.dialogOrders = true;
         console.log(response);
       });

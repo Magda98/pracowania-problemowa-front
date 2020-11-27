@@ -9,13 +9,13 @@ import api from "@/api";
  * @desc Magazyn do przechowywania informacji o zamówieniach
  */
 
- /** obiekt przechowujący aktualne stany danych zmiennych pobranych z API
+/** obiekt przechowujący aktualne stany danych zmiennych pobranych z API
  *  @name orders/state
  * @type {Object}
  * @property {Array} ordersList - tablica zawierająca zamówienia
  */
 const state = {
-    ordersList: []
+  ordersList: []
 };
 
 /** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
@@ -24,7 +24,7 @@ const state = {
  * @getter ordersList - funkcja zwracająca listę zamówień
  */
 const getters = {
-    ordersList: state => state.ordersList
+  ordersList: state => state.ordersList
 };
 
 /** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
@@ -33,14 +33,22 @@ const getters = {
  *  addOrder - funkcja zapisująca zamówienie w bazie
  */
 const actions = {
-    addOrder({ commit, dispatch, state }, data) {
-        api.addOrder(response => {
-            this.dispatch("toastMessage/alert", {
-                message: "Zamówienie złożone!",
-                type: "success"
-              });
-        }, data);
-    }
+  addOrder({ commit, dispatch, state }, data) {
+    api.addOrder(response => {
+      this.dispatch("toastMessage/alert", {
+        message: "Zamówienie złożone!",
+        type: "success"
+      });
+    }, data);
+  },
+  getOrder({ commit, dispatch, state }, data) {
+    return new Promise((resolve, reject) => {
+      api.getOrder(response => {
+        console.log(response);
+        resolve(response);
+      }, data);
+    });
+  }
 };
 
 /** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state
@@ -49,15 +57,15 @@ const actions = {
  * @mutator orders - funkcja zapisujaca listę zamówień w obiekcie state
  */
 const mutations = {
-    orders(state, data) {
-        state.ordersList = data;
-    }
+  orders(state, data) {
+    state.ordersList = data;
+  }
 };
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 };
