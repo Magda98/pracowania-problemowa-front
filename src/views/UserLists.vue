@@ -96,7 +96,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 // @vuese
-// Widok stroy z uprawnieniami użytkowników
+// Widok strony z uprawnieniami użytkowników
 export default {
   data: () => ({
     editedItem: {},

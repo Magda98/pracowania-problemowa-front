@@ -4,7 +4,7 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')',
     }"
   >
     <v-container :style="{ top: '70px', position: 'absolute' }">
@@ -152,9 +152,9 @@
                       myPermissions[
                         'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
                       ] ||
-                        myPermissions[
-                          'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-                        ]
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ]
                     "
                     v-slot:item.actions="{ item }"
                   >
@@ -179,9 +179,85 @@
               </v-card>
             </v-tab-item> </v-tabs-items
           ><br />
-          <v-btn block elevation="3" color="light-green accent-1" @click="order"
-            >Dodaj do zamówienia</v-btn
+          <v-dialog
+            v-model="dialogOffer"
+            persistent
+            max-width="400px"
+            :retain-focus="false"
           >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                block
+                elevation="3"
+                color="light-green accent-1"
+                v-bind="attrs"
+                v-on="on"
+                @click="calcPrice"
+                >Dodaj do zamówienia</v-btn
+              >
+            </template>
+            <v-card>
+              <form>
+                <v-card-title>
+                  <span class="headline">Zamówienie</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-autocomplete
+                    v-if="
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess' ||
+                          'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+                      ]
+                    "
+                    v-model="childID"
+                    :items="kidsNames"
+                    dense
+                    filled
+                    label="Wybierz dzieckoA"
+                  ></v-autocomplete>
+                  <v-autocomplete
+                    v-if="
+                      !myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ] && userInfo.institutions.length
+                    "
+                    v-model="childID"
+                    :items="kidsInstitutionNames"
+                    dense
+                    filled
+                    label="Wybierz dzieckoB"
+                  ></v-autocomplete>
+                  <v-autocomplete
+                    v-if="
+                      !myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ] && !userInfo.institutions.length
+                    "
+                    v-model="childID"
+                    :items="myKidsNames"
+                    dense
+                    filled
+                    label="Wybierz dzieckoC"
+                  ></v-autocomplete>
+                  <v-textarea
+                    v-model="comments"
+                    label="Uwagi do zamówienia"
+                  ></v-textarea>
+                  <v-text-field
+                    v-model="orderValue"
+                    disabled
+                    label="Wartość zamówienia"
+                  >
+                  </v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="error" text @click="close"> Anuluj </v-btn>
+                  <v-btn color="secondary" text @click="order"> Zamów </v-btn>
+                </v-card-actions>
+              </form>
+            </v-card>
+          </v-dialog>
           <br />
           <validation-observer ref="observer">
             <v-dialog v-model="dialog" persistent max-width="600px">
@@ -191,9 +267,9 @@
                     myPermissions[
                       'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
                     ] ||
-                      myPermissions[
-                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-                      ]
+                    myPermissions[
+                      'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                    ]
                   "
                   color="light-green accent-1"
                   block
@@ -285,12 +361,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="error" text @click="close">
-                      Anuluj
-                    </v-btn>
-                    <v-btn color="secondary" text @click="save">
-                      Dodaj
-                    </v-btn>
+                    <v-btn color="error" text @click="close"> Anuluj </v-btn>
+                    <v-btn color="secondary" text @click="save"> Dodaj </v-btn>
                   </v-card-actions>
                 </form>
               </v-card>
@@ -309,20 +381,22 @@ import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode
+  setInteractionMode,
 } from "vee-validate";
 
 setInteractionMode("eager");
-
+// @vuese
+// Widok strony z aktualnym menu
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   data: () => ({
     dialog: false,
     dialogEdit: false,
     dialogDelete: false,
+    dialogOffer: false,
     tab: null,
     search: "",
     selected: [],
@@ -330,6 +404,9 @@ export default {
     newPrice: "",
     newType: "",
     newDay: "",
+    childID: "",
+    comments: "",
+    orderValue: 0,
     editedOffer: {},
     days: [
       { id: 0, name: "Poniedziałek" },
@@ -338,104 +415,168 @@ export default {
       { id: 3, name: "Czwartek" },
       { id: 4, name: "Piątek" },
       { id: 5, name: "Sobota" },
-      { id: 6, name: "Niedziela" }
+      { id: 6, name: "Niedziela" },
     ],
     mealTypes: [
       { id: 1, name: "Śniadanie" },
       { id: 2, name: "Obiad jednodaniowy" },
       { id: 3, name: "Obiad dwudaniowy" },
-      { id: 4, name: "Podwieczorek" }
+      { id: 4, name: "Podwieczorek" },
     ],
     headers: [
       {
         text: "Posiłek",
         align: "start",
         sortable: true,
-        value: "name"
+        value: "name",
       },
       { text: "Rodzaj", value: "type" },
       { text: "Cena (PLN)", value: "price" },
-      { text: "Akcje", value: "actions", sortable: false }
-    ]
+      { text: "Akcje", value: "actions", sortable: false },
+    ],
   }),
   computed: {
     ...mapGetters("offers", ["offersList"]),
-    ...mapGetters("user", ["myPermissions"])
+    ...mapGetters("user", ["userInfo", "myPermissions"]),
+    ...mapGetters("orders", ["ordersList"]),
+    ...mapGetters("kids", ["kidsList", "kidsInstitution"]),
+    kidsNames() {
+      return this.kidsList.map((obj) => ({
+        text: obj.name,
+        value: obj.publicId,
+      }));
+    },
+    myKidsNames() {
+      return this.kidsList.map((obj) => ({
+        text: obj.name,
+        value: obj.publicId,
+      }));
+    },
+    kidsInstitutionNames() {
+      return this.kidsInstitution.map((obj) => ({
+        text: obj.name,
+        value: obj.publicId,
+      }));
+    },
   },
   methods: {
     ...mapActions("offers", [
       "getOffers",
       "addOffer",
       "deleteOffer",
-      "updateOffer"
+      "updateOffer",
     ]),
-
-    /** Zwrócenie ofert odpowiadających danemu dniu */
+    ...mapActions("orders", ["addOrder"]),
+    ...mapActions("kids", ["getKids", "getMyKids", "getInstitutionKids"]),
+    // @vuese
+    // Funkcja zwraca listę ofert na odpowiedni dzień
     _offersList(value) {
       return this.offersList.filter(
-        offersList => offersList.dayOfWeek == value
+        (offersList) => offersList.dayOfWeek == value
       );
     },
-    /** Usunięcie rekordu */
+    // @vuese
+    // Funkcja usuwa ofertę o podanym ID oraz zamyka okno dialogowe usuwania
     remove() {
       this.deleteOffer({
-        id: this.editedOffer.publicId
+        id: this.editedOffer.publicId,
       }).then(() => {
         this.dialogDelete = false;
       });
     },
-    /** Zamknięcie okien dialogowych */
+    // @vuese
+    // Zamknięcie wszystkich okien dialogowych
     close() {
       this.dialog = false;
       this.dialogEdit = false;
       this.dialogDelete = false;
+      this.dialogOffer = false;
     },
-    /** Aktualizacja rekordu */
+    // @vuese
+    // Funkcja aktualizuje wybrany rekord oraz zamyka okno dialogowe edycji
     edit() {
       this.updateOffer({
         id: this.editedOffer.publicId,
         name: this.editedOffer.name,
         price: this.editedOffer.price,
         type: this.editedOffer.type,
-        day: this.editedOffer.dayOfWeek
+        day: this.editedOffer.dayOfWeek,
       }).then(() => {
         this.dialogEdit = false;
       });
     },
-    /** Otworzenie okna dialogowego edycji rekordu */
+    // @vuese
+    // Wybranie edytowanego obiwktu i otworzenie okna dialogowego edycji
     openEdit(item) {
       this.editedOffer = Object.assign({}, item);
       this.dialogEdit = true;
     },
-    /** Otworzenie okna dialogowego usuwania rekordu */
+    // @vuese
+    // Wybranie usuwanego obiektu i otworzenie okna dialogowego usuwania
     openDelete(item) {
       this.editedOffer = Object.assign({}, item);
       this.dialogDelete = true;
     },
-    /** Zapisanie w bazie nowego rekordu */
+    // @vuese
+    // Funkcja zapisuje nowy rekord w bazie oraz zamyka okno dialogowe dodawania rekordów
     save() {
       if (this.$refs.observer.validate()) {
         this.addOffer({
           name: this.newName,
           price: this.newPrice,
           type: this.newType,
-          day: this.newDay
+          day: this.newDay,
         });
         this.dialog = false;
       }
     },
+    // @vuese
+    // Funkcja oblicza wartość zaznaczonych ofert\
+    calcPrice() {
+      var sum = 0;
+      this.selected.forEach(addprice);
+      function addprice(item) {
+        sum += item.price;
+      }
+      this.orderValue = sum.toFixed(2);
+    },
+    // @vuese
+    // Funkcja tworzy zamówienie z wybranymi ofertami dla wybranego dziecka
     order() {
-      var ids = [];
+      var meals = [];
       this.selected.forEach(addid);
       function addid(item) {
-        ids.push(item.publicId);
+        meals.push(item.publicId);
       }
-      alert("Do zamówienia dodano posiłki o id: " + ids);
-    }
+      this.addOrder({ id: this.childID, offers: meals });
+      this.dialogOffer = false;
+    },
   },
   beforeMount() {
     this.getOffers();
-  }
+    if (
+      this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess" ||
+          "FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee"
+      ]
+    ) {
+      this.getKids();
+    } else if (
+      !this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess"
+      ] &&
+      this.userInfo.institutions.length
+    ) {
+      this.getInstitutionKids(this.userInfo.institutions[0].publicId);
+    } else if (
+      !this.myPermissions[
+        "FitKidCateringApp.Helpers.StandardPermissions@AdminAccess"
+      ] &&
+      !this.userInfo.institutions.length
+    ) {
+      this.getMyKids();
+    }
+  },
 };
 </script>
 
