@@ -53,6 +53,7 @@
                     {{ item.name }}:
                   </div>
                   <v-col
+                    cols="12"
                     v-for="item_permision in item.sections[0]"
                     :key="item_permision.key"
                   >
@@ -106,7 +107,10 @@ export default {
     dialog: false,
     checkbox: {
       AdminAccess: false,
-      CateringEmployee: false
+      CateringEmployee: false,
+      View: false,
+      Edit: false,
+      Manage: false
     },
     headers: [
       { text: "Id", value: "id" },
@@ -152,12 +156,21 @@ export default {
     // @vuese
     // funkcja zapisuje zmienione uprawnienia danego użytkownika wywołując odpowiednią funkcję z magazynu Vuex
     save() {
-      this.setUserPermissions({
-        id: this.editedItem.id,
-        AdminAccess: this.checkbox.AdminAccess,
-        CateringEmployee: this.checkbox.CateringEmployee,
-        key: this.permissions[0].key
-      }).then(() => {
+      this.setUserPermissions([
+        {
+          id: this.editedItem.id,
+          AdminAccess: this.checkbox.AdminAccess,
+          CateringEmployee: this.checkbox.CateringEmployee,
+          key: this.permissions[1].key
+        },
+        {
+          id: this.editedItem.id,
+          key: this.permissions[0].key,
+          View: this.checkbox.View,
+          Edit: this.checkbox.Edit,
+          Manage: this.checkbox.Manage
+        }
+      ]).then(() => {
         this.dialog = false;
       });
     },
@@ -166,11 +179,63 @@ export default {
     editItem(item) {
       this.editedItem = Object.assign({}, item);
       this.getUserPermissions(item.id).then(response => {
+        console.log(response);
         this.dialog = true;
         if (!response.length) {
           this.checkbox.AdminAccess = false;
           this.checkbox.CateringEmployee = false;
-        } else {
+          this.checkbox.View = false;
+          this.checkbox.Manage = false;
+          this.checkbox.Edit = false;
+        } else if (
+          response[0].key ===
+            "FitKidCateringApp.Controllers.Children.ChildrenPermissions" &&
+          response.length === 1
+        ) {
+          this.checkbox.View =
+            response[0].value.View === "Allow" ? true : false;
+          this.checkbox.Manage =
+            response[0].value.Manage === "Allow" ? true : false;
+          this.checkbox.Edit =
+            response[0].value.Edit === "Allow" ? true : false;
+          this.checkbox.AdminAccess = false;
+          this.checkbox.CateringEmployee = false;
+        } else if (
+          response[0].key === "FitKidCateringApp.Helpers.StandardPermissions" &&
+          response.length === 1
+        ) {
+          this.checkbox.AdminAccess =
+            response[0].value.AdminAccess === "Allow" ? true : false;
+          this.checkbox.CateringEmployee =
+            response[0].value.CateringEmployee === "Allow" ? true : false;
+          this.checkbox.View = false;
+          this.checkbox.Manage = false;
+          this.checkbox.Edit = false;
+        } else if (
+          response[0].key ===
+            "FitKidCateringApp.Controllers.Children.ChildrenPermissions" &&
+          response.length === 2
+        ) {
+          this.checkbox.View =
+            response[0].value.View === "Allow" ? true : false;
+          this.checkbox.Manage =
+            response[0].value.Manage === "Allow" ? true : false;
+          this.checkbox.Edit =
+            response[0].value.Edit === "Allow" ? true : false;
+          this.checkbox.AdminAccess =
+            response[1].value.AdminAccess === "Allow" ? true : false;
+          this.checkbox.CateringEmployee =
+            response[1].value.CateringEmployee === "Allow" ? true : false;
+        } else if (
+          response[0].key === "FitKidCateringApp.Helpers.StandardPermissions" &&
+          response.length === 2
+        ) {
+          this.checkbox.View =
+            response[1].value.View === "Allow" ? true : false;
+          this.checkbox.Manage =
+            response[1].value.Manage === "Allow" ? true : false;
+          this.checkbox.Edit =
+            response[1].value.Edit === "Allow" ? true : false;
           this.checkbox.AdminAccess =
             response[0].value.AdminAccess === "Allow" ? true : false;
           this.checkbox.CateringEmployee =
@@ -181,6 +246,7 @@ export default {
   },
   beforeMount() {
     this.getPermissions();
+    console.log(this.permissions);
     this.getUsers({
       UserName: this.nick,
       Email: this.email,

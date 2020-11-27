@@ -100,13 +100,23 @@ export default {
    * @param {Object} data - odpowiednie dane użytkownika
    */
   setUserPermissions(cb, data) {
+    console.log(data);
     api
-      .post(`/api/admin/permissions/inspect/${data.id}`, [
+      .post(`/api/admin/permissions/inspect/${data[0].id}`, [
         {
-          key: data.key,
+          key: data[0].key,
           value: {
-            AdminAccess: data.AdminAccess === true ? "Allow" : "Deny",
-            CateringEmployee: data.CateringEmployee === true ? "Allow" : "Deny"
+            AdminAccess: data[0].AdminAccess === true ? "Allow" : "Deny",
+            CateringEmployee:
+              data[0].CateringEmployee === true ? "Allow" : "Deny"
+          }
+        },
+        {
+          key: data[1].key,
+          value: {
+            Edit: data[1].Edit === true ? "Allow" : "Deny",
+            Manage: data[1].Manage === true ? "Allow" : "Deny",
+            View: data[1].View === true ? "Allow" : "Deny"
           }
         }
       ])
@@ -327,6 +337,13 @@ export default {
   getMyKids(cb) {
     api
       .get(`/api/children/mychildren`)
+      .then(response => cb(response.data))
+      .catch(e => console.log(e));
+  },
+  getInstitutionKids(cb, data) {
+    console.log(data);
+    api
+      .get(`/api/children/institution/${data}`)
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   }

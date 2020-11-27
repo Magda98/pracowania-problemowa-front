@@ -10,6 +10,7 @@ import DishList from "../views/DishList.vue";
 import UserList from "../views/UserLists.vue";
 import MyKidList from "../views/MyKidList.vue";
 import Institutions from "../views/Institutions.vue";
+import KidsListInstitution from "../views/KidsListInstitution.vue";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     path: "/kidlist",
     name: "MyKidList",
     component: MyKidList
+  },
+  {
+    path: "/kidlistinstitution",
+    name: "KidsListInstitution",
+    component: KidsListInstitution
   },
   {
     path: "/permissions",
