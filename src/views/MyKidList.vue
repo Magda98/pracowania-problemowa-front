@@ -1,65 +1,5 @@
 <template>
   <v-container>
-    <v-fab-transition>
-      <v-btn
-        @click="dialog = true"
-        color="secondary"
-        dark
-        absolute
-        right
-        top
-        fab
-        style="margin: 50px 20px;"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Nowa osoba</span>
-        </v-card-title>
-
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="kid.FirstName"
-                  label="Imię"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="kid.LastName"
-                  label="Nazwisko"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
-                  v-model="kid.InstitutionPublicId"
-                  :items="institutionsNames"
-                  dense
-                  filled
-                  label="Placówka"
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close">
-            Anuluj
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="save">
-            Dodaj
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <v-dialog v-model="dialogEdit" max-width="500px">
       <v-card>
         <v-card-title>
@@ -176,8 +116,8 @@ export default {
           text: "Instytucja",
           align: "start",
           value: "institutionName"
-        },
-        { text: "Edycja/Usuwanie", value: "actions", sortable: false }
+        }
+        // { text: "Edycja/Usuwanie", value: "actions", sortable: false }
       ]
     };
   },

@@ -9,11 +9,16 @@
             {{ userInfo.firstName + " " + userInfo.lastName }}
           </v-list-item-title>
           <v-list-item-subtitle>{{ userInfo.email }}</v-list-item-subtitle>
-          <v-list-item-subtitle>{{ userInfo.userName }}</v-list-item-subtitle>
-          <v-list-item-subtitle v-if="userInfo.institutions.length"
-            >Instytucja: {{ userInfo.institutions[0].name }}
+          <v-list-item-subtitle style="margin-bottom: 16px;">{{
+            userInfo.userName
+          }}</v-list-item-subtitle>
+          <v-list-item-subtitle
+            v-if="userInfo.institutions.length"
+            style="color: #C0CA33; font-weight: bold;"
+            >Opiekun: {{ userInfo.institutions[0].name }}
           </v-list-item-subtitle>
           <v-list-item-subtitle
+            style="color: #47131d; font-weight: bold;"
             v-if="
               myPermissions[
                 'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
@@ -22,6 +27,7 @@
             >Administrator serwisu
           </v-list-item-subtitle>
           <v-list-item-subtitle
+            style="color: #7CB342; font-weight: bold;"
             v-if="
               myPermissions[
                 'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
