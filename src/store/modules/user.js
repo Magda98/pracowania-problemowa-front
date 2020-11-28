@@ -27,7 +27,7 @@ const state = {
   token: String,
   refToken: String,
   expires: String,
-  userInfo: {},
+  userInfo: false,
   myPermissions: []
 };
 
@@ -80,7 +80,6 @@ const actions = {
         message: "Zostałeś poprawnie zalogowany",
         type: "success"
       });
-      router.push({ path: "menu" });
     });
   },
   refreshToken({ state, commit }) {
@@ -98,7 +97,6 @@ const actions = {
   },
   logout({ commit }) {
     commit(types.LOGOUT_USER);
-    router.push({ path: "login" });
   },
   register({ commit, state }, data) {
     api.register(response => {
@@ -123,6 +121,7 @@ const mutations = {
   },
   saveUserInfo(state, userInfo) {
     state.userInfo = userInfo;
+    router.push({ path: "menu" });
   },
   saveToken(state, data) {
     state.logged_in = true;
@@ -136,11 +135,12 @@ const mutations = {
 
   [types.LOGOUT_USER](state) {
     state.logged_in = false;
-    state.userInfo = {};
+    state.userInfo = false;
     state.myPermissions = [];
     state.token = "";
     state.refToken = "";
     state.expires = "";
+    router.push({ path: "login" });
   },
   [types.GET_TOKEN](state) {
     state.getToken = true;
