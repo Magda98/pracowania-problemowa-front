@@ -11,6 +11,7 @@ import UserList from "../views/UserLists.vue";
 import MyKidList from "../views/MyKidList.vue";
 import Institutions from "../views/Institutions.vue";
 import KidsListInstitution from "../views/KidsListInstitution.vue";
+import OrdersList from "../views/OrdersList.vue";
 
 Vue.use(VueRouter);
 
@@ -69,6 +70,11 @@ const routes = [
     path: "/institutions",
     name: "Institutions",
     component: Institutions
+  },
+  {
+    path: "/orderslist",
+    name: "OrdersList",
+    component: OrdersList
   }
 ];
 

@@ -60,6 +60,7 @@
             ]
         "
         link
+        to="/orderslist"
       >
         <v-list-item-icon>
           <v-icon>mdi-clipboard-list-outline</v-icon>
