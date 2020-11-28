@@ -181,7 +181,6 @@ export default {
   },
   methods: {
     ...mapActions("user", ["logout"])
-  },
-  mounted() {}
+  }
 };
 </script>
