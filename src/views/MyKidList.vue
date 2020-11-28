@@ -1,5 +1,40 @@
 <template>
   <v-container>
+    <v-dialog v-model="dialogOrders" max-width="50%">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Zamówienia dziecka</span>
+        </v-card-title>
+        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+          <v-tab v-for="day in days" :key="day">
+            {{ day }}
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="day in days" :key="day">
+            <v-card>
+              <v-card-text v-if="kidDishList[day].length">
+                <v-row v-for="dish in kidDishList[day]" :key="dish.publicId">
+                  <v-col cols="6">
+                    {{ dish.name }}
+                  </v-col>
+                  <v-col cols="6"> {{ dish.price }} zł </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-text v-else>
+                brak zamówień na dany dzień
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" text @click="closeOrders">
+            Zamknij
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogEdit" max-width="500px">
       <v-card>
         <v-card-title>
@@ -68,22 +103,8 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn small class="mr-2" color="secondary" @click="see(item)">
-          zobacz Zamówienia
+          Zamówienia
         </v-btn>
-        <v-dialog v-model="dialogOrders" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">Zamówienia dziecka</span>
-            </v-card-title>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeOrders">
-                Zamknij
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </template>
     </v-data-table>
     <div
@@ -102,10 +123,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      tab: null,
       dialogDelete: false,
       dialogEdit: false,
       dialog: false,
       dialogOrders: false,
+      ordersList: [],
       currentItem: {},
       kid: {
         FirstName: "",
@@ -113,6 +136,14 @@ export default {
         ParentPublicId: "",
         InstitutionPublicId: ""
       },
+      days: [
+        "Poniedziałek",
+        "Wtorek",
+        "Środa",
+        "Czwartek",
+        "Piątek",
+        "Niedziela"
+      ],
       headers: [
         {
           text: "Imię i nazwisko",
@@ -137,17 +168,41 @@ export default {
     ...mapGetters("institutions", ["institutionsList"]),
     ...mapGetters("kids", ["kidsList"]),
     ...mapGetters("user", ["userInfo"]),
-
+    ...mapGetters("offers", ["offersList"]),
     institutionsNames() {
       return this.institutionsList.map(obj => ({
         text: obj.name,
         value: obj.publicId
       }));
+    },
+    kidDishList() {
+      return this.offersList
+        .filter(offer => this.ordersList.includes(offer.publicId))
+        .reduce(
+          (offers, currOffer) => ({
+            ...offers,
+            [this.days[currOffer.dayOfWeek]]: [
+              ...offers[this.days[currOffer.dayOfWeek]],
+              currOffer
+            ]
+          }),
+          {
+            Poniedziałek: [],
+            Wtorek: [],
+            Środa: [],
+            Czwartek: [],
+            Piątek: [],
+            Sobota: [],
+            Niedziela: []
+          }
+        );
     }
   },
 
   methods: {
+    ...mapActions("offers", ["getOffers"]),
     ...mapActions("institutions", ["getInstitutions"]),
+    ...mapActions("orders", ["getOrder"]),
     ...mapActions("kids", [
       "getMyKids",
       "addMyKid",
@@ -204,19 +259,19 @@ export default {
     save() {
       this.kid.ParentPublicId = this.userInfo.publicId;
       this.addMyKid(this.kid);
-      console.log(this.kid);
       this.close();
     },
     see(item) {
-      this.getGetKidOrders(item.publicId).then(response => {
+      this.getOrder(item.publicId).then(response => {
+        this.ordersList = response.offers;
         this.dialogOrders = true;
-        console.log(response);
       });
     }
   },
   mounted() {
     this.getMyKids();
     this.getInstitutions();
+    this.getOffers();
   }
 };
 </script>

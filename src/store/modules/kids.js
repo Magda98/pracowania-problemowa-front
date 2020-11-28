@@ -49,13 +49,11 @@ const actions = {
   getMyKids({ commit }) {
     api.getMyKids(response => {
       commit("getKids", response);
-      console.log(response);
     });
   },
   getInstitutionKids({ commit }, data) {
     api.getInstitutionKids(response => {
       commit("getKidsInstitution", response);
-      console.log(response);
     }, data);
   },
   addKid({ commit, dispatch }, data) {

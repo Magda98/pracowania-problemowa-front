@@ -182,8 +182,6 @@ export default {
   methods: {
     ...mapActions("user", ["logout"])
   },
-  mounted() {
-    console.log(this.userInfo);
-  }
+  mounted() {}
 };
 </script>
