@@ -80,7 +80,7 @@ const actions = {
         message: "Dane zostały zmienione",
         type: "success"
       });
-      dispatch("getKids");
+      dispatch("getInstitutionKids", data.InstitutionPublicId);
     }, data);
   },
   deleteKid({ commit, dispatch }, data) {
@@ -89,8 +89,8 @@ const actions = {
         message: "Osoba została usunięta",
         type: "info"
       });
-      dispatch("getKids");
-    }, data);
+      dispatch("getInstitutionKids", data.institutionId);
+    }, data.id);
   },
   editMyKid({ commit, dispatch }, data) {
     api.editKid(response => {

@@ -311,13 +311,17 @@ export default {
     // @vuese
     // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
     saveEdit() {
+      this.currentItem.InstitutionPublicId = this.userInfo.institutions[0].publicId;
       this.editKid(this.currentItem);
       this.dialogEdit = false;
     },
     // @vuese
     // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
     deleteItemConfirm() {
-      this.deleteKid(this.currentItem.publicId);
+      this.deleteKid({
+        id: this.currentItem.publicId,
+        institutionId: this.userInfo.institutions[0].publicId
+      });
       this.closeDelete();
     },
     // @vuese
