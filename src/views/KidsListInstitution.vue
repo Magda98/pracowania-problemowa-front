@@ -218,6 +218,7 @@ export default {
         "Środa",
         "Czwartek",
         "Piątek",
+        "Sobota",
         "Niedziela"
       ],
       headers: [
