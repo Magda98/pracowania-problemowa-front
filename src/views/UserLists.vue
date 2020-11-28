@@ -179,7 +179,6 @@ export default {
     editItem(item) {
       this.editedItem = Object.assign({}, item);
       this.getUserPermissions(item.id).then(response => {
-        console.log(response);
         this.dialog = true;
         if (!response.length) {
           this.checkbox.AdminAccess = false;
@@ -246,7 +245,6 @@ export default {
   },
   beforeMount() {
     this.getPermissions();
-    console.log(this.permissions);
     this.getUsers({
       UserName: this.nick,
       Email: this.email,
