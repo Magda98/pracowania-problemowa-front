@@ -45,13 +45,13 @@
                 ></v-autocomplete>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
+                <!-- <v-autocomplete
                   v-model="kid.InstitutionPublicId"
                   :items="institutionsNames"
                   dense
                   filled
                   label="Placówka"
-                ></v-autocomplete>
+                ></v-autocomplete> -->
               </v-col>
             </v-row>
           </v-container>
@@ -246,7 +246,7 @@ export default {
     ...mapGetters("admin", ["userList"]),
     ...mapGetters("kids", ["kidsInstitution"]),
     ...mapGetters("offers", ["offersList"]),
-
+    ...mapGetters("user", ["userInfo"]),
     userNames() {
       return this.userList.map(obj => ({
         text: obj.userName,
@@ -342,6 +342,7 @@ export default {
     // @vuese
     // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
     save() {
+      this.kid.InstitutionPublicId = this.userInfo.institutions[0].publicId;
       this.addKid(this.kid);
       this.close();
     },
@@ -353,6 +354,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.userInfo);
     this.getUsers({
       UserName: this.nick,
       Email: this.email,

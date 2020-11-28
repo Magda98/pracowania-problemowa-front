@@ -62,7 +62,7 @@ const actions = {
         message: "Osoba została dodana",
         type: "success"
       });
-      dispatch("getKids");
+      dispatch("getInstitutionKids", data.InstitutionPublicId);
     }, data);
   },
   addMyKid({ commit, dispatch }, data) {
