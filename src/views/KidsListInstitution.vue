@@ -253,12 +253,6 @@ export default {
         value: obj.publicId
       }));
     },
-    institutionsNames() {
-      return this.institutionsList.map(obj => ({
-        text: obj.name,
-        value: obj.publicId
-      }));
-    },
     kidDishList() {
       return this.offersList
         .filter(offer => this.ordersList.includes(offer.publicId))
@@ -354,7 +348,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.userInfo);
     this.getUsers({
       UserName: this.nick,
       Email: this.email,
@@ -362,7 +355,6 @@ export default {
       LastName: this.name
     });
     this.getInstitutionKids(this.userInfo.institutions[0].publicId);
-    this.getInstitutions();
     this.getOffers();
   }
 };
