@@ -44,7 +44,6 @@ const actions = {
   getOrder({ commit, dispatch, state }, data) {
     return new Promise((resolve, reject) => {
       api.getOrder(response => {
-        console.log(response);
         resolve(response);
       }, data);
     });
