@@ -41,6 +41,35 @@ const actions = {
       });
     }, data);
   },
+  deleteOrders({ commit, dispatch, state }, data) {
+    return new Promise((resolve, reject) => {
+      let date = new Date();
+      let dzien = date.getDay();
+      let days = [
+        "Niedziela",
+        "Poniedziałek",
+        "Wtorek",
+        "Środa",
+        "Czwartek",
+        "Piątek",
+        "Sobota"
+      ];
+      if (days[dzien] !== data.day) {
+        api.addOrder(response => {
+          this.dispatch("toastMessage/alert", {
+            message: "zamówienie zostało usunięte",
+            type: "info"
+          });
+          resolve();
+        }, data);
+      } else {
+        this.dispatch("toastMessage/alert", {
+          message: "Nie można odwołać zamówienia w tym dniu",
+          type: "error"
+        });
+      }
+    });
+  },
   getOrder({ commit, dispatch, state }, data) {
     return new Promise((resolve, reject) => {
       api.getOrder(response => {
