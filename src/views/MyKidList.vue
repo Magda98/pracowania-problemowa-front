@@ -2,6 +2,14 @@
   <v-container>
     <v-dialog v-model="dialogOrders" max-width="50%">
       <v-card>
+        <div v-if="comment">
+          <v-card-title>
+            <span class="headline">Uwagi do zamówienia</span>
+          </v-card-title>
+          <v-card-text>
+            {{ comment }}
+          </v-card-text>
+        </div>
         <v-card-title>
           <span class="headline">Zamówienia dziecka</span>
         </v-card-title>
@@ -123,6 +131,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      comment: "",
+
       tab: null,
       dialogDelete: false,
       dialogEdit: false,
@@ -264,6 +274,7 @@ export default {
     see(item) {
       this.getOrder(item.publicId).then(response => {
         this.ordersList = response.offers;
+        this.comment = response.comment;
         this.dialogOrders = true;
       });
     }

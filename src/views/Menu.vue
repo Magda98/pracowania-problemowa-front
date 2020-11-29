@@ -548,7 +548,11 @@ export default {
       function addid(item) {
         meals.push(item.publicId);
       }
-      this.addOrder({ id: this.childID, offers: meals });
+      this.addOrder({
+        id: this.childID,
+        offers: meals,
+        comments: this.comments
+      });
       this.dialogOffer = false;
     }
   },
