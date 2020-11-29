@@ -100,7 +100,16 @@
                   <v-col cols="6">
                     {{ dish.name }}
                   </v-col>
-                  <v-col cols="6"> {{ dish.price }} zł </v-col>
+                  <v-col cols="2"> {{ dish.price }} zł </v-col>
+                  <v-col cols="4">
+                    <v-btn
+                      small
+                      outlined
+                      color="primary"
+                      @click="deleteOrder(dish.publicId, day)"
+                      >Zrezygnuj z zamówienia</v-btn
+                    ></v-col
+                  >
                 </v-row>
               </v-card-text>
               <v-card-text v-else>
@@ -114,6 +123,21 @@
           <v-btn color="red" text @click="closeOrders">
             Zamknij
           </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogDeleteOrder" max-width="600px">
+      <v-card>
+        <v-card-title class="headline"
+          >Na pewno chcesz usunąć dane zamówienie?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogDeleteOrder = false"
+            >Anuluj</v-btn
+          >
+          <v-btn color="error" text @click="deleteOrderConfirmed">Usuń</v-btn>
+          <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -213,8 +237,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      delOrder: "",
+      currentDay: "",
+      currentKid: "",
       comment: "",
       dialogDelete: false,
+      dialogDeleteOrder: false,
       dialogEdit: false,
       dialog: false,
       tab: null,
@@ -306,7 +334,7 @@ export default {
 
   methods: {
     ...mapActions("offers", ["getOffers"]),
-    ...mapActions("orders", ["getOrder"]),
+    ...mapActions("orders", ["getOrder", "deleteOrders"]),
     ...mapActions("institutions", ["getInstitutions"]),
     ...mapActions("kids", [
       "getInstitutionKids",
@@ -370,6 +398,28 @@ export default {
       this.kid.InstitutionPublicId = this.userInfo.institutions[0].publicId;
       this.addKid(this.kid);
       this.close();
+    },
+    deleteOrderConfirmed() {
+      let orders = this.ordersList.filter(e => e !== this.delOrder);
+      this.deleteOrders({
+        id: this.currentKid,
+        offers: orders,
+        comments: this.comment,
+        day: this.currentDay
+      }).then(response => {
+        this.getOrder(this.currentKid).then(response => {
+          this.ordersList = response.offers;
+          this.comment = response.comment;
+          this.dialogOrders = true;
+        });
+      });
+
+      this.dialogDeleteOrder = false;
+    },
+    deleteOrder(order, day) {
+      this.currentDay = day;
+      this.delOrder = order;
+      this.dialogDeleteOrder = true;
     },
     see(item) {
       this.getOrder(item.publicId).then(response => {

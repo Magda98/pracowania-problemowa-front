@@ -31,8 +31,8 @@
       <v-btn
         style="
     position: absolute;
-    right: 16px;
-    top: 8px;, font-size: 12px;"
+    right: 0px;
+    top: 0px;, font-size: 10px;"
         icon
         text
         @click="hideAlert"
