@@ -51,6 +51,9 @@
                   <template v-slot:item.type="{ item }">
                     <span>{{ mealTypes[item.type - 1].name }}</span>
                   </template>
+                  <template v-slot:item.price="{ item }">
+                    <span>{{ item.price.toFixed(2) }}</span>
+                  </template>
                   <template v-slot:top>
                     <v-dialog
                       v-model="dialogEdit"
