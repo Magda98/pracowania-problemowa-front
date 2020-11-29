@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-fab-transition>
+    <!-- <v-fab-transition>
       <v-btn
         @click="dialog = true"
         color="secondary"
@@ -13,7 +13,7 @@
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
-    </v-fab-transition>
+    </v-fab-transition> -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>

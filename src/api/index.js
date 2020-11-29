@@ -19,7 +19,6 @@ export default {
         Password: data.password
       })
       .then(response => {
-        console.log(response.data.status);
         cb(response.data);
       })
       .catch(e => console.log(e));
@@ -301,7 +300,6 @@ export default {
    * @param {Object} data - odpowiednie dane przekazane podczas edycji instytucji
    */
   editInstitutions(cb, data) {
-    console.log(data);
     api
       .put(`/api/institutions/${data.publicId}`, {
         Name: data.name,
@@ -369,7 +367,6 @@ export default {
       .catch(e => console.log(e));
   },
   getInstitutionKids(cb, data) {
-    console.log(data);
     api
       .get(`/api/children/institution/${data}`)
       .then(response => cb(response.data))
