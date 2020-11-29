@@ -4,7 +4,7 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')',
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
     <v-card :style="{ top: '70px', position: 'absolute', width: '98%' }">
@@ -27,7 +27,7 @@
         :footer-props="{
           'items-per-page-text': 'Wierszy na stronę',
           'items-per-page-all-text': 'Wszystkie',
-          'items-per-page-options': [10, 25, 50, -1],
+          'items-per-page-options': [10, 25, 50, -1]
         }"
         class="elevation-1"
         multi-sort
@@ -58,53 +58,54 @@ export default {
         "Czwartek",
         "Piątek",
         "Sobota",
-        "Niedziela",
+        "Niedziela"
       ],
       tab: null,
       headers: [
         {
           text: "Posiłek",
           align: "start",
-          value: "offerName",
+          value: "offerName"
         },
         {
           text: "Instytucja",
           align: "start",
-          value: "institution",
+          value: "institution"
         },
         {
           text: "Ilość",
           align: "start",
-          value: "ammount",
-        },
-      ],
+          value: "ammount"
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters("offers", ["offersList"]),
     ...mapGetters("institutions", ["institutionsList"]),
-    ...mapGetters("orders", ["summaryInstitution", "summary", "ordersList"]),
+    ...mapGetters("orders", ["summaryInstitution", "summary", "ordersList"])
   },
   methods: {
     ...mapActions("offers", ["getOffers"]),
     ...mapActions("orders", [
       "getOrder",
       "getSummaryInstitution",
-      "getSummary",
+      "getSummary"
     ]),
-    ...mapActions("institutions", ["getInstitutions"]),
+    ...mapActions("institutions", ["getInstitutions"])
   },
   async beforeMount() {
     this.getSummary();
     this.getInstitutions();
+    let module = this;
     const myArray = await Promise.all(
-        this.institutionsList.map(function (item) {
-          console.log(item.publicId);
-          return getSummaryInstitution(item.publicId);
-        })
-      );
+      this.institutionsList.map(function(item) {
+        console.log(item.publicId);
+        return module.getSummaryInstitution(item.publicId);
+      })
+    );
     console.log(myArray);
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
