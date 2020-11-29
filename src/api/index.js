@@ -195,7 +195,10 @@ export default {
    */
   addOrder(cb, data) {
     api
-      .post(`/api/orders/${data.id}`, data.offers)
+      .post(`/api/orders/${data.id}`, {
+        Offers: data.offers,
+        Comment: data.comments
+      })
       .then(response => {
         cb(response.data);
       })
