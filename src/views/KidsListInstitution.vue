@@ -78,6 +78,12 @@
             {{ comment }}
           </v-card-text>
         </div>
+        <div v-if="ordersList.length">
+          <v-card-title>
+            <span class="headline">Łączna kwota do zapłaty tygodniowo</span>
+          </v-card-title>
+          <v-card-text style="font-size: 20px;"> {{ pricing }} zł </v-card-text>
+        </div>
         <v-card-title>
           <span class="headline">Zamówienia dziecka</span>
         </v-card-title>
@@ -262,6 +268,17 @@ export default {
         text: obj.userName,
         value: obj.publicId
       }));
+    },
+    pricing() {
+      let x = this.offersList.filter(offer => {
+        const valid = this.ordersList.includes(offer.publicId);
+        return valid;
+      });
+      let price = 0;
+      x.forEach(element => {
+        price += element.price;
+      });
+      return price;
     },
     kidDishList() {
       return this.offersList
