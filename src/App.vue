@@ -17,7 +17,7 @@
       style="margin-left: 8%;"
     >
       <div
-        style="display: flex;align-items:center;margin:auto;"
+        style="display: flex;align-items:center;margin:auto; width: 100%;"
         v-bind:class="[alertType + '--text']"
       >
         <v-icon

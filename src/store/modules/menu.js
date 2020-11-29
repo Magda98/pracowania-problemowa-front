@@ -15,7 +15,7 @@ import api from "@/api";
  * @property {Array} offersList - tablica zawierająca obiekty aktualnych pozycji w menu
  */
 const state = {
-    offersList: []
+  offersList: []
 };
 
 /** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
@@ -24,7 +24,7 @@ const state = {
  * @getter offersList - funkcja zwracająca listę menu
  */
 const getters = {
-    offersList: state => state.offersList
+  offersList: state => state.offersList
 };
 
 /** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
@@ -36,38 +36,38 @@ const getters = {
  *  updateOffer - funkcja aktualizująca wybraną ofertę
  */
 const actions = {
-    getOffers({ commit }) {
-        api.getOffers(response => {
-            commit("offers", response);
-        });
-    },
-    addOffer({ commit, dispatch, state }, data) {
-        api.addOffer(response => {
-            dispatch("getOffers");
-            this.dispatch("toastMessage/alert", {
-                message: "Rekord dodany!",
-                type: "success"
-              });
-        }, data);
-    },
-    deleteOffer({ commit, dispatch, state }, data) {
-        api.deleteOffer(response => {
-            dispatch("getOffers");
-            this.dispatch("toastMessage/alert", {
-                message: "Rekord usunięty!",
-                type: "success"
-              });
-        }, data);
-    },
-    updateOffer({ commit, dispatch, state }, data) {
-        api.updateOffer(response => {
-            dispatch("getOffers");
-            this.dispatch("toastMessage/alert", {
-                message: "Rekord zaktualizowany!",
-                type: "success"
-              });
-        }, data);
-    }
+  getOffers({ commit }) {
+    api.getOffers(response => {
+      commit("offers", response);
+    });
+  },
+  addOffer({ commit, dispatch, state }, data) {
+    api.addOffer(response => {
+      dispatch("getOffers");
+      this.dispatch("toastMessage/alert", {
+        message: "Rekord dodany!",
+        type: "success"
+      });
+    }, data);
+  },
+  deleteOffer({ commit, dispatch, state }, data) {
+    api.deleteOffer(response => {
+      dispatch("getOffers");
+      this.dispatch("toastMessage/alert", {
+        message: "Rekord usunięty!",
+        type: "success"
+      });
+    }, data);
+  },
+  updateOffer({ commit, dispatch, state }, data) {
+    api.updateOffer(response => {
+      dispatch("getOffers");
+      this.dispatch("toastMessage/alert", {
+        message: "Rekord zaktualizowany!",
+        type: "success"
+      });
+    }, data);
+  }
 };
 /** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state
  * @name menu/mutations
@@ -75,15 +75,15 @@ const actions = {
  * @mutator offers - funkcja zapisujaca listę ofert menu w obiekcie state
  */
 const mutations = {
-    offers(state, data) {
-        state.offersList = data;
-    }
+  offers(state, data) {
+    state.offersList = data;
+  }
 };
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 };
