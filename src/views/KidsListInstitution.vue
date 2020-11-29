@@ -45,13 +45,13 @@
                 ></v-autocomplete>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
+                <!-- <v-autocomplete
                   v-model="kid.InstitutionPublicId"
                   :items="institutionsNames"
                   dense
                   filled
                   label="Placówka"
-                ></v-autocomplete>
+                ></v-autocomplete> -->
               </v-col>
             </v-row>
           </v-container>
@@ -218,6 +218,7 @@ export default {
         "Środa",
         "Czwartek",
         "Piątek",
+        "Sobota",
         "Niedziela"
       ],
       headers: [
@@ -246,16 +247,10 @@ export default {
     ...mapGetters("admin", ["userList"]),
     ...mapGetters("kids", ["kidsInstitution"]),
     ...mapGetters("offers", ["offersList"]),
-
+    ...mapGetters("user", ["userInfo"]),
     userNames() {
       return this.userList.map(obj => ({
         text: obj.userName,
-        value: obj.publicId
-      }));
-    },
-    institutionsNames() {
-      return this.institutionsList.map(obj => ({
-        text: obj.name,
         value: obj.publicId
       }));
     },
@@ -317,13 +312,17 @@ export default {
     // @vuese
     // funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex
     saveEdit() {
+      this.currentItem.InstitutionPublicId = this.userInfo.institutions[0].publicId;
       this.editKid(this.currentItem);
       this.dialogEdit = false;
     },
     // @vuese
     // funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex
     deleteItemConfirm() {
-      this.deleteKid(this.currentItem.publicId);
+      this.deleteKid({
+        id: this.currentItem.publicId,
+        institutionId: this.userInfo.institutions[0].publicId
+      });
       this.closeDelete();
     },
     // @vuese
@@ -342,6 +341,7 @@ export default {
     // @vuese
     // funkcja dodaje nową osobę wowołując odpowednią funkcje z magazynu Vuex
     save() {
+      this.kid.InstitutionPublicId = this.userInfo.institutions[0].publicId;
       this.addKid(this.kid);
       this.close();
     },
@@ -360,7 +360,6 @@ export default {
       LastName: this.name
     });
     this.getInstitutionKids(this.userInfo.institutions[0].publicId);
-    this.getInstitutions();
     this.getOffers();
   }
 };

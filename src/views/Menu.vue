@@ -4,7 +4,7 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')',
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
     <v-container :style="{ top: '70px', position: 'absolute' }">
@@ -152,9 +152,9 @@
                       myPermissions[
                         'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
                       ] ||
-                      myPermissions[
-                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-                      ]
+                        myPermissions[
+                          'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                        ]
                     "
                     v-slot:item.actions="{ item }"
                   >
@@ -197,7 +197,7 @@
               >
             </template>
             <v-card>
-              <form>
+              <form v-if="userInfo">
                 <v-card-title>
                   <span class="headline">Zamówienie</span>
                 </v-card-title>
@@ -267,9 +267,9 @@
                     myPermissions[
                       'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
                     ] ||
-                    myPermissions[
-                      'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
-                    ]
+                      myPermissions[
+                        'FitKidCateringApp.Helpers.StandardPermissions@AdminAccess'
+                      ]
                   "
                   color="light-green accent-1"
                   block
@@ -381,7 +381,7 @@ import {
   extend,
   ValidationObserver,
   ValidationProvider,
-  setInteractionMode,
+  setInteractionMode
 } from "vee-validate";
 
 setInteractionMode("eager");
@@ -390,7 +390,7 @@ setInteractionMode("eager");
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver,
+    ValidationObserver
   },
   data: () => ({
     dialog: false,
@@ -415,25 +415,25 @@ export default {
       { id: 3, name: "Czwartek" },
       { id: 4, name: "Piątek" },
       { id: 5, name: "Sobota" },
-      { id: 6, name: "Niedziela" },
+      { id: 6, name: "Niedziela" }
     ],
     mealTypes: [
       { id: 1, name: "Śniadanie" },
       { id: 2, name: "Obiad jednodaniowy" },
       { id: 3, name: "Obiad dwudaniowy" },
-      { id: 4, name: "Podwieczorek" },
+      { id: 4, name: "Podwieczorek" }
     ],
     headers: [
       {
         text: "Posiłek",
         align: "start",
         sortable: true,
-        value: "name",
+        value: "name"
       },
       { text: "Rodzaj", value: "type" },
       { text: "Cena (PLN)", value: "price" },
-      { text: "Akcje", value: "actions", sortable: false },
-    ],
+      { text: "Akcje", value: "actions", sortable: false }
+    ]
   }),
   computed: {
     ...mapGetters("offers", ["offersList"]),
@@ -441,30 +441,30 @@ export default {
     ...mapGetters("orders", ["ordersList"]),
     ...mapGetters("kids", ["kidsList", "kidsInstitution"]),
     kidsNames() {
-      return this.kidsList.map((obj) => ({
+      return this.kidsList.map(obj => ({
         text: obj.name,
-        value: obj.publicId,
+        value: obj.publicId
       }));
     },
     myKidsNames() {
-      return this.kidsList.map((obj) => ({
+      return this.kidsList.map(obj => ({
         text: obj.name,
-        value: obj.publicId,
+        value: obj.publicId
       }));
     },
     kidsInstitutionNames() {
-      return this.kidsInstitution.map((obj) => ({
+      return this.kidsInstitution.map(obj => ({
         text: obj.name,
-        value: obj.publicId,
+        value: obj.publicId
       }));
-    },
+    }
   },
   methods: {
     ...mapActions("offers", [
       "getOffers",
       "addOffer",
       "deleteOffer",
-      "updateOffer",
+      "updateOffer"
     ]),
     ...mapActions("orders", ["addOrder"]),
     ...mapActions("kids", ["getKids", "getMyKids", "getInstitutionKids"]),
@@ -472,14 +472,14 @@ export default {
     // Funkcja zwraca listę ofert na odpowiedni dzień
     _offersList(value) {
       return this.offersList.filter(
-        (offersList) => offersList.dayOfWeek == value
+        offersList => offersList.dayOfWeek == value
       );
     },
     // @vuese
     // Funkcja usuwa ofertę o podanym ID oraz zamyka okno dialogowe usuwania
     remove() {
       this.deleteOffer({
-        id: this.editedOffer.publicId,
+        id: this.editedOffer.publicId
       }).then(() => {
         this.dialogDelete = false;
       });
@@ -500,7 +500,7 @@ export default {
         name: this.editedOffer.name,
         price: this.editedOffer.price,
         type: this.editedOffer.type,
-        day: this.editedOffer.dayOfWeek,
+        day: this.editedOffer.dayOfWeek
       }).then(() => {
         this.dialogEdit = false;
       });
@@ -525,7 +525,7 @@ export default {
           name: this.newName,
           price: this.newPrice,
           type: this.newType,
-          day: this.newDay,
+          day: this.newDay
         });
         this.dialog = false;
       }
@@ -550,7 +550,7 @@ export default {
       }
       this.addOrder({ id: this.childID, offers: meals });
       this.dialogOffer = false;
-    },
+    }
   },
   beforeMount() {
     this.getOffers();
@@ -576,7 +576,7 @@ export default {
     ) {
       this.getMyKids();
     }
-  },
+  }
 };
 </script>
 
