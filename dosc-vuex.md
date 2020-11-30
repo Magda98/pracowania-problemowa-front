@@ -18,7 +18,7 @@ Typ: [Object][44]
 
 ## store/modules/admin
 
-Magazyn do przechowywania informacji do których dostęp ma administartor
+Magazyn do przechowywania informacji do których dostęp ma administrator
 
 ## admin/getters
 
@@ -28,7 +28,7 @@ Typ: [object][44]
 
 ## admin/actions
 
-getPermissions - funkcja pobiera dostępne uprawnienia z API nstępnie wywołuje mutacje "permissions" <br/>
+getPermissions - funkcja pobiera dostępne uprawnienia z API następnie wywołuje mutacje "permissions" <br/>
  getUsers - funkcja pobiera wszystkich użytkowników z API, następnie wywołuje mutację "users" <br/>
  getUserPermissions - funkcja pobierająca z API uprawnienia danego uzytkownika <br/>
 
@@ -63,7 +63,7 @@ Typ: [Object][44]
 getInstitutions - funkcja pobiera listę instytucji z API <br/>
 addInstitutions - wywołuje zapytanie aby dodać nową instytucję <br/>
 deleteInstitution - wywołuje zapytanie w celu usunięcia instytucji <br/>
-editInstitution - wywołuje zpytanie w celu edycji danych instytucji <br/>
+editInstitution - wywołuje zapytanie w celu edycji danych instytucji <br/>
 
 ## institutions/mutations
 
@@ -93,13 +93,13 @@ Typ: [Object][44]
 
 ## kids/actions
 
-getKids - funkcja pobiera listę podopiecznych z API - administartor <br/>
+getKids - funkcja pobiera listę podopiecznych z API - administrator <br/>
   getMyKids - funkcja pobiera listę podopiecznych z API - rodzic  <br/>
-  addKid - funkcja dodaje podopiecznego - administartor  <br/>
+  addKid - funkcja dodaje podopiecznego - administrator  <br/>
   addMyKid - funkcja dodaje podopiecznego - rodzic  <br/>
-  editKid - funkcja edytuje podopiecznego - administartor  <br/>
+  editKid - funkcja edytuje podopiecznego - administrator  <br/>
   editMyKid - funkcja edytuje podopiecznego - rodzic  <br/>
-  deleteKid - funkcja usuwa podopiecznego - administartor  <br/>
+  deleteKid - funkcja usuwa podopiecznego - administrator  <br/>
   deleteMyKid - funkcja usuwa podopiecznego - rodzic  <br/>
 
 ## kids/mutations
@@ -197,8 +197,8 @@ Typ: [object][44]
 
 ## toastMessage/actions
 
-alert - pokazuje snackbar z dana wiadomością <br/>
-hideAlert - zamyka snackbar po klinknięciu przycisku zamykjącego <br/>
+alert - pokazuje snackbar z daną wiadomością <br/>
+hideAlert - zamyka snackbar po kliknięciu przycisku zamykającego <br/>
 
 ## toastMessage/mutations
 

@@ -11,13 +11,13 @@ Widok strony z uprawnieniami użytkowników
 |search|funkcja umożliwiająca wyszukiwanie danego użytkownika|-|
 |close|Zamyka okno dialogowe|-|
 |save|funkcja zapisuje zmienione uprawnienia danego użytkownika wywołując odpowiednią funkcję z magazynu Vuex|-|
-|editItem|Funkcja otwiera odpowiendie okno dialogowe edycji z uprawnieniami danego użytkownika|-|
+|editItem|Funkcja otwiera odpowiednie okno dialogowe edycji z uprawnieniami danego użytkownika|-|
 
 
 
 ## Register
 
-Widok stroy rejestracji
+Widok strony rejestracji
 
 
 
@@ -48,8 +48,8 @@ Widok strony listy podopiecznych - rodzic
 
 |Funkcja|Opis|Argumenty|
 |---|---|---|
-|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
-|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usunięcia danej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji danej osoby|Argument to osoba której dotyczy wybrany wiersz|
 |closeEdit|funkcja zamyka okno dialogowe edycji|-|
 |saveEdit|funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex|-|
 |deleteItemConfirm|funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex|-|
@@ -71,7 +71,7 @@ Widok strony z aktualnym menu
 |remove|Funkcja usuwa ofertę o podanym ID oraz zamyka okno dialogowe usuwania|-|
 |close|Zamknięcie wszystkich okien dialogowych|-|
 |edit|Funkcja aktualizuje wybrany rekord oraz zamyka okno dialogowe edycji|-|
-|openEdit|Wybranie edytowanego obiwktu i otworzenie okna dialogowego edycji|-|
+|openEdit|Wybranie edytowanego obiektu i otworzenie okna dialogowego edycji|-|
 |openDelete|Wybranie usuwanego obiektu i otworzenie okna dialogowego usuwania|-|
 |save|Funkcja zapisuje nowy rekord w bazie oraz zamyka okno dialogowe dodawania rekordów|-|
 |calcPrice|Funkcja oblicza wartość zaznaczonych ofert\|-|
@@ -84,7 +84,7 @@ Widok strony z aktualnym menu
 
 ## Login
 
-Widok stroy logowania
+Widok strony logowania
 
 
 
@@ -98,14 +98,14 @@ Widok stroy logowania
 
 ## KidsListInstitution
 
-Widok stroy listy podopiecznych - administrator
+Widok strony listy podopiecznych - administrator
 
 
 
 |Funkcja|Opis|Argumenty|
 |---|---|---|
-|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
-|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usunięcia danej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji danej osoby|Argument to osoba której dotyczy wybrany wiersz|
 |closeEdit|funkcja zamyka okno dialogowe edycji|-|
 |saveEdit|funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex|-|
 |deleteItemConfirm|funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex|-|
@@ -117,14 +117,14 @@ Widok stroy listy podopiecznych - administrator
 
 ## KidsList
 
-Widok stroy listy podopiecznych - administrator
+Widok strony listy podopiecznych - administrator
 
 
 
 |Funkcja|Opis|Argumenty|
 |---|---|---|
-|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
-|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji daniej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usunięcia danej osoby|Argument to osoba której dotyczy wybrany wiersz|
+|editItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu edycji danej osoby|Argument to osoba której dotyczy wybrany wiersz|
 |closeEdit|funkcja zamyka okno dialogowe edycji|-|
 |saveEdit|funkcja zapisuje zmiany w edycji osoby wywołując odpowiednią funkcję z magazynu Vuex|-|
 |deleteItemConfirm|funkcja usuwa daną osobę wywołując daną funkcję z magazynu Vuex|-|
@@ -136,13 +136,13 @@ Widok stroy listy podopiecznych - administrator
 
 ## Institutions
 
-Widok stroy Instytucji
+Widok strony Instytucji
 
 
 
 |Funkcja|Opis|Argumenty|
 |---|---|---|
-|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usuniecia daniej instytucji|Argument to instytucja której dotyczy wybrany wiersz|
+|deleteItem|funkcja, która przypisuje dany obiekt do zmiennej currentItem w celu usunięcia danej instytucji|Argument to instytucja której dotyczy wybrany wiersz|
 |editItem|funkcja, która przypisuje dany obiekt do zmiennej currentIem w celu edycji|Argument to instytucja której dotyczy wybrany wiersz|
 |closeEdit|funkcja, która zamyka okno dialogowe|-|
 |saveEdit|funkcja, która zapisuje wyedytowane dane instytucji, wywołuje funkcję z magazynu Vuex|-|

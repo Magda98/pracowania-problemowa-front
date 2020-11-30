@@ -488,7 +488,7 @@ h1 {
   position: relative;
   width: 100%;
   max-width: 100%;
-  object-fit: cover;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
