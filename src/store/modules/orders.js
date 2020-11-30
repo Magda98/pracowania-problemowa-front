@@ -13,6 +13,8 @@ import api from "@/api";
  *  @name orders/state
  * @type {Object}
  * @property {Array} ordersList - tablica zawierająca zamówienia
+ * @property {Array} summary - tablica zawierająca statystyki ogólne
+ * @property {Array} summaryInstitution - tablica zawierająca statystyki konkretnej instytucji
  */
 const state = {
   ordersList: [],
@@ -24,6 +26,8 @@ const state = {
  *  @name orders/getters
  * @type {object}
  * @getter ordersList - funkcja zwracająca listę zamówień
+ * @getter ordersList - funkcja zwracająca statystyki ogólne
+ * @getter ordersList - funkcja zwracająca statystyki konkretnej instytucji
  */
 const getters = {
   ordersList: state => state.ordersList,
@@ -34,7 +38,10 @@ const getters = {
 /** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
  *  @name orders/actions
  * @desc
- *  addOrder - funkcja zapisująca zamówienie w bazie
+ *  addOrder - funkcja zapisująca zamówienie w bazie </br>
+ *  getOrder - funkcja pobiera zamówienie </br>
+ *  getSummary - funkcja pobiera statystyki ogólne</br>
+ *  getSummaryInstitution - funkcja pobiera statystyki konkretnej instytucji
  */
 const actions = {
   addOrder({ commit, dispatch, state }, data) {
@@ -73,6 +80,8 @@ const actions = {
  * @name orders/mutations
  * @type {object}
  * @mutator orders - funkcja zapisujaca listę zamówień w obiekcie state
+ * @mutator orders - funkcja zapisujaca statystyki ogólne w obiekcie state
+ * @mutator orders - funkcja zapisujaca statystyki konkretnej instytucji w obiekcie state
  */
 const mutations = {
   orders(state, data) {
