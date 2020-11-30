@@ -81,6 +81,13 @@ const actions = {
       }, data);
     });
   },
+  getOrderKids({ commit, dispatch, state }, data) {
+    return new Promise((resolve, reject) => {
+      api.getOrder(response => {
+        resolve(response);
+      }, data);
+    });
+  },
   getSummary({ commit }) {
     return new Promise((resolve, reject) => {
       api.getSummary(response => {
@@ -95,7 +102,7 @@ const actions = {
         resolve(response);
       }, data);
     });
-  },
+  }
 };
 
 /** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state

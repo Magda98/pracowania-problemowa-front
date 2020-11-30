@@ -4,11 +4,28 @@
     fill-height
     fluid
     :style="{
-      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')',
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
     <v-dialog v-model="dialogDetails" max-width="50%">
       <v-card>
+        <div>
+          <v-card-title>
+            <span class="headline">Uwagi do zamówienia</span>
+          </v-card-title>
+          <v-card-text v-if="comment">
+            {{ comment }}
+          </v-card-text>
+          <v-card-text v-else>
+            brak uwag do zamówienia
+          </v-card-text>
+        </div>
+        <div v-if="ordersList.length">
+          <v-card-title>
+            <span class="headline">Łączna kwota do zapłaty tygodniowo</span>
+          </v-card-title>
+          <v-card-text style="font-size: 20px;"> {{ pricing }} zł </v-card-text>
+        </div>
         <v-card-title>
           <span class="headline">Zamówienia dziecka</span>
         </v-card-title>
@@ -25,10 +42,12 @@
                   <v-col cols="6">
                     {{ dish.name }}
                   </v-col>
-                  <v-col cols="6"> {{ dish.price.toFixed(2) }} zł </v-col>
+                  <v-col cols="6"> {{ dish.price }} zł </v-col>
                 </v-row>
               </v-card-text>
-              <v-card-text v-else> brak zamówień na dany dzień </v-card-text>
+              <v-card-text v-else>
+                brak zamówień na dany dzień
+              </v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs-items>
@@ -53,13 +72,15 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table
-        v-if="exampleData"
+        v-if="allKidsOrdersList.length"
         :headers="headers"
         :items="tableData()"
         :search="search"
-        :footer-props="{'items-per-page-text': 'Wierszy na stronę',
-        'items-per-page-all-text': 'Wszystkie',
-        'items-per-page-options': [10, 25, 50, -1],}"
+        :footer-props="{
+          'items-per-page-text': 'Wierszy na stronę',
+          'items-per-page-all-text': 'Wszystkie',
+          'items-per-page-options': [10, 25, 50, -1]
+        }"
         class="elevation-1"
         multi-sort
       >
@@ -86,6 +107,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      comment: "",
+      allKidsOrdersList: [],
       search: "",
       days: [
         "Poniedziałek",
@@ -94,7 +117,7 @@ export default {
         "Czwartek",
         "Piątek",
         "Sobota",
-        "Niedziela",
+        "Niedziela"
       ],
       tab: null,
       ordersList: [],
@@ -103,65 +126,51 @@ export default {
         {
           text: "Dziecko",
           align: "start",
-          value: "name",
+          value: "name"
         },
         {
           text: "Instytucja",
           align: "start",
-          value: "institution",
+          value: "institution"
         },
         {
           text: "Wartość zamówienia",
           align: "start",
-          value: "value",
+          value: "value"
         },
         {
           text: "Szczegóły",
           align: "start",
           value: "details",
-          sortable: false,
-        },
-      ],
-      exampleData: [
-        {
-          childPublicId: "c0d814d6-13ba-4672-a397-f347879b5415",
-          offers: [
-            "69be89d6-43bc-4490-967b-99b3f1ccaa36",
-            "823ac138-9cc0-4fa3-ab6d-e20060093dd4",
-            "f3041591-bd19-419a-b8c9-36d546bbea2c",
-            "178a4bb5-6085-43c4-99e6-8270f80d3dad",
-          ],
-        },
-        {
-          childPublicId: "78996d50-1240-4f87-9035-3ebdd3e41cd3",
-          offers: [
-            "69be89d6-43bc-4490-967b-99b3f1ccaa36",
-            "f3041591-bd19-419a-b8c9-36d546bbea2c",
-          ],
-        },
-        {
-          childPublicId: "2ab621d3-c889-403b-975a-ef2754619b4c",
-          offers: [
-            "f3041591-bd19-419a-b8c9-36d546bbea2c",
-            "178a4bb5-6085-43c4-99e6-8270f80d3dad",
-          ],
-        },
-      ],
+          sortable: false
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters("offers", ["offersList"]),
     ...mapGetters("kids", ["kidsList"]),
+    pricing() {
+      let x = this.offersList.filter(offer => {
+        const valid = this.ordersList.includes(offer.publicId);
+        return valid;
+      });
+      let price = 0;
+      x.forEach(element => {
+        price += element.price;
+      });
+      return price;
+    },
     kidDishList() {
       return this.offersList
-        .filter((offer) => this.ordersList.includes(offer.publicId))
+        .filter(offer => this.ordersList.includes(offer.publicId))
         .reduce(
           (offers, currOffer) => ({
             ...offers,
             [this.days[currOffer.dayOfWeek]]: [
               ...offers[this.days[currOffer.dayOfWeek]],
-              currOffer,
-            ],
+              currOffer
+            ]
           }),
           {
             Poniedziałek: [],
@@ -170,15 +179,15 @@ export default {
             Czwartek: [],
             Piątek: [],
             Sobota: [],
-            Niedziela: [],
+            Niedziela: []
           }
         );
-    },
+    }
   },
   methods: {
     ...mapActions("kids", ["getKids"]),
     ...mapActions("offers", ["getOffers"]),
-    ...mapActions("orders", ["getOrder"]),
+    ...mapActions("orders", ["getOrder", "getOrderKids"]),
     // @vuese
     // funkcja tworzy tabelę z danymi do wyświetlenia
     tableData() {
@@ -186,9 +195,9 @@ export default {
       var offers = this.offersList;
       var kids = this.kidsList;
       var xname, xinst, xprice;
-      this.exampleData.forEach(fill);
+      this.allKidsOrdersList.forEach(fill);
       function fill(item) {
-        var kid = kids.find((obj) => {
+        var kid = kids.find(obj => {
           return obj.publicId === item.childPublicId;
         });
         xname = kid.name;
@@ -196,7 +205,7 @@ export default {
         xprice = 0;
         item.offers.forEach(addPrice);
         function addPrice(item) {
-          xprice += offers.find((obj) => {
+          xprice += offers.find(obj => {
             return obj.publicId === item;
           }).price;
         }
@@ -205,7 +214,7 @@ export default {
           publicId: item.childPublicId,
           name: xname,
           institution: xinst,
-          value: xprice,
+          value: xprice
         });
       }
       return myArray;
@@ -214,16 +223,27 @@ export default {
     // funkcja wyświetla okno dialogowe ze szczegółami zamówienia
     //@arg Jako argument podaje się wyświetlane zamówienie
     see(item) {
-      this.getOrder(item.publicId).then((response) => {
+      this.getOrder(item.publicId).then(response => {
         this.ordersList = response.offers;
+        this.comment = response.comment;
         this.dialogDetails = true;
       });
-    },
+    }
   },
-  beforeMount() {
+  async beforeMount() {
     this.getOffers();
     this.getKids();
-  },
+    let module = this;
+    const myArray = await Promise.all(
+      this.kidsList.map(function(item) {
+        return module.getOrderKids(item.publicId);
+      })
+    );
+    let kidsWithOrders = myArray.filter(obj => {
+      if (obj.offers.length) return obj;
+    });
+    this.allKidsOrdersList = kidsWithOrders;
+  }
 };
 </script>
 <style lang="scss" scoped>

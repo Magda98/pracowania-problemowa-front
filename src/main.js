@@ -28,8 +28,11 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   response => {
-    if (response.status === 200 || response.status === 201 || response.status === 202) {
-
+    if (
+      response.status === 200 ||
+      response.status === 201 ||
+      response.status === 202
+    ) {
       if (!response.data.refresh) store.dispatch("user/refreshToken");
       return Promise.resolve(response);
     } else {
@@ -89,19 +92,10 @@ new Vue({
   store,
   vuetify,
   api,
-  // created() {
-  //   this.$store.subscribe((mutation, state) => {
-  //     if (mutation.type === "user/SAVE_TOKEN") {
-  //       axios.defaults.headers.common[
-  //         "Authorization"
-  //       ] = `Bearer ${state.user.token}`;
-  //     }
-  //   });
-  //   if (this.$store.state.user.token) {
-  //     axios.defaults.headers.common[
-  //       "Authorization"
-  //     ] = `Bearer ${this.$store.state.user.token}`;
-  //   }
-  // },
+  created() {
+    if (!this.$store.state.user.token) {
+      router.push({ path: "login" });
+    }
+  },
   render: h => h(App)
 }).$mount("#app");

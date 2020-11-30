@@ -11,10 +11,10 @@
         <v-col md="10">
           <h1>About</h1>
           <br />
-          <h4>
-            Jesteśmy firmą cateringową z Pcimia Dolnego, która od 35 lat
-            zapewnia smaczne i zdrowe posiłki dla przedszkoli. Zapoznajcie się z
-            naszą ofertą i znajdźcie coś dla siebie!
+          <h4 style="max-width:600px;margin:auto;">
+            Projekt aplikacji webowej na potrzeby zarządzania zamówieniami w
+            firmie caterignowej w ramach przedmiotu Projekt/pracownia problemowa
+            4EFA-DI
           </h4>
           <br />
           <h2>Autorzy:</h2>
