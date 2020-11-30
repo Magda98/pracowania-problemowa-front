@@ -1,6 +1,6 @@
 # UserLists
 
-Widok stroy z uprawnieniami użytkowników
+Widok strony z uprawnieniami użytkowników
 
 ## Methods
 

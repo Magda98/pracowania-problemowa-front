@@ -9,6 +9,7 @@ import api from "@/axios/settings.js";
 
 export default {
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące logowania
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane użytkownika przekazane podczas logowania
    */
@@ -24,6 +25,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące uprawnień
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getPermission(cb) {
@@ -40,6 +43,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania danych użytkownia
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getUserData(cb) {
@@ -51,6 +56,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące rejestracji użytkownika
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane użytkownika przekazane podczas rejestracji
    */
@@ -69,6 +76,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące wygenerowania na nowo tokenu
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   refreshToken(cb, data) {
@@ -83,6 +92,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania uprawnień danego użytkownia
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane użytkownika
    */
@@ -95,6 +106,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące ustawienia uprawnień danego użytkownika
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane użytkownika
    */
@@ -125,6 +138,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania listy użytkowników serwisu
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane użytkownika przekazane podczas rejestracji
    */
@@ -146,6 +161,8 @@ export default {
       });
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania oferty
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getOffers(cb) {
@@ -159,6 +176,8 @@ export default {
       });
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące dodania oferty
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas dodawnia oferty
    */
@@ -176,6 +195,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące usunięcia danej oferty
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas usuwania oferty
    */
@@ -190,6 +211,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące dodania zamówienia
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas tworzenia zamówienia
    */
@@ -205,6 +228,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania zamówienia dla danego dziecka
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas tworzenia zamówienia
    */
@@ -217,6 +242,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące podsumowania dla zamówień
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getSummary(cb) {
@@ -228,6 +255,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące podsumowania zamówień danych instytucji
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas tworzenia zamówienia
    */
@@ -240,6 +269,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące edycji danej oferty
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas edycji oferty
    */
@@ -258,6 +289,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania uprawnien użytkownika
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getPermissions(cb) {
@@ -271,6 +304,8 @@ export default {
       });
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania listy instytucji
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getInstitutions(cb) {
@@ -282,6 +317,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące dodania nowej instytucji
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas dodawania instytucji
    */
@@ -294,6 +331,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące usunięcia danej instytucji
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas usuwania instytucji
    */
@@ -306,6 +345,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące edycji instytucji
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas edycji instytucji
    */
@@ -324,6 +365,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania listy dzieci
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getAllKids(cb) {
@@ -333,6 +376,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące dodania dziecka
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas dodawnia dziecka
    */
@@ -343,6 +388,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące edytowania danych dziecka
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas edycji danych dziecka
    */
@@ -358,6 +405,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące usunięcia dziecka
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    * @param {Object} data - odpowiednie dane przekazane podczas usuwania danych dziecka
    */
@@ -368,6 +417,8 @@ export default {
       .catch(e => console.log(e));
   },
   /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania listy dzieci danego rodzica
+   *
    * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
    */
   getMyKids(cb) {
@@ -376,6 +427,11 @@ export default {
       .then(response => cb(response.data))
       .catch(e => console.log(e));
   },
+  /**
+   * @desc Funkcja wysyłająca zapytanie do API dotyczące pobrania listy dzieci należacych do danej instytucji
+   *
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getInstitutionKids(cb, data) {
     api
       .get(`/api/children/institution/${data}`)
