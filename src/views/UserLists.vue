@@ -39,7 +39,11 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-data-table :headers="headers" :items="userList" class="elevation-1">
+    <v-data-table :headers="headers" :items="userList" class="elevation-1" 
+        :footer-props="{'items-per-page-text': 'Wierszy na stronę',
+        'items-per-page-all-text': 'Wszystkie',
+        'items-per-page-options': [10, 25, 50, -1],}"
+        multi-sort>
       <template v-slot:top>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>

@@ -25,7 +25,7 @@
                   <v-col cols="6">
                     {{ dish.name }}
                   </v-col>
-                  <v-col cols="6"> {{ dish.price }} zł </v-col>
+                  <v-col cols="6"> {{ dish.price.toFixed(2) }} zł </v-col>
                 </v-row>
               </v-card-text>
               <v-card-text v-else> brak zamówień na dany dzień </v-card-text>
@@ -47,7 +47,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Wyszukaj"
           single-line
           hide-details
         ></v-text-field>
@@ -57,6 +57,9 @@
         :headers="headers"
         :items="tableData()"
         :search="search"
+        :footer-props="{'items-per-page-text': 'Wierszy na stronę',
+        'items-per-page-all-text': 'Wszystkie',
+        'items-per-page-options': [10, 25, 50, -1],}"
         class="elevation-1"
         multi-sort
       >

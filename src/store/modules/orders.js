@@ -15,7 +15,9 @@ import api from "@/api";
  * @property {Array} ordersList - tablica zawierająca zamówienia
  */
 const state = {
-  ordersList: []
+  ordersList: [],
+  summary: [],
+  summaryInstitution: []
 };
 
 /** obiekt posiadający funkcje które zwracają obiekty lub tablice z obiektu state
@@ -24,7 +26,9 @@ const state = {
  * @getter ordersList - funkcja zwracająca listę zamówień
  */
 const getters = {
-  ordersList: state => state.ordersList
+  ordersList: state => state.ordersList,
+  summary: state => state.summary,
+  summaryInstitution: state => state.summaryInstitution
 };
 
 /** obiekt posiadający funkcje, które wywołują funkcje pobierające dane z API, a anstępnie zapisują te dane poprzez mutacje do obiektów w state
@@ -76,7 +80,22 @@ const actions = {
         resolve(response);
       }, data);
     });
-  }
+  },
+  getSummary({ commit }) {
+    return new Promise((resolve, reject) => {
+      api.getSummary(response => {
+        commit("summary", response);
+      });
+    });
+  },
+  getSummaryInstitution({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      api.getSummaryInstitution(response => {
+        commit("summaryInstitution", response);
+        resolve(response);
+      }, data);
+    });
+  },
 };
 
 /** obiekt posiadający funkcje które zmieniają stan zmiennych w obiekcie state
@@ -87,6 +106,12 @@ const actions = {
 const mutations = {
   orders(state, data) {
     state.ordersList = data;
+  },
+  summaryInstitution(state, data) {
+    state.summaryInstitution = data;
+  },
+  summary(state, data) {
+    state.summary = data;
   }
 };
 

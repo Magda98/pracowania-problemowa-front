@@ -181,6 +181,10 @@
       v-if="kidsList.length"
       :headers="headers"
       :items="kidsList"
+      :footer-props="{'items-per-page-text': 'Wierszy na stronę',
+        'items-per-page-all-text': 'Wszystkie',
+        'items-per-page-options': [10, 25, 50, -1],}"
+        multi-sort
       class="elevation-1"
     >
       <template v-slot:top>

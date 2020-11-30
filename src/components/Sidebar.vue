@@ -67,6 +67,21 @@
         </v-list-item-icon>
         <v-list-item-title>Lista zamówień</v-list-item-title>
       </v-list-item>
+      <v-list-item
+        v-if="
+          loggedIn &&
+            myPermissions[
+              'FitKidCateringApp.Helpers.StandardPermissions@CateringEmployee'
+            ]
+        "
+        link
+        to="/stats"
+      >
+        <v-list-item-icon>
+          <v-icon>mdi-chart-box-outline</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Statystyki</v-list-item-title>
+      </v-list-item>
       <v-list-item v-if="loggedIn" link to="/menu">
         <v-list-item-icon>
           <v-icon>mdi-book-open-outline</v-icon>
