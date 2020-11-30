@@ -216,6 +216,9 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   */
   getSummary(cb) {
     api
       .get(`/api/orders/summary`)
@@ -224,6 +227,10 @@ export default {
       })
       .catch(e => console.log(e));
   },
+  /**
+   * @param {Function} cb - funkcja wywoływana po pobraniu danych z API
+   * @param {Object} data - odpowiednie dane przekazane podczas tworzenia zamówienia
+   */
   getSummaryInstitution(cb, data) {
     api
       .get(`/api/orders/summary/${data}`)
