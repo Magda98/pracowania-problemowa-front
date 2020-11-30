@@ -37,8 +37,11 @@ const getters = {
  */
 const actions = {
   getOffers({ commit }) {
-    api.getOffers(response => {
-      commit("offers", response);
+    return new Promise((resolve, reject) => {
+      api.getOffers(response => {
+        commit("offers", response);
+        resolve();
+      });
     });
   },
   addOffer({ commit, dispatch, state }, data) {

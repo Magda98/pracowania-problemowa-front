@@ -36,8 +36,11 @@ const getters = {
  */
 const actions = {
   getInstitutions({ commit, state }, data) {
-    api.getInstitutions(response => {
-      commit("getInstitutions", response);
+    return new Promise((resolve, reject) => {
+      api.getInstitutions(response => {
+        commit("getInstitutions", response);
+        resolve();
+      });
     });
   },
   addInstitutions({ dispatch }, data) {

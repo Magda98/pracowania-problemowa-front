@@ -7,96 +7,111 @@
       backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
-    <v-dialog v-model="dialogDetails" max-width="50%">
-      <v-card>
-        <div>
+    <div v-if="!loading">
+      <v-dialog v-model="dialogDetails" max-width="50%">
+        <v-card>
+          <div>
+            <v-card-title>
+              <span class="headline">Uwagi do zamówienia</span>
+            </v-card-title>
+            <v-card-text v-if="comment">
+              {{ comment }}
+            </v-card-text>
+            <v-card-text v-else>
+              brak uwag do zamówienia
+            </v-card-text>
+          </div>
+          <div v-if="ordersList.length">
+            <v-card-title>
+              <span class="headline">Łączna kwota do zapłaty tygodniowo</span>
+            </v-card-title>
+            <v-card-text style="font-size: 20px;">
+              {{ pricing }} zł
+            </v-card-text>
+          </div>
           <v-card-title>
-            <span class="headline">Uwagi do zamówienia</span>
+            <span class="headline">Zamówienia dziecka</span>
           </v-card-title>
-          <v-card-text v-if="comment">
-            {{ comment }}
-          </v-card-text>
-          <v-card-text v-else>
-            brak uwag do zamówienia
-          </v-card-text>
-        </div>
-        <div v-if="ordersList.length">
-          <v-card-title>
-            <span class="headline">Łączna kwota do zapłaty tygodniowo</span>
-          </v-card-title>
-          <v-card-text style="font-size: 20px;"> {{ pricing }} zł </v-card-text>
-        </div>
+          <v-tabs
+            v-model="tab"
+            background-color="transparent"
+            color="basil"
+            grow
+          >
+            <v-tab v-for="day in days" :key="day">
+              {{ day }}
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="tab">
+            <v-tab-item v-for="day in days" :key="day">
+              <v-card>
+                <v-card-text v-if="kidDishList[day].length">
+                  <v-row v-for="dish in kidDishList[day]" :key="dish.publicId">
+                    <v-col cols="6">
+                      {{ dish.name }}
+                    </v-col>
+                    <v-col cols="6"> {{ dish.price }} zł </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-text v-else>
+                  brak zamówień na dany dzień
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs-items>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red" text @click="dialogDetails = false">
+              Zamknij
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-card :style="{ top: '70px', position: 'absolute', width: '98%' }">
         <v-card-title>
-          <span class="headline">Zamówienia dziecka</span>
-        </v-card-title>
-        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-          <v-tab v-for="day in days" :key="day">
-            {{ day }}
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tab">
-          <v-tab-item v-for="day in days" :key="day">
-            <v-card>
-              <v-card-text v-if="kidDishList[day].length">
-                <v-row v-for="dish in kidDishList[day]" :key="dish.publicId">
-                  <v-col cols="6">
-                    {{ dish.name }}
-                  </v-col>
-                  <v-col cols="6"> {{ dish.price }} zł </v-col>
-                </v-row>
-              </v-card-text>
-              <v-card-text v-else>
-                brak zamówień na dany dzień
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
-        <v-card-actions>
+          Zamówienia
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="dialogDetails = false">
-            Zamknij
-          </v-btn>
-        </v-card-actions>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Wyszukaj"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          v-if="allKidsOrdersList.length"
+          :headers="headers"
+          :items="tableData()"
+          :search="search"
+          :footer-props="{
+            'items-per-page-text': 'Wierszy na stronę',
+            'items-per-page-all-text': 'Wszystkie',
+            'items-per-page-options': [10, 25, 50, -1]
+          }"
+          class="elevation-1"
+          multi-sort
+        >
+          <template v-slot:item.details="{ item }">
+            <v-btn small class="mr-2" color="secondary" @click="see(item)">
+              Szczegóły
+            </v-btn>
+          </template>
+        </v-data-table>
+        <div
+          v-else
+          style="margin: auto; padding-top: 50px; width: 100%; text-align: center"
+        >
+          brak zamówień
+        </div>
       </v-card>
-    </v-dialog>
-    <v-card :style="{ top: '70px', position: 'absolute', width: '98%' }">
-      <v-card-title>
-        Zamówienia
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Wyszukaj"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        v-if="allKidsOrdersList.length"
-        :headers="headers"
-        :items="tableData()"
-        :search="search"
-        :footer-props="{
-          'items-per-page-text': 'Wierszy na stronę',
-          'items-per-page-all-text': 'Wszystkie',
-          'items-per-page-options': [10, 25, 50, -1]
-        }"
-        class="elevation-1"
-        multi-sort
-      >
-        <template v-slot:item.details="{ item }">
-          <v-btn small class="mr-2" color="secondary" @click="see(item)">
-            Szczegóły
-          </v-btn>
-        </template>
-      </v-data-table>
-      <div
-        v-else
-        style="margin: auto; padding-top: 50px; width: 100%; text-align: center"
-      >
-        brak zamówień
-      </div>
-    </v-card>
+    </div>
+    <v-progress-circular
+      style="margin: auto;"
+      v-else
+      indeterminate
+      color="green"
+    ></v-progress-circular>
   </v-container>
 </template>
 
@@ -107,6 +122,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading: true,
       comment: "",
       allKidsOrdersList: [],
       search: "",
@@ -242,6 +258,7 @@ export default {
     let kidsWithOrders = myArray.filter(obj => {
       if (obj.offers.length) return obj;
     });
+    this.loading = false;
     this.allKidsOrdersList = kidsWithOrders;
   }
 };

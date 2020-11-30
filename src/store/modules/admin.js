@@ -50,9 +50,12 @@ const actions = {
     });
   },
   getUsers({ commit }, data) {
-    api.getUsers(response => {
-      commit("users", response);
-    }, data);
+    return new Promise((resolve, reject) => {
+      api.getUsers(response => {
+        commit("users", response);
+        resolve();
+      }, data);
+    });
   },
   getUserPermissions({ commit }, data) {
     return new Promise((resolve, reject) => {

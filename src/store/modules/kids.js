@@ -42,19 +42,28 @@ const getters = {
  */
 const actions = {
   getKids({ commit }) {
-    api.getAllKids(response => {
-      commit("getKids", response);
+    return new Promise((resolve, reject) => {
+      api.getAllKids(response => {
+        commit("getKids", response);
+        resolve();
+      });
     });
   },
   getMyKids({ commit }) {
-    api.getMyKids(response => {
-      commit("getKids", response);
+    return new Promise((resolve, reject) => {
+      api.getMyKids(response => {
+        commit("getKids", response);
+        resolve();
+      });
     });
   },
   getInstitutionKids({ commit }, data) {
-    api.getInstitutionKids(response => {
-      commit("getKidsInstitution", response);
-    }, data);
+    return new Promise((resolve, reject) => {
+      api.getInstitutionKids(response => {
+        commit("getKidsInstitution", response);
+        resolve();
+      }, data);
+    });
   },
   addKid({ commit, dispatch }, data) {
     api.addKid(response => {

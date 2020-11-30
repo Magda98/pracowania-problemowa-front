@@ -1,174 +1,191 @@
 <template>
-  <v-container>
-    <v-fab-transition>
-      <v-btn
-        @click="dialog = true"
-        color="secondary"
-        dark
-        absolute
-        right
-        top
-        fab
-        style="margin: 50px 20px;"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Nowa placówka</span>
-        </v-card-title>
+  <v-container
+    class="container"
+    fluid
+    fill-height
+    :style="{
+      backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
+    }"
+  >
+    <div style="width: 98%; position: absolute; top: 80px;" v-if="!loading">
+      <v-fab-transition>
+        <v-btn
+          @click="dialog = true"
+          color="secondary"
+          dark
+          absolute
+          right
+          top
+          fab
+          style="margin: 50px 20px;"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
+      <v-dialog v-model="dialog" max-width="500px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Nowa placówka</span>
+          </v-card-title>
 
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="institution.Name"
-                  label="Nazwa"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="institution.Street"
-                  label="Ulica"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="institution.ZipCode"
-                  label="Kod pocztowy"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="institution.City"
-                  label="Miasto"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-autocomplete
-                  v-model="institution.OwnerPublicId"
-                  :items="userNames"
-                  dense
-                  filled
-                  label="Właściciel"
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="institution.Name"
+                    label="Nazwa"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="institution.Street"
+                    label="Ulica"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="institution.ZipCode"
+                    label="Kod pocztowy"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="institution.City"
+                    label="Miasto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-autocomplete
+                    v-model="institution.OwnerPublicId"
+                    :items="userNames"
+                    dense
+                    filled
+                    label="Właściciel"
+                  ></v-autocomplete>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close">
-            Anuluj
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="save">
-            Dodaj
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close">
+              Anuluj
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="save">
+              Dodaj
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-    <v-dialog v-model="dialogEdit" max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Edycja placówki</span>
-        </v-card-title>
+      <v-dialog v-model="dialogEdit" max-width="500px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Edycja placówki</span>
+          </v-card-title>
 
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="currentItem.name"
-                  label="Nazwa"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="currentItem.street"
-                  label="Ulica"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="currentItem.zipCode"
-                  label="Kod pocztowy"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="currentItem.city"
-                  label="Miasto"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="currentItem.name"
+                    label="Nazwa"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="currentItem.street"
+                    label="Ulica"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="currentItem.zipCode"
+                    label="Kod pocztowy"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="currentItem.city"
+                    label="Miasto"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeEdit">
-            Anuluj
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="saveEdit">
-            Zapisz
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-data-table
-      v-if="institutionsList.length"
-      :headers="headers"
-      :items="institutionsList"
-      :footer-props="{'items-per-page-text': 'Wierszy na stronę',
-        'items-per-page-all-text': 'Wszystkie',
-        'items-per-page-options': [10, 25, 50, -1],}"
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeEdit">
+              Anuluj
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="saveEdit">
+              Zapisz
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-data-table
+        v-if="institutionsList.length"
+        :headers="headers"
+        :items="institutionsList"
+        :footer-props="{
+          'items-per-page-text': 'Wierszy na stronę',
+          'items-per-page-all-text': 'Wszystkie',
+          'items-per-page-options': [10, 25, 50, -1]
+        }"
         multi-sort
-      class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Placówki</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline"
-                >Na pewno chcesz usunąć placówkę?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Anuluj</v-btn
+        class="elevation-1"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Placówki</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="headline"
+                  >Na pewno chcesz usunąć placówkę?</v-card-title
                 >
-                <v-btn color="error" text @click="deleteItemConfirm"
-                  >Usuń</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
-    <div
-      v-else
-      style="margin:auto; padding-top: 50px;width:100%;text-align:center;"
-    >
-      brak placówek
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete"
+                    >Anuluj</v-btn
+                  >
+                  <v-btn color="error" text @click="deleteItemConfirm"
+                    >Usuń</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+      <div
+        v-else
+        style="margin:auto; padding-top: 50px;width:100%;text-align:center;"
+      >
+        brak placówek
+      </div>
     </div>
+    <v-progress-circular
+      style="margin: auto;"
+      v-else
+      indeterminate
+      color="green"
+    ></v-progress-circular>
   </v-container>
 </template>
 
@@ -179,6 +196,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading: true,
       dialogDelete: false,
       dialogEdit: false,
       dialog: false,
@@ -289,14 +307,37 @@ export default {
       this.close();
     }
   },
-  beforeMount() {
+  async beforeMount() {
     this.getInstitutions();
-    this.getUsers({
+    await this.getUsers({
       UserName: "",
       Email: "",
       FirstName: "",
       LastName: ""
     });
+    this.loading = false;
   }
 };
 </script>
+<style lang="scss" scoped>
+.filed {
+  margin-right: 10px !important;
+}
+</style>
+<style lang="scss" scoped>
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 40px;
+  color: #272727;
+}
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+</style>

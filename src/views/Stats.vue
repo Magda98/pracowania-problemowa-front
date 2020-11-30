@@ -7,50 +7,58 @@
       backgroundImage: 'url(' + require('../assets/bg-1_white.png') + ')'
     }"
   >
-    <v-card :style="{ top: '70px', position: 'absolute', width: '98%' }">
-      <v-card-title>
-        Statystyki
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Wyszukaj"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        v-if="tableData"
-        :headers="getHeaders(showAll)"
-        :search="search"
-        :items="getData(showAll)"
-        :footer-props="{
-          'items-per-page-text': 'Wierszy na stronę',
-          'items-per-page-all-text': 'Wszystkie',
-          'items-per-page-options': [10, 25, 50, -1]
-        }"
-        class="elevation-1"
-        multi-sort
-      >
-        <template v-slot:item.day="{ item }">
-          <span>{{ days[item.day] }}</span>
-        </template>
-        <template v-slot:top>
-          <v-switch
-            v-model="showAll"
-            label="Widok szczegółowy"
-            inset
-            class="pa-3"
-          ></v-switch>
-        </template>
-      </v-data-table>
-      <div
-        v-else
-        style="margin: auto; padding-top: 50px; width: 100%; text-align: center"
-      >
-        brak zamówień
-      </div>
-    </v-card>
+    <div v-if="!loading">
+      <v-card :style="{ top: '70px', position: 'absolute', width: '98%' }">
+        <v-card-title>
+          Statystyki
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Wyszukaj"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          v-if="tableData"
+          :headers="getHeaders(showAll)"
+          :search="search"
+          :items="getData(showAll)"
+          :footer-props="{
+            'items-per-page-text': 'Wierszy na stronę',
+            'items-per-page-all-text': 'Wszystkie',
+            'items-per-page-options': [10, 25, 50, -1]
+          }"
+          class="elevation-1"
+          multi-sort
+        >
+          <template v-slot:item.day="{ item }">
+            <span>{{ days[item.day] }}</span>
+          </template>
+          <template v-slot:top>
+            <v-switch
+              v-model="showAll"
+              label="Widok szczegółowy"
+              inset
+              class="pa-3"
+            ></v-switch>
+          </template>
+        </v-data-table>
+        <div
+          v-else
+          style="margin: auto; padding-top: 50px; width: 100%; text-align: center"
+        >
+          brak zamówień
+        </div>
+      </v-card>
+    </div>
+    <v-progress-circular
+      style="margin: auto;"
+      v-else
+      indeterminate
+      color="green"
+    ></v-progress-circular>
   </v-container>
 </template>
 
@@ -61,6 +69,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading: true,
       showAll: false,
       search: "",
       tableData: [],
@@ -198,6 +207,7 @@ export default {
       }
       index++;
     }
+    this.loading = false;
   }
 };
 </script>
