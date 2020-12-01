@@ -1,8 +1,20 @@
 <template>
   <v-app>
     <v-layout fluid fill-height>
-      <Sidebar />
+      <Sidebar @updateDrawer="onClickChild" :drawer="drawer" />
       <v-main>
+        <v-btn
+          v-if="$vuetify.breakpoint.mobile"
+          absolute
+          dark
+          fab
+          left
+          color="secondary"
+          ><v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+        </v-btn>
+
         <transition name="slide-fade">
           <router-view />
         </transition>
@@ -51,7 +63,7 @@ export default {
   },
   name: "App",
   data: () => ({
-    //
+    drawer: true
   }),
   computed: {
     ...mapGetters("user", ["userInfo", "loggedIn"]),
@@ -64,7 +76,15 @@ export default {
     ])
   },
   methods: {
-    ...mapActions("toastMessage", ["hideAlert"])
+    ...mapActions("toastMessage", ["hideAlert"]),
+    onClickChild(value) {
+      this.drawer = value;
+    }
+  },
+  beforeMount() {
+    if (this.$vuetify.breakpoint.mobile) {
+      this.drawer = false;
+    }
   }
 };
 </script>

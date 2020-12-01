@@ -1,5 +1,13 @@
 <template>
-  <v-navigation-drawer permanent color="primary" dark fill-height>
+  <v-navigation-drawer
+    v-model="propModel"
+    bottom
+    fixed
+    app
+    color="primary"
+    dark
+    fill-height
+  >
     <v-list v-if="loggedIn && userInfo">
       <v-list-item class="px-2"> </v-list-item>
 
@@ -192,8 +200,24 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  props: {
+    drawer: Boolean
+  },
   computed: {
-    ...mapGetters("user", ["userInfo", "loggedIn", "userInfo", "myPermissions"])
+    ...mapGetters("user", [
+      "userInfo",
+      "loggedIn",
+      "userInfo",
+      "myPermissions"
+    ]),
+    propModel: {
+      get() {
+        return this.drawer;
+      },
+      set(value) {
+        this.$emit("updateDrawer", value);
+      }
+    }
   },
   methods: {
     ...mapActions("user", ["logout"])
